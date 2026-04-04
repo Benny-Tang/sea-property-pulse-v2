@@ -51,7 +51,7 @@ app.post("/properties", async (req, res) => {
     .from("properties")
     .insert([{ title, price, location, image_url }]);
 
-  if (error) return res.status(500).json(error);
+  if (error) return res.status(500).json(error); 
   res.json(data);
 });
 
