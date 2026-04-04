@@ -6,25 +6,70 @@
 <body>
   <h1>JebatClaw Properties</h1>
 
+  <h2>Generate Property Page</h2>
+
+  <form id="generator">
+    <input id="url" placeholder="Paste listing URL" required />
+    <button type="submit">Generate</button>
+  </form>
+
+  <hr/>
+
   <div id="list"></div>
 
   <script>
-    fetch("https://jebatclaw-backend.onrender.com/properties")
-      .then(res => res.json())
-      .then(data => {
-        const container = document.getElementById("list");
+    const API = "https://jebatclaw-property-backend.onrender.com";
 
-        data.forEach(p => {
-          const div = document.createElement("div");
-          div.innerHTML = `
-            <h3>${p.title}</h3>
-            <p>${p.location}</p>
-            <p>RM ${p.price}</p>
-            ${p.image_url ? `<img src="${p.image_url}" width="200"/>` : ""}
-          `;
-          container.appendChild(div);
+    // LOAD PROPERTIES
+    function load() {
+      fetch(API + "/properties")
+        .then(res => res.json())
+        .then(data => {
+          const container = document.getElementById("list");
+          container.innerHTML = "";
+
+          data.forEach(p => {
+            const div = document.createElement("div");
+            div.innerHTML = `
+              <h3>${p.title}</h3>
+              <p>${p.location}</p>
+              <p>RM ${p.price}</p>
+              ${p.image_url ? `<img src="${p.image_url}" width="200"/>` : ""}
+              <hr/>
+            `;
+            container.appendChild(div);
+          });
         });
+    }
+
+    load();
+
+    // GENERATE (simulate AI)
+    document.getElementById("generator").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const url = document.getElementById("url").value;
+
+      // Simulated extraction (we improve later)
+      const fakeData = {
+        title: "Generated Property from URL",
+        price: Math.floor(Math.random() * 900000) + 100000,
+        location: "Malaysia",
+        image_url: ""
+      };
+
+      await fetch(API + "/properties", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(fakeData)
       });
+
+      alert("Property generated!");
+
+      load();
+    });
   </script>
 </body>
 </html>
