@@ -1,0 +1,31 @@
+name: SEA Property Pulse Daily Scan
+
+on:
+  schedule:
+    - cron: '0 1 * * *'  # Run daily at 1AM UTC (9AM Malaysia time)
+  workflow_dispatch:       # Allow manual trigger
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: cd backend && npm install
+
+      - name: Run scraper
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          BRIGHT_DATA_TOKEN: ${{ secrets.BRIGHT_DATA_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: cd backend && node scraper.js
+
+      - name: Keep Supabase alive (ping)
+        run: curl -s https://sea-property-pulse-v2.vercel.app/api/health || true

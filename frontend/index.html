@@ -1,75 +1,206 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>JebatClaw</title>
-</head>
-<body>
-  <h1>JebatClaw Properties</h1>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEA Property Pulse — Live Market Intelligence</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #0D1B3E; color: #fff; min-height: 100vh; }
 
-  <h2>Generate Property Page</h2>
-
-  <form id="generator">
-    <input id="url" placeholder="Paste listing URL" required />
-    <button type="submit">Generate</button>
-  </form>
-
-  <hr/>
-
-  <div id="list"></div>
-
-  <script>
-    const API = "https://jebatclaw-property-backend.onrender.com";
-
-    // LOAD PROPERTIES
-    function load() {
-      fetch(API + "/properties")
-        .then(res => res.json())
-        .then(data => {
-          const container = document.getElementById("list");
-          container.innerHTML = "";
-
-          data.forEach(p => {
-            const div = document.createElement("div");
-            div.innerHTML = `
-              <h3>${p.title}</h3>
-              <p>${p.location}</p>
-              <p>RM ${p.price}</p>
-              ${p.image_url ? `<img src="${p.image_url}" width="200"/>` : ""}
-              <hr/>
-            `;
-            container.appendChild(div);
-          });
-        });
+    header {
+      background: linear-gradient(135deg, #0D1B3E, #028090);
+      padding: 24px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(2,195,154,0.3);
+    }
+    header h1 { font-size: 24px; color: #02C39A; }
+    header p { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+    .live-badge {
+      background: rgba(2,195,154,0.2); border: 1px solid #02C39A;
+      color: #02C39A; padding: 6px 14px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
     }
 
-    load();
+    .stats-bar {
+      display: flex; gap: 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .stat-item {
+      flex: 1; padding: 20px; text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .stat-item .val { font-size: 28px; font-weight: 700; color: #02C39A; }
+    .stat-item .lbl { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
 
-    // GENERATE (simulate AI)
-    document.getElementById("generator").addEventListener("submit", async (e) => {
-      e.preventDefault();
+    .grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px; padding: 30px 40px;
+    }
 
-      const url = document.getElementById("url").value;
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 24px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover { transform: translateY(-2px); border-color: rgba(2,195,154,0.4); }
 
-      // Simulated extraction (we improve later)
-      const fakeData = {
-        title: "Generated Property from URL",
-        price: Math.floor(Math.random() * 900000) + 100000,
-        location: "Malaysia",
-        image_url: ""
-      };
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .country-name { font-size: 18px; font-weight: 700; }
+    .score {
+      background: rgba(2,195,154,0.15); border: 1px solid rgba(2,195,154,0.3);
+      color: #02C39A; padding: 4px 12px; border-radius: 20px;
+      font-size: 14px; font-weight: 700;
+    }
 
-      await fetch(API + "/properties", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(fakeData)
-      });
+    .sentiment {
+      display: inline-block; padding: 3px 10px; border-radius: 12px;
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 1px; margin-bottom: 12px;
+    }
+    .sentiment.hot { background: rgba(239,68,68,0.2); color: #F87171; }
+    .sentiment.warm { background: rgba(245,158,11,0.2); color: #FCD34D; }
+    .sentiment.cool { background: rgba(96,165,250,0.2); color: #93C5FD; }
 
-      alert("Property generated!"); 
+    .price { font-size: 15px; color: rgba(255,255,255,0.7); margin-bottom: 12px; }
+    .price span { color: #02C39A; font-weight: 600; }
 
-      load();
-    });
-  </script>
+    .summary { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 14px; }
+
+    .locations { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .location-tag {
+      background: rgba(2,128,144,0.2); border: 1px solid rgba(2,128,144,0.3);
+      color: #67E8F9; padding: 3px 10px; border-radius: 10px; font-size: 11px;
+    }
+
+    .trends { list-style: none; }
+    .trends li {
+      font-size: 12px; color: rgba(255,255,255,0.5);
+      padding: 4px 0; padding-left: 16px; position: relative;
+    }
+    .trends li::before { content: "→"; position: absolute; left: 0; color: #028090; }
+
+    .last-updated { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 14px; }
+
+    .loading {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 400px; gap: 16px;
+    }
+    .spinner {
+      width: 48px; height: 48px; border: 3px solid rgba(2,195,154,0.2);
+      border-top-color: #02C39A; border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-msg {
+      text-align: center; padding: 60px 40px; color: rgba(255,255,255,0.4);
+    }
+    .error-msg h2 { color: #F87171; margin-bottom: 8px; }
+
+    footer {
+      text-align: center; padding: 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 12px; color: rgba(255,255,255,0.25);
+    }
+    footer span { color: #02C39A; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🏙️ SEA Property Pulse</h1>
+    <p>AI-Powered Real Estate Market Intelligence · Southeast Asia</p>
+  </div>
+  <div class="live-badge">🟢 LIVE DATA</div>
+</header>
+
+<div class="stats-bar" id="statsBar">
+  <div class="stat-item"><div class="val" id="totalMarkets">—</div><div class="lbl">Markets Tracked</div></div>
+  <div class="stat-item"><div class="val" id="hotMarkets">—</div><div class="lbl">Hot Markets</div></div>
+  <div class="stat-item"><div class="val" id="avgScore">—</div><div class="lbl">Avg Market Score</div></div>
+  <div class="stat-item"><div class="val" id="lastScan">—</div><div class="lbl">Last Scan</div></div>
+</div>
+
+<div id="content">
+  <div class="loading">
+    <div class="spinner"></div>
+    <p style="color:rgba(255,255,255,0.4)">Loading live market intelligence...</p>
+  </div>
+</div>
+
+<footer>
+  Powered by <span>Bright Data</span> · <span>Claude AI</span> · <span>Supabase</span> · Built by Benny Tang
+</footer>
+
+<script>
+  const API_URL = window.location.hostname === 'localhost'
+    ? 'http://localhost:3000/api'
+    : '/api';
+
+  async function loadSignals() {
+    try {
+      const res = await fetch(`${API_URL}/signals`);
+      if (!res.ok) throw new Error('API error');
+      const data = await res.json();
+      renderDashboard(data);
+    } catch (err) {
+      document.getElementById('content').innerHTML = `
+        <div class="error-msg">
+          <h2>No Data Yet</h2>
+          <p>Run the scraper to populate the dashboard.</p>
+          <p style="margin-top:8px;font-size:12px;">npm run scan</p>
+        </div>`;
+    }
+  }
+
+  function renderDashboard(markets) {
+    if (!markets || markets.length === 0) {
+      document.getElementById('content').innerHTML = `
+        <div class="error-msg"><h2>No Data Yet</h2><p>Run the scraper first.</p></div>`;
+      return;
+    }
+
+    const hotCount = markets.filter(m => m.sentiment === 'hot').length;
+    const avgScore = (markets.reduce((a, b) => a + (b.market_score || 0), 0) / markets.length).toFixed(1);
+    const lastScan = markets[0]?.scanned_at
+      ? new Date(markets[0].scanned_at).toLocaleDateString('en-MY', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+      : '—';
+
+    document.getElementById('totalMarkets').textContent = markets.length;
+    document.getElementById('hotMarkets').textContent = hotCount;
+    document.getElementById('avgScore').textContent = avgScore;
+    document.getElementById('lastScan').textContent = lastScan;
+
+    const flags = { MY:'🇲🇾', SG:'🇸🇬', TH:'🇹🇭', ID:'🇮🇩', PH:'🇵🇭', VN:'🇻🇳' };
+
+    const cards = markets.map(m => `
+      <div class="card">
+        <div class="card-header">
+          <div class="country-name">${flags[m.country_code] || ''} ${m.country}</div>
+          <div class="score">⭐ ${m.market_score || '—'}</div>
+        </div>
+        <div class="sentiment ${m.sentiment}">${m.sentiment || 'unknown'}</div>
+        <div class="price">Avg: <span>${m.avg_price_range || 'N/A'}</span></div>
+        <div class="summary">${m.summary || ''}</div>
+        ${m.hot_locations?.length ? `
+        <div class="locations">
+          ${m.hot_locations.map(l => `<span class="location-tag">📍 ${l}</span>`).join('')}
+        </div>` : ''}
+        ${m.trends?.length ? `
+        <ul class="trends">
+          ${m.trends.map(t => `<li>${t}</li>`).join('')}
+        </ul>` : ''}
+        <div class="last-updated">Updated: ${m.scanned_at ? new Date(m.scanned_at).toLocaleString('en-MY') : '—'}</div>
+      </div>
+    `).join('');
+
+    document.getElementById('content').innerHTML = `<div class="grid">${cards}</div>`;
+  }
+
+  loadSignals();
+  setInterval(loadSignals, 5 * 60 * 1000);
+</script>
 </body>
-</html> 
+</html>
