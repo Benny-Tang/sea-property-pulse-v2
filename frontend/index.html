@@ -23,7 +23,7 @@
     }
 
     .stats-bar {
-      display: flex; gap: 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex; border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .stat-item {
       flex: 1; padding: 20px; text-align: center;
@@ -32,55 +32,67 @@
     .stat-item .val { font-size: 28px; font-weight: 700; color: #02C39A; }
     .stat-item .lbl { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
 
+    .filters {
+      display: flex; gap: 10px; padding: 20px 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 8px 18px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2);
+      background: transparent; color: rgba(255,255,255,0.6);
+      cursor: pointer; font-size: 13px; transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: #02C39A; color: #02C39A; }
+    .filter-btn.active { background: rgba(2,195,154,0.2); border-color: #02C39A; color: #02C39A; font-weight: 600; }
+    .filter-btn.buyer { border-color: #60A5FA; color: #60A5FA; }
+    .filter-btn.buyer.active { background: rgba(96,165,250,0.2); }
+    .filter-btn.seller { border-color: #F87171; color: #F87171; }
+    .filter-btn.seller.active { background: rgba(248,113,113,0.2); }
+    .filter-btn.momentum { border-color: #34D399; color: #34D399; }
+    .filter-btn.momentum.active { background: rgba(52,211,153,0.2); }
+
     .grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 20px; padding: 30px 40px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px; padding: 24px 40px;
     }
 
     .card {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px; padding: 24px;
+      border-radius: 14px; padding: 20px;
       transition: transform 0.2s, border-color 0.2s;
     }
-    .card:hover { transform: translateY(-2px); border-color: rgba(2,195,154,0.4); }
+    .card:hover { transform: translateY(-2px); border-color: rgba(2,195,154,0.3); }
+    .card.buyer_intent { border-left: 3px solid #60A5FA; }
+    .card.seller_stress { border-left: 3px solid #F87171; }
+    .card.momentum { border-left: 3px solid #34D399; }
 
-    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-    .country-name { font-size: 18px; font-weight: 700; }
-    .score {
-      background: rgba(2,195,154,0.15); border: 1px solid rgba(2,195,154,0.3);
-      color: #02C39A; padding: 4px 12px; border-radius: 20px;
-      font-size: 14px; font-weight: 700;
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .signal-badge {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; padding: 3px 10px; border-radius: 10px;
     }
+    .signal-badge.buyer_intent { background: rgba(96,165,250,0.2); color: #60A5FA; }
+    .signal-badge.seller_stress { background: rgba(248,113,113,0.2); color: #F87171; }
+    .signal-badge.momentum { background: rgba(52,211,153,0.2); color: #34D399; }
 
-    .sentiment {
-      display: inline-block; padding: 3px 10px; border-radius: 12px;
-      font-size: 11px; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 1px; margin-bottom: 12px;
+    .country-tag { font-size: 12px; color: rgba(255,255,255,0.4); }
+
+    .card-title {
+      font-size: 14px; font-weight: 600; color: #fff;
+      margin-bottom: 8px; line-height: 1.4;
     }
-    .sentiment.hot { background: rgba(239,68,68,0.2); color: #F87171; }
-    .sentiment.warm { background: rgba(245,158,11,0.2); color: #FCD34D; }
-    .sentiment.cool { background: rgba(96,165,250,0.2); color: #93C5FD; }
+    .card-snippet { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; margin-bottom: 10px; }
 
-    .price { font-size: 15px; color: rgba(255,255,255,0.7); margin-bottom: 12px; }
-    .price span { color: #02C39A; font-weight: 600; }
+    .card-meta { display: flex; gap: 10px; flex-wrap: wrap; }
+    .meta-item { font-size: 11px; color: rgba(255,255,255,0.35); }
+    .meta-item span { color: #02C39A; }
 
-    .summary { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 14px; }
-
-    .locations { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-    .location-tag {
-      background: rgba(2,128,144,0.2); border: 1px solid rgba(2,128,144,0.3);
-      color: #67E8F9; padding: 3px 10px; border-radius: 10px; font-size: 11px;
+    .card-link {
+      display: inline-block; margin-top: 10px;
+      font-size: 11px; color: #028090; text-decoration: none;
     }
-
-    .trends { list-style: none; }
-    .trends li {
-      font-size: 12px; color: rgba(255,255,255,0.5);
-      padding: 4px 0; padding-left: 16px; position: relative;
-    }
-    .trends li::before { content: "→"; position: absolute; left: 0; color: #028090; }
-
-    .last-updated { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 14px; }
+    .card-link:hover { color: #02C39A; }
 
     .loading {
       display: flex; flex-direction: column; align-items: center;
@@ -93,10 +105,7 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .error-msg {
-      text-align: center; padding: 60px 40px; color: rgba(255,255,255,0.4);
-    }
-    .error-msg h2 { color: #F87171; margin-bottom: 8px; }
+    .no-data { text-align: center; padding: 60px; color: rgba(255,255,255,0.3); }
 
     footer {
       text-align: center; padding: 24px;
@@ -116,17 +125,30 @@
   <div class="live-badge">🟢 LIVE DATA</div>
 </header>
 
-<div class="stats-bar" id="statsBar">
-  <div class="stat-item"><div class="val" id="totalMarkets">—</div><div class="lbl">Markets Tracked</div></div>
-  <div class="stat-item"><div class="val" id="hotMarkets">—</div><div class="lbl">Hot Markets</div></div>
-  <div class="stat-item"><div class="val" id="avgScore">—</div><div class="lbl">Avg Market Score</div></div>
-  <div class="stat-item"><div class="val" id="lastScan">—</div><div class="lbl">Last Scan</div></div>
+<div class="stats-bar">
+  <div class="stat-item"><div class="val" id="totalListings">—</div><div class="lbl">Total Signals</div></div>
+  <div class="stat-item"><div class="val" id="buyerCount">—</div><div class="lbl">Buyer Intent</div></div>
+  <div class="stat-item"><div class="val" id="sellerCount">—</div><div class="lbl">Seller Stress</div></div>
+  <div class="stat-item"><div class="val" id="momentumCount">—</div><div class="lbl">Momentum</div></div>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" onclick="filterAll()">🌏 All Markets</button>
+  <button class="filter-btn" onclick="filterCountry('MY')">🇲🇾 Malaysia</button>
+  <button class="filter-btn" onclick="filterCountry('SG')">🇸🇬 Singapore</button>
+  <button class="filter-btn" onclick="filterCountry('TH')">🇹🇭 Thailand</button>
+  <button class="filter-btn" onclick="filterCountry('ID')">🇮🇩 Indonesia</button>
+  <button class="filter-btn" onclick="filterCountry('PH')">🇵🇭 Philippines</button>
+  <button class="filter-btn" onclick="filterCountry('VN')">🇻🇳 Vietnam</button>
+  <button class="filter-btn buyer" onclick="filterSignal('buyer_intent')">🔵 Buyer Intent</button>
+  <button class="filter-btn seller" onclick="filterSignal('seller_stress')">🔴 Seller Stress</button>
+  <button class="filter-btn momentum" onclick="filterSignal('momentum')">🟢 Momentum</button>
 </div>
 
 <div id="content">
   <div class="loading">
     <div class="spinner"></div>
-    <p style="color:rgba(255,255,255,0.4)">Loading live market intelligence...</p>
+    <p style="color:rgba(255,255,255,0.4)">Loading live market signals...</p>
   </div>
 </div>
 
@@ -139,68 +161,79 @@
     ? 'http://localhost:3000/api'
     : '/api';
 
-  async function loadSignals() {
+  let allListings = [];
+  let activeCountry = null;
+  let activeSignal = null;
+
+  const flags = { MY:'🇲🇾', SG:'🇸🇬', TH:'🇹🇭', ID:'🇮🇩', PH:'🇵🇭', VN:'🇻🇳' };
+
+  async function loadListings() {
     try {
-      const res = await fetch(`${API_URL}/signals`);
+      const res = await fetch(`${API_URL}/listings`);
       if (!res.ok) throw new Error('API error');
-      const data = await res.json();
-      renderDashboard(data);
+      allListings = await res.json();
+      updateStats();
+      renderCards(allListings);
     } catch (err) {
-      document.getElementById('content').innerHTML = `
-        <div class="error-msg">
-          <h2>No Data Yet</h2>
-          <p>Run the scraper to populate the dashboard.</p>
-          <p style="margin-top:8px;font-size:12px;">npm run scan</p>
-        </div>`;
+      document.getElementById('content').innerHTML =
+        '<div class="no-data"><h2 style="color:#F87171">No Data Yet</h2><p>Run the scraper to populate signals.</p></div>';
     }
   }
 
-  function renderDashboard(markets) {
-    if (!markets || markets.length === 0) {
-      document.getElementById('content').innerHTML = `
-        <div class="error-msg"><h2>No Data Yet</h2><p>Run the scraper first.</p></div>`;
+  function updateStats() {
+    document.getElementById('totalListings').textContent = allListings.length;
+    document.getElementById('buyerCount').textContent = allListings.filter(l => l.signal_type === 'buyer_intent').length;
+    document.getElementById('sellerCount').textContent = allListings.filter(l => l.signal_type === 'seller_stress').length;
+    document.getElementById('momentumCount').textContent = allListings.filter(l => l.signal_type === 'momentum').length;
+  }
+
+  function renderCards(listings) {
+    if (!listings.length) {
+      document.getElementById('content').innerHTML = '<div class="no-data">No signals match this filter.</div>';
       return;
     }
-
-    const hotCount = markets.filter(m => m.sentiment === 'hot').length;
-    const avgScore = (markets.reduce((a, b) => a + (b.market_score || 0), 0) / markets.length).toFixed(1);
-    const lastScan = markets[0]?.scanned_at
-      ? new Date(markets[0].scanned_at).toLocaleDateString('en-MY', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
-      : '—';
-
-    document.getElementById('totalMarkets').textContent = markets.length;
-    document.getElementById('hotMarkets').textContent = hotCount;
-    document.getElementById('avgScore').textContent = avgScore;
-    document.getElementById('lastScan').textContent = lastScan;
-
-    const flags = { MY:'🇲🇾', SG:'🇸🇬', TH:'🇹🇭', ID:'🇮🇩', PH:'🇵🇭', VN:'🇻🇳' };
-
-    const cards = markets.map(m => `
-      <div class="card">
-        <div class="card-header">
-          <div class="country-name">${flags[m.country_code] || ''} ${m.country}</div>
-          <div class="score">⭐ ${m.market_score || '—'}</div>
+    const cards = listings.map(l => `
+      <div class="card ${l.signal_type}">
+        <div class="card-top">
+          <span class="signal-badge ${l.signal_type}">${l.signal_type?.replace('_', ' ') || 'unknown'}</span>
+          <span class="country-tag">${flags[l.country_code] || ''} ${l.country}</span>
         </div>
-        <div class="sentiment ${m.sentiment}">${m.sentiment || 'unknown'}</div>
-        <div class="price">Avg: <span>${m.avg_price_range || 'N/A'}</span></div>
-        <div class="summary">${m.summary || ''}</div>
-        ${m.hot_locations?.length ? `
-        <div class="locations">
-          ${m.hot_locations.map(l => `<span class="location-tag">📍 ${l}</span>`).join('')}
-        </div>` : ''}
-        ${m.trends?.length ? `
-        <ul class="trends">
-          ${m.trends.map(t => `<li>${t}</li>`).join('')}
-        </ul>` : ''}
-        <div class="last-updated">Updated: ${m.scanned_at ? new Date(m.scanned_at).toLocaleString('en-MY') : '—'}</div>
+        <div class="card-title">${l.title || 'No title'}</div>
+        <div class="card-snippet">${l.snippet || ''}</div>
+        <div class="card-meta">
+          ${l.location ? `<div class="meta-item">📍 <span>${l.location}</span></div>` : ''}
+          ${l.price ? `<div class="meta-item">💰 <span>${l.price}</span></div>` : ''}
+          ${l.source ? `<div class="meta-item">🌐 <span>${l.source}</span></div>` : ''}
+        </div>
+        ${l.url ? `<a class="card-link" href="${l.url}" target="_blank">View listing →</a>` : ''}
       </div>
     `).join('');
-
     document.getElementById('content').innerHTML = `<div class="grid">${cards}</div>`;
   }
 
-  loadSignals();
-  setInterval(loadSignals, 5 * 60 * 1000);
+  function filterAll() {
+    activeCountry = null; activeSignal = null;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    renderCards(allListings);
+  }
+
+  function filterCountry(code) {
+    activeCountry = code; activeSignal = null;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    renderCards(allListings.filter(l => l.country_code === code));
+  }
+
+  function filterSignal(type) {
+    activeSignal = type; activeCountry = null;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    renderCards(allListings.filter(l => l.signal_type === type));
+  }
+
+  loadListings();
+  setInterval(loadListings, 5 * 60 * 1000);
 </script>
 </body>
 </html>

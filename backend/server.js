@@ -9,7 +9,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANO
 app.use(cors());
 app.use(express.json());
 
-// Get all market signals
+// Get all market signals (country summaries)
 app.get('/api/signals', async (req, res) => {
   const { data, error } = await supabase
     .from('property_signals')
@@ -19,21 +19,32 @@ app.get('/api/signals', async (req, res) => {
   res.json(data);
 });
 
-// Get single market
-app.get('/api/signals/:code', async (req, res) => {
+// Get all individual listings
+app.get('/api/listings', async (req, res) => {
   const { data, error } = await supabase
-    .from('property_signals')
+    .from('property_listings')
     .select('*')
-    .eq('country_code', req.params.code.toUpperCase())
-    .single();
+    .order('scanned_at', { ascending: false })
+    .limit(200);
   if (error) return res.status(500).json({ error });
   res.json(data);
 });
 
-// Health check + keep Supabase alive
+// Get listings by country
+app.get('/api/listings/:code', async (req, res) => {
+  const { data, error } = await supabase
+    .from('property_listings')
+    .select('*')
+    .eq('country_code', req.params.code.toUpperCase())
+    .order('scanned_at', { ascending: false });
+  if (error) return res.status(500).json({ error });
+  res.json(data);
+});
+
+// Health check
 app.get('/api/health', async (req, res) => {
   const { count } = await supabase
-    .from('property_signals')
+    .from('property_listings')
     .select('*', { count: 'exact', head: true });
   res.json({
     status: 'ok',
