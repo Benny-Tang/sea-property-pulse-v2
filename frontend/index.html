@@ -4,93 +4,114 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SEA Property Pulse — Live Market Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', sans-serif; background: #0D1B3E; color: #fff; min-height: 100vh; }
+    body { font-family: 'Inter', sans-serif; background: #080F25; color: #fff; min-height: 100vh; }
 
     header {
-      background: linear-gradient(135deg, #0D1B3E, #028090);
-      padding: 24px 40px;
+      background: linear-gradient(135deg, #0D1B3E 0%, #0a3d4a 100%);
+      padding: 28px 48px;
       display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid rgba(2,195,154,0.3);
+      border-bottom: 1px solid rgba(2,195,154,0.2);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
     }
-    header h1 { font-size: 24px; color: #02C39A; }
-    header p { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+    .header-left h1 { font-size: 26px; font-weight: 800; color: #02C39A; letter-spacing: -0.5px; }
+    .header-left p { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 5px; font-weight: 400; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
     .live-badge {
-      background: rgba(2,195,154,0.2); border: 1px solid #02C39A;
-      color: #02C39A; padding: 6px 14px; border-radius: 20px;
-      font-size: 12px; font-weight: 600;
+      background: rgba(2,195,154,0.15); border: 1px solid rgba(2,195,154,0.4);
+      color: #02C39A; padding: 7px 16px; border-radius: 20px;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.5px;
+      display: flex; align-items: center; gap: 6px;
     }
+    .live-dot { width: 7px; height: 7px; background: #02C39A; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 
     .stats-bar {
-      display: flex; border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
     }
     .stat-item {
-      flex: 1; padding: 20px; text-align: center;
-      border-right: 1px solid rgba(255,255,255,0.08);
+      padding: 24px; text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      position: relative;
     }
-    .stat-item .val { font-size: 28px; font-weight: 700; color: #02C39A; }
-    .stat-item .lbl { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+    .stat-item:last-child { border-right: none; }
+    .stat-item .val { font-size: 32px; font-weight: 800; color: #02C39A; line-height: 1; }
+    .stat-item .val.blue { color: #60A5FA; }
+    .stat-item .val.red { color: #F87171; }
+    .stat-item .val.green { color: #34D399; }
+    .stat-item .lbl { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 6px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; }
 
     .filters {
-      display: flex; gap: 10px; padding: 20px 40px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      flex-wrap: wrap;
+      display: flex; gap: 8px; padding: 20px 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      flex-wrap: wrap; align-items: center;
+      background: rgba(255,255,255,0.01);
     }
+    .filters-label { font-size: 11px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; margin-right: 4px; }
     .filter-btn {
-      padding: 8px 18px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2);
-      background: transparent; color: rgba(255,255,255,0.6);
-      cursor: pointer; font-size: 13px; transition: all 0.2s;
+      padding: 7px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.12);
+      background: transparent; color: rgba(255,255,255,0.5);
+      cursor: pointer; font-size: 12px; font-weight: 500;
+      transition: all 0.2s; font-family: 'Inter', sans-serif;
     }
-    .filter-btn:hover { border-color: #02C39A; color: #02C39A; }
-    .filter-btn.active { background: rgba(2,195,154,0.2); border-color: #02C39A; color: #02C39A; font-weight: 600; }
-    .filter-btn.buyer { border-color: #60A5FA; color: #60A5FA; }
-    .filter-btn.buyer.active { background: rgba(96,165,250,0.2); }
-    .filter-btn.seller { border-color: #F87171; color: #F87171; }
-    .filter-btn.seller.active { background: rgba(248,113,113,0.2); }
-    .filter-btn.momentum { border-color: #34D399; color: #34D399; }
-    .filter-btn.momentum.active { background: rgba(52,211,153,0.2); }
+    .filter-btn:hover { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.8); }
+    .filter-btn.active { background: rgba(2,195,154,0.15); border-color: #02C39A; color: #02C39A; font-weight: 600; }
+    .filter-btn.buyer.active { background: rgba(96,165,250,0.15); border-color: #60A5FA; color: #60A5FA; }
+    .filter-btn.seller.active { background: rgba(248,113,113,0.15); border-color: #F87171; color: #F87171; }
+    .filter-btn.momentum.active { background: rgba(52,211,153,0.15); border-color: #34D399; color: #34D399; }
+    .divider { width: 1px; height: 20px; background: rgba(255,255,255,0.1); margin: 0 4px; }
 
     .grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 16px; padding: 24px 40px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 16px; padding: 28px 48px;
     }
 
     .card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px; padding: 20px;
-      transition: transform 0.2s, border-color 0.2s;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px; padding: 22px;
+      transition: all 0.25s; cursor: default;
+      position: relative; overflow: hidden;
     }
-    .card:hover { transform: translateY(-2px); border-color: rgba(2,195,154,0.3); }
-    .card.buyer_intent { border-left: 3px solid #60A5FA; }
-    .card.seller_stress { border-left: 3px solid #F87171; }
-    .card.momentum { border-left: 3px solid #34D399; }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%; border-radius: 16px 0 0 16px;
+    }
+    .card.buyer_intent::before { background: #60A5FA; }
+    .card.seller_stress::before { background: #F87171; }
+    .card.momentum::before { background: #34D399; }
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.05);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
 
-    .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .signal-badge {
       font-size: 10px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 1px; padding: 3px 10px; border-radius: 10px;
+      letter-spacing: 1px; padding: 4px 10px; border-radius: 8px;
     }
-    .signal-badge.buyer_intent { background: rgba(96,165,250,0.2); color: #60A5FA; }
-    .signal-badge.seller_stress { background: rgba(248,113,113,0.2); color: #F87171; }
-    .signal-badge.momentum { background: rgba(52,211,153,0.2); color: #34D399; }
+    .signal-badge.buyer_intent { background: rgba(96,165,250,0.15); color: #60A5FA; border: 1px solid rgba(96,165,250,0.3); }
+    .signal-badge.seller_stress { background: rgba(248,113,113,0.15); color: #F87171; border: 1px solid rgba(248,113,113,0.3); }
+    .signal-badge.momentum { background: rgba(52,211,153,0.15); color: #34D399; border: 1px solid rgba(52,211,153,0.3); }
+    .country-tag { font-size: 12px; color: rgba(255,255,255,0.35); font-weight: 500; }
 
-    .country-tag { font-size: 12px; color: rgba(255,255,255,0.4); }
+    .card-title { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.9); margin-bottom: 8px; line-height: 1.5; }
+    .card-snippet { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.6; margin-bottom: 14px; }
 
-    .card-title {
-      font-size: 14px; font-weight: 600; color: #fff;
-      margin-bottom: 8px; line-height: 1.4;
-    }
-    .card-snippet { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; margin-bottom: 10px; }
-
-    .card-meta { display: flex; gap: 10px; flex-wrap: wrap; }
-    .meta-item { font-size: 11px; color: rgba(255,255,255,0.35); }
-    .meta-item span { color: #02C39A; }
+    .card-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+    .meta-item { font-size: 11px; color: rgba(255,255,255,0.3); display: flex; align-items: center; gap: 4px; }
+    .meta-item strong { color: rgba(255,255,255,0.6); font-weight: 500; }
 
     .card-link {
-      display: inline-block; margin-top: 10px;
+      display: inline-flex; align-items: center; gap: 4px;
       font-size: 11px; color: #028090; text-decoration: none;
+      font-weight: 500; transition: color 0.2s;
     }
     .card-link:hover { color: #02C39A; }
 
@@ -99,61 +120,75 @@
       justify-content: center; min-height: 400px; gap: 16px;
     }
     .spinner {
-      width: 48px; height: 48px; border: 3px solid rgba(2,195,154,0.2);
+      width: 44px; height: 44px; border: 3px solid rgba(2,195,154,0.15);
       border-top-color: #02C39A; border-radius: 50%;
-      animation: spin 1s linear infinite;
+      animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+    .loading p { font-size: 13px; color: rgba(255,255,255,0.3); }
 
-    .no-data { text-align: center; padding: 60px; color: rgba(255,255,255,0.3); }
+    .no-data { text-align: center; padding: 80px; color: rgba(255,255,255,0.3); }
+    .no-data h3 { font-size: 18px; margin-bottom: 8px; color: rgba(255,255,255,0.5); }
+
+    .results-count {
+      padding: 0 48px 0; font-size: 12px;
+      color: rgba(255,255,255,0.25); margin-top: -12px; margin-bottom: 4px;
+    }
 
     footer {
-      text-align: center; padding: 24px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      font-size: 12px; color: rgba(255,255,255,0.25);
+      text-align: center; padding: 28px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-size: 12px; color: rgba(255,255,255,0.2); margin-top: 20px;
     }
-    footer span { color: #02C39A; }
+    footer span { color: #02C39A; font-weight: 500; }
   </style>
 </head>
 <body>
 
 <header>
-  <div>
-    <h1>🏙️ SEA Property Pulse</h1>
-    <p>AI-Powered Real Estate Market Intelligence · Southeast Asia</p>
+  <div class="header-left">
+    <h1>&#127759; SEA Property Pulse</h1>
+    <p>AI-Powered Real Estate Market Intelligence &middot; Southeast Asia</p>
   </div>
-  <div class="live-badge">🟢 LIVE DATA</div>
+  <div class="header-right">
+    <div class="live-badge"><div class="live-dot"></div> LIVE DATA</div>
+  </div>
 </header>
 
 <div class="stats-bar">
   <div class="stat-item"><div class="val" id="totalListings">—</div><div class="lbl">Total Signals</div></div>
-  <div class="stat-item"><div class="val" id="buyerCount">—</div><div class="lbl">Buyer Intent</div></div>
-  <div class="stat-item"><div class="val" id="sellerCount">—</div><div class="lbl">Seller Stress</div></div>
-  <div class="stat-item"><div class="val" id="momentumCount">—</div><div class="lbl">Momentum</div></div>
+  <div class="stat-item"><div class="val blue" id="buyerCount">—</div><div class="lbl">Buyer Intent</div></div>
+  <div class="stat-item"><div class="val red" id="sellerCount">—</div><div class="lbl">Seller Stress</div></div>
+  <div class="stat-item"><div class="val green" id="momentumCount">—</div><div class="lbl">Momentum</div></div>
 </div>
 
 <div class="filters">
-  <button class="filter-btn active" onclick="filterAll()">🌏 All Markets</button>
-  <button class="filter-btn" onclick="filterCountry('MY')">🇲🇾 Malaysia</button>
-  <button class="filter-btn" onclick="filterCountry('SG')">🇸🇬 Singapore</button>
-  <button class="filter-btn" onclick="filterCountry('TH')">🇹🇭 Thailand</button>
-  <button class="filter-btn" onclick="filterCountry('ID')">🇮🇩 Indonesia</button>
-  <button class="filter-btn" onclick="filterCountry('PH')">🇵🇭 Philippines</button>
-  <button class="filter-btn" onclick="filterCountry('VN')">🇻🇳 Vietnam</button>
-  <button class="filter-btn buyer" onclick="filterSignal('buyer_intent')">🔵 Buyer Intent</button>
-  <button class="filter-btn seller" onclick="filterSignal('seller_stress')">🔴 Seller Stress</button>
-  <button class="filter-btn momentum" onclick="filterSignal('momentum')">🟢 Momentum</button>
+  <span class="filters-label">Market</span>
+  <button class="filter-btn active" onclick="filterAll(event)">All</button>
+  <button class="filter-btn" onclick="filterCountry('MY', event)">&#127474;&#127486; Malaysia</button>
+  <button class="filter-btn" onclick="filterCountry('SG', event)">&#127480;&#127468; Singapore</button>
+  <button class="filter-btn" onclick="filterCountry('TH', event)">&#127481;&#127469; Thailand</button>
+  <button class="filter-btn" onclick="filterCountry('ID', event)">&#127470;&#127465; Indonesia</button>
+  <button class="filter-btn" onclick="filterCountry('PH', event)">&#127477;&#127469; Philippines</button>
+  <button class="filter-btn" onclick="filterCountry('VN', event)">&#127483;&#127475; Vietnam</button>
+  <div class="divider"></div>
+  <span class="filters-label">Signal</span>
+  <button class="filter-btn buyer" onclick="filterSignal('buyer_intent', event)">&#128309; Buyer Intent</button>
+  <button class="filter-btn seller" onclick="filterSignal('seller_stress', event)">&#128308; Seller Stress</button>
+  <button class="filter-btn momentum" onclick="filterSignal('momentum', event)">&#128994; Momentum</button>
 </div>
+
+<div class="results-count" id="resultsCount"></div>
 
 <div id="content">
   <div class="loading">
     <div class="spinner"></div>
-    <p style="color:rgba(255,255,255,0.4)">Loading live market signals...</p>
+    <p>Loading live market signals...</p>
   </div>
 </div>
 
 <footer>
-  Powered by <span>Bright Data</span> · <span>Claude AI</span> · <span>Supabase</span> · Built by Benny Tang
+  Powered by <span>Bright Data</span> &middot; <span>Claude AI</span> &middot; <span>Supabase</span> &middot; Built by Benny Tang
 </footer>
 
 <script>
@@ -162,10 +197,15 @@
     : '/api';
 
   let allListings = [];
-  let activeCountry = null;
-  let activeSignal = null;
 
-  const flags = { MY:'🇲🇾', SG:'🇸🇬', TH:'🇹🇭', ID:'🇮🇩', PH:'🇵🇭', VN:'🇻🇳' };
+  const flags = {
+    MY: '&#127474;&#127486;',
+    SG: '&#127480;&#127468;',
+    TH: '&#127481;&#127469;',
+    ID: '&#127470;&#127465;',
+    PH: '&#127477;&#127469;',
+    VN: '&#127483;&#127475;'
+  };
 
   async function loadListings() {
     try {
@@ -176,7 +216,7 @@
       renderCards(allListings);
     } catch (err) {
       document.getElementById('content').innerHTML =
-        '<div class="no-data"><h2 style="color:#F87171">No Data Yet</h2><p>Run the scraper to populate signals.</p></div>';
+        '<div class="no-data"><h3>No Data Yet</h3><p>Run the scraper to populate signals.</p></div>';
     }
   }
 
@@ -188,47 +228,45 @@
   }
 
   function renderCards(listings) {
+    document.getElementById('resultsCount').textContent = `Showing ${listings.length} signals`;
     if (!listings.length) {
-      document.getElementById('content').innerHTML = '<div class="no-data">No signals match this filter.</div>';
+      document.getElementById('content').innerHTML = '<div class="no-data"><h3>No signals match this filter.</h3></div>';
       return;
     }
     const cards = listings.map(l => `
       <div class="card ${l.signal_type}">
         <div class="card-top">
-          <span class="signal-badge ${l.signal_type}">${l.signal_type?.replace('_', ' ') || 'unknown'}</span>
+          <span class="signal-badge ${l.signal_type}">${(l.signal_type || '').replace('_', ' ')}</span>
           <span class="country-tag">${flags[l.country_code] || ''} ${l.country}</span>
         </div>
-        <div class="card-title">${l.title || 'No title'}</div>
-        <div class="card-snippet">${l.snippet || ''}</div>
+        <div class="card-title">${l.title || 'Untitled'}</div>
+        ${l.snippet ? `<div class="card-snippet">${l.snippet}</div>` : ''}
         <div class="card-meta">
-          ${l.location ? `<div class="meta-item">📍 <span>${l.location}</span></div>` : ''}
-          ${l.price ? `<div class="meta-item">💰 <span>${l.price}</span></div>` : ''}
-          ${l.source ? `<div class="meta-item">🌐 <span>${l.source}</span></div>` : ''}
+          ${l.location ? `<div class="meta-item">&#128205; <strong>${l.location}</strong></div>` : ''}
+          ${l.price ? `<div class="meta-item">&#128176; <strong>${l.price}</strong></div>` : ''}
+          ${l.source ? `<div class="meta-item">&#127760; <strong>${l.source}</strong></div>` : ''}
         </div>
-        ${l.url ? `<a class="card-link" href="${l.url}" target="_blank">View listing →</a>` : ''}
+        ${l.url ? `<a class="card-link" href="${l.url}" target="_blank">View listing &#8594;</a>` : ''}
       </div>
     `).join('');
     document.getElementById('content').innerHTML = `<div class="grid">${cards}</div>`;
   }
 
-  function filterAll() {
-    activeCountry = null; activeSignal = null;
+  function filterAll(e) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
+    e.target.classList.add('active');
     renderCards(allListings);
   }
 
-  function filterCountry(code) {
-    activeCountry = code; activeSignal = null;
+  function filterCountry(code, e) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
+    e.target.classList.add('active');
     renderCards(allListings.filter(l => l.country_code === code));
   }
 
-  function filterSignal(type) {
-    activeSignal = type; activeCountry = null;
+  function filterSignal(type, e) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
+    e.target.classList.add('active');
     renderCards(allListings.filter(l => l.signal_type === type));
   }
 
