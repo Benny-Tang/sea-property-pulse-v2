@@ -7,180 +7,202 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #080F25; color: #fff; min-height: 100vh; }
+    body { font-family: 'Inter', sans-serif; background: #060D1F; color: #fff; min-height: 100vh; overflow-x: hidden; }
 
+    /* HEADER */
     header {
-      background: rgba(13,27,62,0.95);
-      backdrop-filter: blur(10px);
-      padding: 20px 48px;
+      background: rgba(6,13,31,0.92);
+      backdrop-filter: blur(16px);
+      padding: 18px 48px;
       display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid rgba(2,195,154,0.15);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
       position: sticky; top: 0; z-index: 100;
     }
     .header-left { display: flex; align-items: center; gap: 14px; }
     .logo-circle {
-      width: 42px; height: 42px; border-radius: 12px;
+      width: 40px; height: 40px; border-radius: 10px;
       background: linear-gradient(135deg, #02C39A, #028090);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
     }
-    .header-left h1 { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
-    .header-left p { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+    .header-left h1 { font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .header-left p { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px; }
     .live-badge {
-      background: rgba(2,195,154,0.1); border: 1px solid rgba(2,195,154,0.3);
-      color: #02C39A; padding: 7px 16px; border-radius: 20px;
+      background: rgba(2,195,154,0.08); border: 1px solid rgba(2,195,154,0.25);
+      color: #02C39A; padding: 6px 14px; border-radius: 20px;
       font-size: 11px; font-weight: 600;
       display: flex; align-items: center; gap: 6px;
     }
     .live-dot { width: 6px; height: 6px; background: #02C39A; border-radius: 50%; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
 
+    /* HERO with skyline background */
     .hero {
-      background: linear-gradient(135deg, #0D1B3E 0%, #080F25 60%);
-      padding: 56px 48px;
       position: relative; overflow: hidden;
+      min-height: 420px;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 60px 48px;
     }
-    .hero::before {
-      content: ''; position: absolute; top: -100px; right: -100px;
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(2,195,154,0.08) 0%, transparent 70%);
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image: url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80&auto=format&fit=crop');
+      background-size: cover; background-position: center 40%;
+      filter: brightness(0.25) saturate(0.8);
     }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(135deg, rgba(6,13,31,0.95) 0%, rgba(6,13,31,0.7) 50%, rgba(2,128,144,0.15) 100%);
+    }
+    .hero-side-glow {
+      position: absolute; right: -100px; top: 50%; transform: translateY(-50%);
+      width: 500px; height: 500px; z-index: 1;
+      background: radial-gradient(circle, rgba(2,195,154,0.08) 0%, transparent 65%);
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 600px; }
     .hero-tag {
       display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(2,195,154,0.1); border: 1px solid rgba(2,195,154,0.2);
-      color: #02C39A; padding: 5px 12px; border-radius: 20px;
-      font-size: 11px; font-weight: 600; letter-spacing: 1px;
-      text-transform: uppercase; margin-bottom: 20px;
+      background: rgba(2,195,154,0.1); border: 1px solid rgba(2,195,154,0.25);
+      color: #02C39A; padding: 5px 14px; border-radius: 20px;
+      font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 22px;
     }
-    .hero h2 { font-size: 40px; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 12px; line-height: 1.1; }
+    .hero h2 { font-size: 44px; font-weight: 800; letter-spacing: -2px; line-height: 1.05; margin-bottom: 16px; }
     .hero h2 span { color: #02C39A; }
-    .hero p { font-size: 15px; color: rgba(255,255,255,0.5); max-width: 520px; line-height: 1.7; }
+    .hero p { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.75; max-width: 480px; margin-bottom: 28px; }
+    .hero-cities {
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    .city-pill {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.5); padding: 5px 12px; border-radius: 20px; font-size: 11px;
+    }
 
+    /* STATS */
     .stats-bar {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      background: rgba(255,255,255,0.02);
-      border-top: 1px solid rgba(255,255,255,0.05);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: grid; grid-template-columns: repeat(4,1fr);
+      border-top: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.015);
     }
     .stat-item {
-      padding: 24px; text-align: center;
-      border-right: 1px solid rgba(255,255,255,0.05);
+      padding: 22px; text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.04);
       position: relative;
     }
     .stat-item:last-child { border-right: none; }
-    .stat-glow {
-      position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 60%; height: 2px; border-radius: 2px;
-    }
-    .stat-glow.teal { background: linear-gradient(90deg, transparent, #02C39A, transparent); }
-    .stat-glow.blue { background: linear-gradient(90deg, transparent, #60A5FA, transparent); }
-    .stat-glow.red { background: linear-gradient(90deg, transparent, #F87171, transparent); }
-    .stat-glow.green { background: linear-gradient(90deg, transparent, #34D399, transparent); }
-    .stat-item .val { font-size: 34px; font-weight: 800; line-height: 1; }
-    .stat-item .val.teal { color: #02C39A; }
-    .stat-item .val.blue { color: #60A5FA; }
-    .stat-item .val.red { color: #F87171; }
-    .stat-item .val.green { color: #34D399; }
-    .stat-item .lbl { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 6px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+    .stat-glow { position: absolute; bottom:0; left:50%; transform:translateX(-50%); width:50%; height:1px; }
+    .stat-glow.teal { background: linear-gradient(90deg,transparent,#02C39A,transparent); }
+    .stat-glow.blue { background: linear-gradient(90deg,transparent,#60A5FA,transparent); }
+    .stat-glow.red { background: linear-gradient(90deg,transparent,#F87171,transparent); }
+    .stat-glow.green { background: linear-gradient(90deg,transparent,#34D399,transparent); }
+    .stat-item .val { font-size: 32px; font-weight: 800; line-height:1; }
+    .val.teal { color:#02C39A; } .val.blue { color:#60A5FA; } .val.red { color:#F87171; } .val.green { color:#34D399; }
+    .stat-item .lbl { font-size:10px; color:rgba(255,255,255,0.25); margin-top:6px; text-transform:uppercase; letter-spacing:1.5px; font-weight:600; }
 
+    /* FILTERS */
     .filters {
-      display: flex; gap: 8px; padding: 18px 48px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      flex-wrap: wrap; align-items: center;
-      background: rgba(255,255,255,0.01);
+      display:flex; gap:8px; padding:16px 48px;
+      border-bottom:1px solid rgba(255,255,255,0.04);
+      flex-wrap:wrap; align-items:center;
     }
-    .filters-label { font-size: 10px; color: rgba(255,255,255,0.25); text-transform: uppercase; letter-spacing: 1.5px; margin-right: 4px; font-weight: 600; }
+    .filters-label { font-size:10px; color:rgba(255,255,255,0.2); text-transform:uppercase; letter-spacing:1.5px; margin-right:4px; font-weight:600; }
     .filter-btn {
-      padding: 7px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.4);
-      cursor: pointer; font-size: 12px; font-weight: 500;
-      transition: all 0.2s; font-family: 'Inter', sans-serif;
+      padding:6px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.07);
+      background:rgba(255,255,255,0.02); color:rgba(255,255,255,0.35);
+      cursor:pointer; font-size:12px; font-weight:500;
+      transition:all 0.2s; font-family:'Inter',sans-serif;
     }
-    .filter-btn:hover { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.06); }
-    .filter-btn.active { background: rgba(2,195,154,0.15); border-color: rgba(2,195,154,0.4); color: #02C39A; font-weight: 600; }
-    .filter-btn.buyer.active { background: rgba(96,165,250,0.15); border-color: rgba(96,165,250,0.4); color: #60A5FA; }
-    .filter-btn.seller.active { background: rgba(248,113,113,0.15); border-color: rgba(248,113,113,0.4); color: #F87171; }
-    .filter-btn.momentum.active { background: rgba(52,211,153,0.15); border-color: rgba(52,211,153,0.4); color: #34D399; }
-    .divider { width: 1px; height: 20px; background: rgba(255,255,255,0.08); margin: 0 4px; }
+    .filter-btn:hover { border-color:rgba(255,255,255,0.15); color:rgba(255,255,255,0.7); }
+    .filter-btn.active { background:rgba(2,195,154,0.12); border-color:rgba(2,195,154,0.35); color:#02C39A; font-weight:600; }
+    .filter-btn.buyer.active { background:rgba(96,165,250,0.12); border-color:rgba(96,165,250,0.35); color:#60A5FA; }
+    .filter-btn.seller.active { background:rgba(248,113,113,0.12); border-color:rgba(248,113,113,0.35); color:#F87171; }
+    .filter-btn.momentum.active { background:rgba(52,211,153,0.12); border-color:rgba(52,211,153,0.35); color:#34D399; }
+    .divider { width:1px; height:18px; background:rgba(255,255,255,0.07); margin:0 4px; }
 
-    .results-count { padding: 16px 48px 0; font-size: 12px; color: rgba(255,255,255,0.2); }
+    .results-count { padding:14px 48px 0; font-size:12px; color:rgba(255,255,255,0.18); }
 
+    /* GRID */
     .grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 16px; padding: 20px 48px 48px;
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+      gap:14px; padding:18px 48px 60px;
     }
 
     .card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 16px; padding: 22px;
-      transition: all 0.25s;
-      position: relative; overflow: hidden;
+      background: rgba(255,255,255,0.025);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px; padding:20px;
+      transition:all 0.25s; position:relative; overflow:hidden;
     }
-    .card::after {
-      content: ''; position: absolute; top: 0; left: 0;
-      width: 100%; height: 1px;
+    .card-glow {
+      position:absolute; top:-60px; right:-60px;
+      width:150px; height:150px; border-radius:50%;
+      opacity:0.04; transition:opacity 0.3s;
     }
-    .card.buyer_intent::after { background: linear-gradient(90deg, transparent, #60A5FA, transparent); }
-    .card.seller_stress::after { background: linear-gradient(90deg, transparent, #F87171, transparent); }
-    .card.momentum::after { background: linear-gradient(90deg, transparent, #34D399, transparent); }
+    .card.buyer_intent .card-glow { background:#60A5FA; }
+    .card.seller_stress .card-glow { background:#F87171; }
+    .card.momentum .card-glow { background:#34D399; }
+    .card::before {
+      content:''; position:absolute; top:0; left:0;
+      width:100%; height:1px;
+    }
+    .card.buyer_intent::before { background:linear-gradient(90deg,transparent,rgba(96,165,250,0.5),transparent); }
+    .card.seller_stress::before { background:linear-gradient(90deg,transparent,rgba(248,113,113,0.5),transparent); }
+    .card.momentum::before { background:linear-gradient(90deg,transparent,rgba(52,211,153,0.5),transparent); }
     .card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.05);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+      transform:translateY(-3px);
+      border-color:rgba(255,255,255,0.1);
+      background:rgba(255,255,255,0.04);
+      box-shadow:0 16px 48px rgba(0,0,0,0.5);
     }
+    .card:hover .card-glow { opacity:0.08; }
 
-    .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .card-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
     .signal-badge {
-      font-size: 10px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.8px; padding: 4px 10px; border-radius: 6px;
+      font-size:9px; font-weight:700; text-transform:uppercase;
+      letter-spacing:1px; padding:3px 9px; border-radius:6px;
     }
-    .signal-badge.buyer_intent { background: rgba(96,165,250,0.12); color: #60A5FA; border: 1px solid rgba(96,165,250,0.2); }
-    .signal-badge.seller_stress { background: rgba(248,113,113,0.12); color: #F87171; border: 1px solid rgba(248,113,113,0.2); }
-    .signal-badge.momentum { background: rgba(52,211,153,0.12); color: #34D399; border: 1px solid rgba(52,211,153,0.2); }
-    .country-tag { font-size: 12px; color: rgba(255,255,255,0.3); font-weight: 500; }
+    .signal-badge.buyer_intent { background:rgba(96,165,250,0.1); color:#60A5FA; border:1px solid rgba(96,165,250,0.2); }
+    .signal-badge.seller_stress { background:rgba(248,113,113,0.1); color:#F87171; border:1px solid rgba(248,113,113,0.2); }
+    .signal-badge.momentum { background:rgba(52,211,153,0.1); color:#34D399; border:1px solid rgba(52,211,153,0.2); }
+    .country-tag { font-size:11px; color:rgba(255,255,255,0.25); font-weight:500; }
 
-    .card-title { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.9); margin-bottom: 8px; line-height: 1.5; }
-    .card-snippet { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.6; margin-bottom: 14px; }
+    .card-title { font-size:14px; font-weight:600; color:rgba(255,255,255,0.88); margin-bottom:7px; line-height:1.5; }
+    .card-snippet { font-size:12px; color:rgba(255,255,255,0.38); line-height:1.6; margin-bottom:12px; }
 
-    .card-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
-    .meta-item { font-size: 11px; color: rgba(255,255,255,0.25); display: flex; align-items: center; gap: 4px; }
-    .meta-item strong { color: rgba(255,255,255,0.6); font-weight: 500; }
+    .card-meta { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    .meta-item { font-size:11px; color:rgba(255,255,255,0.22); display:flex; align-items:center; gap:3px; }
+    .meta-item strong { color:rgba(255,255,255,0.55); font-weight:500; }
 
     .card-link {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 11px; color: #028090; text-decoration: none;
-      font-weight: 500; transition: color 0.2s;
+      font-size:11px; color:rgba(2,195,154,0.7); text-decoration:none;
+      font-weight:500; transition:color 0.2s;
     }
-    .card-link:hover { color: #02C39A; }
+    .card-link:hover { color:#02C39A; }
 
     .loading {
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; min-height: 400px; gap: 16px;
+      display:flex; flex-direction:column; align-items:center;
+      justify-content:center; min-height:400px; gap:16px;
     }
     .spinner {
-      width: 44px; height: 44px; border: 3px solid rgba(2,195,154,0.1);
-      border-top-color: #02C39A; border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      width:44px; height:44px; border:3px solid rgba(2,195,154,0.1);
+      border-top-color:#02C39A; border-radius:50%;
+      animation:spin 0.8s linear infinite;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .loading p { font-size: 13px; color: rgba(255,255,255,0.3); }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .loading p { font-size:13px; color:rgba(255,255,255,0.25); }
+    .no-data { text-align:center; padding:80px; color:rgba(255,255,255,0.25); }
 
-    .no-data { text-align: center; padding: 80px; color: rgba(255,255,255,0.3); }
-    .no-data h3 { font-size: 18px; margin-bottom: 8px; }
-
+    /* FOOTER */
     footer {
-      background: rgba(13,27,62,0.5);
-      border-top: 1px solid rgba(255,255,255,0.05);
-      padding: 28px 48px;
-      font-size: 12px; color: rgba(255,255,255,0.25);
+      background:rgba(6,13,31,0.8);
+      border-top:1px solid rgba(255,255,255,0.04);
+      padding:28px 48px;
+      font-size:12px; color:rgba(255,255,255,0.2);
     }
-    .footer-inner { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; }
-    .footer-company { font-weight: 600; color: rgba(255,255,255,0.6); font-size: 13px; }
-    .footer-disclaimer { max-width: 600px; line-height: 1.7; }
-    .footer-contact a { color: #02C39A; text-decoration: none; }
-    .footer-contact a:hover { text-decoration: underline; }
+    .footer-inner { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; }
+    .footer-company { font-weight:700; color:rgba(255,255,255,0.5); font-size:13px; }
+    .footer-disclaimer { max-width:600px; line-height:1.7; }
+    .footer-contact a { color:#02C39A; text-decoration:none; }
+    .footer-contact a:hover { text-decoration:underline; }
   </style>
 </head>
 <body>
@@ -197,9 +219,22 @@
 </header>
 
 <div class="hero">
-  <div class="hero-tag">&#9889; AI-Powered Intelligence</div>
-  <h2>Southeast Asia<br><span>Property Signals</span></h2>
-  <p>Real-time market intelligence powered by AI — tracking buyer intent, seller stress, and momentum across 6 SEA markets daily.</p>
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-side-glow"></div>
+  <div class="hero-content">
+    <div class="hero-tag">&#9889; AI-Powered Intelligence</div>
+    <h2>Southeast Asia<br><span>Property Signals</span></h2>
+    <p>Real-time market intelligence powered by AI — tracking buyer intent, seller stress, and momentum across 6 SEA markets daily.</p>
+    <div class="hero-cities">
+      <span class="city-pill">&#127474;&#127486; Kuala Lumpur</span>
+      <span class="city-pill">&#127480;&#127468; Singapore</span>
+      <span class="city-pill">&#127481;&#127469; Bangkok</span>
+      <span class="city-pill">&#127470;&#127465; Jakarta</span>
+      <span class="city-pill">&#127477;&#127469; Manila</span>
+      <span class="city-pill">&#127483;&#127475; Ho Chi Minh</span>
+    </div>
+  </div>
 </div>
 
 <div class="stats-bar">
@@ -257,7 +292,7 @@
       <div class="footer-contact" style="margin-top:4px;">Contact: <a href="mailto:benny@seapropertypulse.com">benny@seapropertypulse.com</a></div>
     </div>
     <div class="footer-disclaimer">
-      <strong style="color:rgba(255,255,255,0.4);">Disclaimer:</strong> The information provided on this platform is for general informational purposes only and does not constitute financial, legal, or investment advice. Tang88 Resources makes no representations or warranties regarding the accuracy or completeness of the data. Users should conduct their own due diligence before making any property investment decisions.
+      <strong style="color:rgba(255,255,255,0.35);">Disclaimer:</strong> The information provided on this platform is for general informational purposes only and does not constitute financial, legal, or investment advice. Tang88 Resources makes no representations or warranties regarding the accuracy or completeness of the data. Users should conduct their own due diligence before making any property investment decisions.
     </div>
   </div>
 </footer>
@@ -270,12 +305,9 @@
   let allListings = [];
 
   const flags = {
-    MY: '&#127474;&#127486;',
-    SG: '&#127480;&#127468;',
-    TH: '&#127481;&#127469;',
-    ID: '&#127470;&#127465;',
-    PH: '&#127477;&#127469;',
-    VN: '&#127483;&#127475;'
+    MY:'&#127474;&#127486;', SG:'&#127480;&#127468;',
+    TH:'&#127481;&#127469;', ID:'&#127470;&#127465;',
+    PH:'&#127477;&#127469;', VN:'&#127483;&#127475;'
   };
 
   async function loadListings() {
@@ -306,43 +338,42 @@
     }
     const cards = listings.map(l => `
       <div class="card ${l.signal_type}">
+        <div class="card-glow"></div>
         <div class="card-top">
-          <span class="signal-badge ${l.signal_type}">${(l.signal_type || '').replace('_', ' ')}</span>
-          <span class="country-tag">${flags[l.country_code] || ''} ${l.country}</span>
+          <span class="signal-badge ${l.signal_type}">${(l.signal_type||'').replace('_',' ')}</span>
+          <span class="country-tag">${flags[l.country_code]||''} ${l.country}</span>
         </div>
-        <div class="card-title">${l.title || 'Untitled'}</div>
-        ${l.snippet ? `<div class="card-snippet">${l.snippet}</div>` : ''}
+        <div class="card-title">${l.title||'Untitled'}</div>
+        ${l.snippet?`<div class="card-snippet">${l.snippet}</div>`:''}
         <div class="card-meta">
-          ${l.location ? `<div class="meta-item">&#128205; <strong>${l.location}</strong></div>` : ''}
-          ${l.price ? `<div class="meta-item">&#128176; <strong>${l.price}</strong></div>` : ''}
-          ${l.source ? `<div class="meta-item">&#127760; <strong>${l.source}</strong></div>` : ''}
+          ${l.location?`<div class="meta-item">&#128205; <strong>${l.location}</strong></div>`:''}
+          ${l.price?`<div class="meta-item">&#128176; <strong>${l.price}</strong></div>`:''}
+          ${l.source?`<div class="meta-item">&#127760; <strong>${l.source}</strong></div>`:''}
         </div>
-        ${l.url ? `<a class="card-link" href="${l.url}" target="_blank">View listing &#8594;</a>` : ''}
+        ${l.url?`<a class="card-link" href="${l.url}" target="_blank">View listing &#8594;</a>`:''}
       </div>
     `).join('');
     document.getElementById('content').innerHTML = `<div class="grid">${cards}</div>`;
   }
 
   function filterAll(e) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
     e.target.classList.add('active');
     renderCards(allListings);
   }
-
-  function filterCountry(code, e) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  function filterCountry(code,e) {
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
     e.target.classList.add('active');
-    renderCards(allListings.filter(l => l.country_code === code));
+    renderCards(allListings.filter(l=>l.country_code===code));
   }
-
-  function filterSignal(type, e) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  function filterSignal(type,e) {
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
     e.target.classList.add('active');
-    renderCards(allListings.filter(l => l.signal_type === type));
+    renderCards(allListings.filter(l=>l.signal_type===type));
   }
 
   loadListings();
-  setInterval(loadListings, 5 * 60 * 1000);
+  setInterval(loadListings, 5*60*1000);
 </script>
 </body>
 </html>
