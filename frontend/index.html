@@ -7,209 +7,209 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #060D1F; color: #fff; min-height: 100vh; overflow-x: hidden; }
+    body { font-family: 'Inter', sans-serif; background: #060D1F; color: #E8EAED; min-height: 100vh; overflow-x: hidden; }
 
     /* HEADER */
     header {
-      background: rgba(6,13,31,0.92);
-      backdrop-filter: blur(16px);
-      padding: 18px 48px;
-      display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
       position: sticky; top: 0; z-index: 100;
+      background: rgba(6,13,31,0.92); backdrop-filter: blur(16px);
+      border-bottom: 1px solid #1A2332;
+      padding: 16px 48px;
+      display: flex; justify-content: space-between; align-items: center;
     }
-    .header-left { display: flex; align-items: center; gap: 14px; }
-    .logo-circle {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: linear-gradient(135deg, #02C39A, #028090);
-      display: flex; align-items: center; justify-content: center; font-size: 18px;
-    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-logo { width: 40px; height: 40px; border-radius: 10px; }
     .header-left h1 { font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
-    .header-left p { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+    .header-left p { font-size: 11px; color: #94A3B8; margin-top: 2px; }
     .live-badge {
+      display: flex; align-items: center; gap: 6px;
       background: rgba(2,195,154,0.08); border: 1px solid rgba(2,195,154,0.25);
       color: #02C39A; padding: 6px 14px; border-radius: 20px;
       font-size: 11px; font-weight: 600;
-      display: flex; align-items: center; gap: 6px;
     }
     .live-dot { width: 6px; height: 6px; background: #02C39A; border-radius: 50%; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 
-    /* HERO with skyline background */
+    /* HERO */
     .hero {
       position: relative; overflow: hidden;
-      min-height: 420px;
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 60px 48px;
+      min-height: 520px; display: flex; align-items: center;
+      padding: 80px 48px;
     }
     .hero-bg {
       position: absolute; inset: 0; z-index: 0;
-      background-image: url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80&auto=format&fit=crop');
-      background-size: cover; background-position: center 40%;
-      filter: brightness(0.25) saturate(0.8);
+      background-image: url('https://d2xsxph8kpxj0f.cloudfront.net/310419663031675827/9YGsTcCmUQLyjWSrxpAjL/hero-background-sea-markets-EtGi9M9BZdHZWxT8GPuHpr.webp');
+      background-size: cover; background-position: center;
     }
     .hero-overlay {
       position: absolute; inset: 0; z-index: 1;
-      background: linear-gradient(135deg, rgba(6,13,31,0.95) 0%, rgba(6,13,31,0.7) 50%, rgba(2,128,144,0.15) 100%);
+      background: linear-gradient(to right, rgba(6,13,31,0.97) 0%, rgba(6,13,31,0.8) 50%, rgba(6,13,31,0.4) 100%);
     }
-    .hero-side-glow {
-      position: absolute; right: -100px; top: 50%; transform: translateY(-50%);
-      width: 500px; height: 500px; z-index: 1;
-      background: radial-gradient(circle, rgba(2,195,154,0.08) 0%, transparent 65%);
+    .hero-overlay2 {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to bottom, rgba(6,13,31,0.3) 0%, rgba(6,13,31,0.6) 100%);
     }
-    .hero-content { position: relative; z-index: 2; max-width: 600px; }
+    .hero-content { position: relative; z-index: 2; max-width: 640px; }
     .hero-tag {
       display: inline-flex; align-items: center; gap: 6px;
       background: rgba(2,195,154,0.1); border: 1px solid rgba(2,195,154,0.25);
       color: #02C39A; padding: 5px 14px; border-radius: 20px;
       font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; margin-bottom: 22px;
+      text-transform: uppercase; margin-bottom: 24px;
     }
-    .hero h2 { font-size: 44px; font-weight: 800; letter-spacing: -2px; line-height: 1.05; margin-bottom: 16px; }
-    .hero h2 span { color: #02C39A; }
-    .hero p { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.75; max-width: 480px; margin-bottom: 28px; }
-    .hero-cities {
-      display: flex; gap: 10px; flex-wrap: wrap;
+    .hero h2 {
+      font-size: 52px; font-weight: 800; letter-spacing: -2px;
+      line-height: 1.05; margin-bottom: 16px; color: #fff;
     }
+    .hero h2 span {
+      background: linear-gradient(to right, #02C39A, #67E8F9);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p { font-size: 16px; color: #94A3B8; line-height: 1.75; max-width: 480px; margin-bottom: 28px; }
+    .hero-cities { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
     .city-pill {
       background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.5); padding: 5px 12px; border-radius: 20px; font-size: 11px;
+      color: rgba(255,255,255,0.5); padding: 5px 14px; border-radius: 20px; font-size: 12px;
     }
+    .hero-btn {
+      background: #02C39A; color: #060D1F; padding: 12px 28px;
+      border-radius: 10px; border: none; font-size: 14px; font-weight: 700;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .hero-btn:hover { background: #00A884; }
 
     /* STATS */
     .stats-bar {
       display: grid; grid-template-columns: repeat(4,1fr);
-      border-top: 1px solid rgba(255,255,255,0.04);
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      background: rgba(255,255,255,0.015);
+      background: rgba(15,22,41,0.8);
+      border-top: 1px solid #1A2332; border-bottom: 1px solid #1A2332;
     }
-    .stat-item {
-      padding: 22px; text-align: center;
-      border-right: 1px solid rgba(255,255,255,0.04);
-      position: relative;
-    }
+    .stat-item { padding: 24px; text-align: center; border-right: 1px solid #1A2332; position: relative; }
     .stat-item:last-child { border-right: none; }
     .stat-glow { position: absolute; bottom:0; left:50%; transform:translateX(-50%); width:50%; height:1px; }
     .stat-glow.teal { background: linear-gradient(90deg,transparent,#02C39A,transparent); }
     .stat-glow.blue { background: linear-gradient(90deg,transparent,#60A5FA,transparent); }
     .stat-glow.red { background: linear-gradient(90deg,transparent,#F87171,transparent); }
     .stat-glow.green { background: linear-gradient(90deg,transparent,#34D399,transparent); }
-    .stat-item .val { font-size: 32px; font-weight: 800; line-height:1; }
-    .val.teal { color:#02C39A; } .val.blue { color:#60A5FA; } .val.red { color:#F87171; } .val.green { color:#34D399; }
-    .stat-item .lbl { font-size:10px; color:rgba(255,255,255,0.25); margin-top:6px; text-transform:uppercase; letter-spacing:1.5px; font-weight:600; }
+    .stat-item .val { font-size: 34px; font-weight: 800; line-height:1; }
+    .val.teal{color:#02C39A;} .val.blue{color:#60A5FA;} .val.red{color:#F87171;} .val.green{color:#34D399;}
+    .stat-item .lbl { font-size:10px; color:#94A3B8; margin-top:6px; text-transform:uppercase; letter-spacing:1.5px; font-weight:600; }
+
+    /* AI SECTION */
+    .ai-section {
+      padding: 80px 48px;
+      border-top: 1px solid #1A2332;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+    }
+    .ai-section h3 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 16px; }
+    .ai-section p { font-size: 15px; color: #94A3B8; line-height: 1.75; margin-bottom: 24px; }
+    .ai-features { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .ai-features li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #CBD5E1; }
+    .ai-dot { width: 8px; height: 8px; background: #02C39A; border-radius: 50%; flex-shrink: 0; }
+    .ai-image { width: 100%; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); }
+
+    /* CITIES SECTION */
+    .cities-section {
+      padding: 80px 48px;
+      border-top: 1px solid #1A2332;
+      background: rgba(15,22,41,0.5);
+      text-align: center;
+    }
+    .cities-section h3 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 12px; }
+    .cities-section p { font-size: 15px; color: #94A3B8; margin-bottom: 36px; }
+    .cities-image { width: 100%; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); }
 
     /* FILTERS */
-    .filters {
-      display:flex; gap:8px; padding:16px 48px;
-      border-bottom:1px solid rgba(255,255,255,0.04);
-      flex-wrap:wrap; align-items:center;
-    }
-    .filters-label { font-size:10px; color:rgba(255,255,255,0.2); text-transform:uppercase; letter-spacing:1.5px; margin-right:4px; font-weight:600; }
+    .filters-section { padding: 24px 48px; border-top: 1px solid #1A2332; border-bottom: 1px solid #1A2332; }
+    .filters-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+    .filters-row:last-child { margin-bottom: 0; }
+    .filters-label { font-size: 10px; color: #94A3B8; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; margin-right: 4px; min-width: 50px; }
     .filter-btn {
-      padding:6px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.07);
-      background:rgba(255,255,255,0.02); color:rgba(255,255,255,0.35);
-      cursor:pointer; font-size:12px; font-weight:500;
-      transition:all 0.2s; font-family:'Inter',sans-serif;
+      padding: 6px 14px; border-radius: 8px; border: 1px solid #1A2332;
+      background: rgba(255,255,255,0.02); color: #94A3B8;
+      cursor: pointer; font-size: 12px; font-weight: 500;
+      transition: all 0.2s; font-family: 'Inter', sans-serif;
     }
-    .filter-btn:hover { border-color:rgba(255,255,255,0.15); color:rgba(255,255,255,0.7); }
-    .filter-btn.active { background:rgba(2,195,154,0.12); border-color:rgba(2,195,154,0.35); color:#02C39A; font-weight:600; }
-    .filter-btn.buyer.active { background:rgba(96,165,250,0.12); border-color:rgba(96,165,250,0.35); color:#60A5FA; }
-    .filter-btn.seller.active { background:rgba(248,113,113,0.12); border-color:rgba(248,113,113,0.35); color:#F87171; }
-    .filter-btn.momentum.active { background:rgba(52,211,153,0.12); border-color:rgba(52,211,153,0.35); color:#34D399; }
-    .divider { width:1px; height:18px; background:rgba(255,255,255,0.07); margin:0 4px; }
+    .filter-btn:hover { border-color: rgba(255,255,255,0.15); color: #CBD5E1; }
+    .filter-btn.active { background: rgba(2,195,154,0.12); border-color: rgba(2,195,154,0.35); color: #02C39A; font-weight: 600; }
+    .filter-btn.buyer.active { background: rgba(96,165,250,0.12); border-color: rgba(96,165,250,0.35); color: #60A5FA; }
+    .filter-btn.seller.active { background: rgba(248,113,113,0.12); border-color: rgba(248,113,113,0.35); color: #F87171; }
+    .filter-btn.momentum.active { background: rgba(52,211,153,0.12); border-color: rgba(52,211,153,0.35); color: #34D399; }
 
-    .results-count { padding:14px 48px 0; font-size:12px; color:rgba(255,255,255,0.18); }
+    .results-count { padding: 16px 48px 0; font-size: 12px; color: #94A3B8; }
 
     /* GRID */
-    .grid {
-      display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
-      gap:14px; padding:18px 48px 60px;
-    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(340px,1fr)); gap: 16px; padding: 20px 48px 60px; }
 
     .card {
-      background: rgba(255,255,255,0.025);
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:16px; padding:20px;
-      transition:all 0.25s; position:relative; overflow:hidden;
+      background: #0F1629; border: 1px solid #1A2332;
+      border-radius: 16px; padding: 22px;
+      transition: all 0.25s; position: relative; overflow: hidden;
     }
-    .card-glow {
-      position:absolute; top:-60px; right:-60px;
-      width:150px; height:150px; border-radius:50%;
-      opacity:0.04; transition:opacity 0.3s;
-    }
-    .card.buyer_intent .card-glow { background:#60A5FA; }
-    .card.seller_stress .card-glow { background:#F87171; }
-    .card.momentum .card-glow { background:#34D399; }
     .card::before {
-      content:''; position:absolute; top:0; left:0;
-      width:100%; height:1px;
+      content:''; position:absolute; top:0; left:0; width:4px; height:100%;
     }
-    .card.buyer_intent::before { background:linear-gradient(90deg,transparent,rgba(96,165,250,0.5),transparent); }
-    .card.seller_stress::before { background:linear-gradient(90deg,transparent,rgba(248,113,113,0.5),transparent); }
-    .card.momentum::before { background:linear-gradient(90deg,transparent,rgba(52,211,153,0.5),transparent); }
-    .card:hover {
-      transform:translateY(-3px);
-      border-color:rgba(255,255,255,0.1);
-      background:rgba(255,255,255,0.04);
-      box-shadow:0 16px 48px rgba(0,0,0,0.5);
-    }
-    .card:hover .card-glow { opacity:0.08; }
+    .card.buyer_intent::before { background: #60A5FA; }
+    .card.seller_stress::before { background: #F87171; }
+    .card.momentum::before { background: #34D399; }
+    .card:hover { transform:translateY(-3px); border-color: rgba(255,255,255,0.1); box-shadow:0 16px 48px rgba(0,0,0,0.5); }
 
     .card-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-    .signal-badge {
-      font-size:9px; font-weight:700; text-transform:uppercase;
-      letter-spacing:1px; padding:3px 9px; border-radius:6px;
-    }
+    .signal-badge { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:3px 9px; border-radius:6px; }
     .signal-badge.buyer_intent { background:rgba(96,165,250,0.1); color:#60A5FA; border:1px solid rgba(96,165,250,0.2); }
     .signal-badge.seller_stress { background:rgba(248,113,113,0.1); color:#F87171; border:1px solid rgba(248,113,113,0.2); }
     .signal-badge.momentum { background:rgba(52,211,153,0.1); color:#34D399; border:1px solid rgba(52,211,153,0.2); }
-    .country-tag { font-size:11px; color:rgba(255,255,255,0.25); font-weight:500; }
+    .country-tag { font-size:11px; color:#94A3B8; font-weight:500; }
 
-    .card-title { font-size:14px; font-weight:600; color:rgba(255,255,255,0.88); margin-bottom:7px; line-height:1.5; }
-    .card-snippet { font-size:12px; color:rgba(255,255,255,0.38); line-height:1.6; margin-bottom:12px; }
-
+    .card-title { font-size:14px; font-weight:600; color:#E8EAED; margin-bottom:7px; line-height:1.5; }
+    .card-snippet { font-size:12px; color:#94A3B8; line-height:1.6; margin-bottom:12px; }
     .card-meta { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
-    .meta-item { font-size:11px; color:rgba(255,255,255,0.22); display:flex; align-items:center; gap:3px; }
-    .meta-item strong { color:rgba(255,255,255,0.55); font-weight:500; }
+    .meta-item { font-size:11px; color:#64748B; display:flex; align-items:center; gap:3px; }
+    .meta-item strong { color:#CBD5E1; font-weight:500; }
+    .card-link { font-size:11px; color:#02C39A; text-decoration:none; font-weight:500; transition:color 0.2s; opacity:0.7; }
+    .card-link:hover { opacity:1; }
 
-    .card-link {
-      font-size:11px; color:rgba(2,195,154,0.7); text-decoration:none;
-      font-weight:500; transition:color 0.2s;
+    /* MARKET DYNAMICS */
+    .dynamics-section {
+      padding: 80px 48px;
+      border-top: 1px solid #1A2332;
+      background: linear-gradient(135deg, rgba(15,22,41,0.8), rgba(6,13,31,0.9));
+      text-align: center;
     }
-    .card-link:hover { color:#02C39A; }
-
-    .loading {
-      display:flex; flex-direction:column; align-items:center;
-      justify-content:center; min-height:400px; gap:16px;
-    }
-    .spinner {
-      width:44px; height:44px; border:3px solid rgba(2,195,154,0.1);
-      border-top-color:#02C39A; border-radius:50%;
-      animation:spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform:rotate(360deg); } }
-    .loading p { font-size:13px; color:rgba(255,255,255,0.25); }
-    .no-data { text-align:center; padding:80px; color:rgba(255,255,255,0.25); }
+    .dynamics-section h3 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 12px; }
+    .dynamics-section p { font-size: 15px; color: #94A3B8; margin-bottom: 36px; }
+    .dynamics-image { width: 100%; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); }
 
     /* FOOTER */
     footer {
-      background:rgba(6,13,31,0.8);
-      border-top:1px solid rgba(255,255,255,0.04);
-      padding:28px 48px;
-      font-size:12px; color:rgba(255,255,255,0.2);
+      background: rgba(6,13,31,0.95);
+      border-top: 1px solid #1A2332;
+      padding: 48px;
     }
-    .footer-inner { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; }
-    .footer-company { font-weight:700; color:rgba(255,255,255,0.5); font-size:13px; }
-    .footer-disclaimer { max-width:600px; line-height:1.7; }
-    .footer-contact a { color:#02C39A; text-decoration:none; }
-    .footer-contact a:hover { text-decoration:underline; }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 32px; }
+    .footer-col h4 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 16px; }
+    .footer-col p, .footer-col li { font-size: 13px; color: #94A3B8; line-height: 1.7; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { padding: 4px 0; }
+    .footer-col a { color: #02C39A; text-decoration: none; }
+    .footer-col a:hover { text-decoration: underline; }
+    .footer-divider { border: none; border-top: 1px solid #1A2332; margin-bottom: 24px; }
+    .footer-disclaimer { font-size: 12px; color: #64748B; line-height: 1.7; }
+    .footer-disclaimer strong { color: #94A3B8; }
+
+    .loading { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:400px; gap:16px; }
+    .spinner { width:44px; height:44px; border:3px solid rgba(2,195,154,0.1); border-top-color:#02C39A; border-radius:50%; animation:spin 0.8s linear infinite; }
+    @keyframes spin { to{transform:rotate(360deg);} }
+    .loading p { font-size:13px; color:#64748B; }
+    .no-data { text-align:center; padding:80px; color:#64748B; }
   </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
   <div class="header-left">
-    <div class="logo-circle">&#127759;</div>
+    <img class="header-logo" src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031675827/9YGsTcCmUQLyjWSrxpAjL/brand-logo-mark-4ZoNezaxsMHVFtQssWcHv.webp" alt="SEA Property Pulse Logo" onerror="this.style.display='none'">
     <div>
       <h1>SEA Property Pulse</h1>
       <p>AI-Powered Real Estate Market Intelligence &middot; Southeast Asia</p>
@@ -218,10 +218,11 @@
   <div class="live-badge"><div class="live-dot"></div> LIVE DATA</div>
 </header>
 
+<!-- HERO -->
 <div class="hero">
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
-  <div class="hero-side-glow"></div>
+  <div class="hero-overlay2"></div>
   <div class="hero-content">
     <div class="hero-tag">&#9889; AI-Powered Intelligence</div>
     <h2>Southeast Asia<br><span>Property Signals</span></h2>
@@ -234,9 +235,11 @@
       <span class="city-pill">&#127477;&#127469; Manila</span>
       <span class="city-pill">&#127483;&#127475; Ho Chi Minh</span>
     </div>
+    <button class="hero-btn" onclick="document.querySelector('.filters-section').scrollIntoView({behavior:'smooth'})">Explore Markets &#8594;</button>
   </div>
 </div>
 
+<!-- STATS -->
 <div class="stats-bar">
   <div class="stat-item">
     <div class="val teal" id="totalListings">—</div>
@@ -260,20 +263,49 @@
   </div>
 </div>
 
-<div class="filters">
-  <span class="filters-label">Market</span>
-  <button class="filter-btn active" onclick="filterAll(event)">All</button>
-  <button class="filter-btn" onclick="filterCountry('MY', event)">&#127474;&#127486; Malaysia</button>
-  <button class="filter-btn" onclick="filterCountry('SG', event)">&#127480;&#127468; Singapore</button>
-  <button class="filter-btn" onclick="filterCountry('TH', event)">&#127481;&#127469; Thailand</button>
-  <button class="filter-btn" onclick="filterCountry('ID', event)">&#127470;&#127465; Indonesia</button>
-  <button class="filter-btn" onclick="filterCountry('PH', event)">&#127477;&#127469; Philippines</button>
-  <button class="filter-btn" onclick="filterCountry('VN', event)">&#127483;&#127475; Vietnam</button>
-  <div class="divider"></div>
-  <span class="filters-label">Signal</span>
-  <button class="filter-btn buyer" onclick="filterSignal('buyer_intent', event)">&#128309; Buyer Intent</button>
-  <button class="filter-btn seller" onclick="filterSignal('seller_stress', event)">&#128308; Seller Stress</button>
-  <button class="filter-btn momentum" onclick="filterSignal('momentum', event)">&#128994; Momentum</button>
+<!-- AI SECTION -->
+<div class="ai-section">
+  <div>
+    <h3>AI-Powered Market Analysis</h3>
+    <p>Our advanced AI engine processes millions of data points in real-time, delivering actionable insights into Southeast Asia's most dynamic property markets.</p>
+    <ul class="ai-features">
+      <li><span class="ai-dot"></span> Real-time buyer intent tracking</li>
+      <li><span class="ai-dot"></span> Seller stress indicators</li>
+      <li><span class="ai-dot"></span> Market momentum analysis</li>
+      <li><span class="ai-dot"></span> Geographic market insights</li>
+      <li><span class="ai-dot"></span> Daily automated data refresh</li>
+    </ul>
+  </div>
+  <div>
+    <img class="ai-image" src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031675827/9YGsTcCmUQLyjWSrxpAjL/market-intelligence-illustration-MF4XnmPGZA35hCtmAT6FHV.webp" alt="AI Market Intelligence" onerror="this.style.display='none'">
+  </div>
+</div>
+
+<!-- CITIES SECTION -->
+<div class="cities-section">
+  <h3>Southeast Asia's Premier Markets</h3>
+  <p>Comprehensive coverage across the region's most dynamic real estate markets</p>
+  <img class="cities-image" src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031675827/9YGsTcCmUQLyjWSrxpAjL/southeast-asia-cities-composite-REUossAtK7e8eRgPDV5Nku.webp" alt="Southeast Asian Cities" onerror="this.style.display='none'">
+</div>
+
+<!-- FILTERS -->
+<div class="filters-section">
+  <div class="filters-row">
+    <span class="filters-label">Market</span>
+    <button class="filter-btn active" onclick="filterAll(event)">&#127760; All</button>
+    <button class="filter-btn" onclick="filterCountry('MY', event)">&#127474;&#127486; Malaysia</button>
+    <button class="filter-btn" onclick="filterCountry('SG', event)">&#127480;&#127468; Singapore</button>
+    <button class="filter-btn" onclick="filterCountry('TH', event)">&#127481;&#127469; Thailand</button>
+    <button class="filter-btn" onclick="filterCountry('ID', event)">&#127470;&#127465; Indonesia</button>
+    <button class="filter-btn" onclick="filterCountry('PH', event)">&#127477;&#127469; Philippines</button>
+    <button class="filter-btn" onclick="filterCountry('VN', event)">&#127483;&#127475; Vietnam</button>
+  </div>
+  <div class="filters-row">
+    <span class="filters-label">Signal</span>
+    <button class="filter-btn buyer" onclick="filterSignal('buyer_intent', event)">&#128309; Buyer Intent</button>
+    <button class="filter-btn seller" onclick="filterSignal('seller_stress', event)">&#128308; Seller Stress</button>
+    <button class="filter-btn momentum" onclick="filterSignal('momentum', event)">&#128994; Momentum</button>
+  </div>
 </div>
 
 <div class="results-count" id="resultsCount"></div>
@@ -285,16 +317,42 @@
   </div>
 </div>
 
+<!-- MARKET DYNAMICS -->
+<div class="dynamics-section">
+  <h3>Real Estate Market Dynamics</h3>
+  <p>Data-driven insights into Southeast Asia's property investment landscape</p>
+  <img class="dynamics-image" src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031675827/9YGsTcCmUQLyjWSrxpAjL/property-market-dynamics-dFvfTMX98Kdz3tYBxmCMuP.webp" alt="Market Dynamics" onerror="this.style.display='none'">
+</div>
+
+<!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
-    <div>
-      <div class="footer-company">Tang88 Resources, Malaysia</div>
-      <div class="footer-contact" style="margin-top:4px;">Contact: <a href="mailto:benny@seapropertypulse.com">benny@seapropertypulse.com</a></div>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>About SEA Property Pulse</h4>
+      <p>Premium AI-powered real estate market intelligence for Southeast Asia. Tracking buyer intent, seller stress, and momentum signals across 6 major markets daily.</p>
     </div>
-    <div class="footer-disclaimer">
-      <strong style="color:rgba(255,255,255,0.35);">Disclaimer:</strong> The information provided on this platform is for general informational purposes only and does not constitute financial, legal, or investment advice. Tang88 Resources makes no representations or warranties regarding the accuracy or completeness of the data. Users should conduct their own due diligence before making any property investment decisions.
+    <div class="footer-col">
+      <h4>Markets Covered</h4>
+      <ul>
+        <li>&#127474;&#127486; Malaysia</li>
+        <li>&#127480;&#127468; Singapore</li>
+        <li>&#127481;&#127469; Thailand</li>
+        <li>&#127470;&#127465; Indonesia</li>
+        <li>&#127477;&#127469; Philippines</li>
+        <li>&#127483;&#127475; Vietnam</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <p>Tang88 Resources, Malaysia</p>
+      <p style="margin-top:8px;"><a href="mailto:benny@seapropertypulse.com">benny@seapropertypulse.com</a></p>
+      <p style="margin-top:16px; font-size:12px; color:#64748B;">&copy; 2025 SEA Property Pulse. All rights reserved.</p>
     </div>
   </div>
+  <hr class="footer-divider">
+  <p class="footer-disclaimer">
+    <strong>Disclaimer:</strong> The information provided on this platform is for general informational purposes only and does not constitute financial, legal, or investment advice. Tang88 Resources makes no representations or warranties regarding the accuracy or completeness of the data. Users should conduct their own due diligence before making any property investment decisions.
+  </p>
 </footer>
 
 <script>
@@ -338,7 +396,6 @@
     }
     const cards = listings.map(l => `
       <div class="card ${l.signal_type}">
-        <div class="card-glow"></div>
         <div class="card-top">
           <span class="signal-badge ${l.signal_type}">${(l.signal_type||'').replace('_',' ')}</span>
           <span class="country-tag">${flags[l.country_code]||''} ${l.country}</span>
