@@ -9,16 +9,19 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', sans-serif; background: #060D1F; color: #E8EAED; min-height: 100vh; overflow-x: hidden; }
 
-    /* HEADER */
     header {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(6,13,31,0.92); backdrop-filter: blur(16px);
+      background: rgba(6,13,31,0.95); backdrop-filter: blur(16px);
       border-bottom: 1px solid #1A2332;
       padding: 16px 48px;
       display: flex; justify-content: space-between; align-items: center;
     }
     .header-left { display: flex; align-items: center; gap: 12px; }
-    .header-logo { width: 40px; height: 40px; border-radius: 10px; }
+    .logo-circle {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: linear-gradient(135deg, #02C39A, #028090);
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+    }
     .header-left h1 { font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
     .header-left p { font-size: 11px; color: #94A3B8; margin-top: 2px; }
     .live-badge {
@@ -30,24 +33,23 @@
     .live-dot { width: 6px; height: 6px; background: #02C39A; border-radius: 50%; animation: pulse 2s infinite; }
     @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 
-    /* HERO */
     .hero {
       position: relative; overflow: hidden;
-      min-height: 520px; display: flex; align-items: center;
+      min-height: 540px; display: flex; align-items: center;
       padding: 80px 48px;
     }
     .hero-bg {
       position: absolute; inset: 0; z-index: 0;
-      background-image: url('https://d2xsxph8kpxj0f.cloudfront.net/310419663031675827/9YGsTcCmUQLyjWSrxpAjL/hero-background-sea-markets-EtGi9M9BZdHZWxT8GPuHpr.webp');
-      background-size: cover; background-position: center;
+      background-image: url('https://images.unsplash.com/photo-1508009603885-50cf7c8dd0d5?w=1600&q=80&auto=format&fit=crop');
+      background-size: cover; background-position: center 30%;
     }
     .hero-overlay {
       position: absolute; inset: 0; z-index: 1;
-      background: linear-gradient(to right, rgba(6,13,31,0.97) 0%, rgba(6,13,31,0.8) 50%, rgba(6,13,31,0.4) 100%);
+      background: linear-gradient(to right, rgba(6,13,31,0.97) 0%, rgba(6,13,31,0.85) 50%, rgba(6,13,31,0.5) 100%);
     }
     .hero-overlay2 {
       position: absolute; inset: 0; z-index: 1;
-      background: linear-gradient(to bottom, rgba(6,13,31,0.3) 0%, rgba(6,13,31,0.6) 100%);
+      background: linear-gradient(to bottom, transparent 0%, rgba(6,13,31,0.7) 100%);
     }
     .hero-content { position: relative; z-index: 2; max-width: 640px; }
     .hero-tag {
@@ -57,10 +59,7 @@
       font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
       text-transform: uppercase; margin-bottom: 24px;
     }
-    .hero h2 {
-      font-size: 52px; font-weight: 800; letter-spacing: -2px;
-      line-height: 1.05; margin-bottom: 16px; color: #fff;
-    }
+    .hero h2 { font-size: 52px; font-weight: 800; letter-spacing: -2px; line-height: 1.05; margin-bottom: 16px; color: #fff; }
     .hero h2 span {
       background: linear-gradient(to right, #02C39A, #67E8F9);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
@@ -68,8 +67,8 @@
     .hero p { font-size: 16px; color: #94A3B8; line-height: 1.75; max-width: 480px; margin-bottom: 28px; }
     .hero-cities { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
     .city-pill {
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.5); padding: 5px 14px; border-radius: 20px; font-size: 12px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.6); padding: 5px 14px; border-radius: 20px; font-size: 12px;
     }
     .hero-btn {
       background: #02C39A; color: #060D1F; padding: 12px 28px;
@@ -78,24 +77,22 @@
     }
     .hero-btn:hover { background: #00A884; }
 
-    /* STATS */
     .stats-bar {
       display: grid; grid-template-columns: repeat(4,1fr);
-      background: rgba(15,22,41,0.8);
+      background: rgba(15,22,41,0.9);
       border-top: 1px solid #1A2332; border-bottom: 1px solid #1A2332;
     }
     .stat-item { padding: 24px; text-align: center; border-right: 1px solid #1A2332; position: relative; }
     .stat-item:last-child { border-right: none; }
     .stat-glow { position: absolute; bottom:0; left:50%; transform:translateX(-50%); width:50%; height:1px; }
-    .stat-glow.teal { background: linear-gradient(90deg,transparent,#02C39A,transparent); }
-    .stat-glow.blue { background: linear-gradient(90deg,transparent,#60A5FA,transparent); }
-    .stat-glow.red { background: linear-gradient(90deg,transparent,#F87171,transparent); }
-    .stat-glow.green { background: linear-gradient(90deg,transparent,#34D399,transparent); }
+    .stat-glow.teal{background:linear-gradient(90deg,transparent,#02C39A,transparent);}
+    .stat-glow.blue{background:linear-gradient(90deg,transparent,#60A5FA,transparent);}
+    .stat-glow.red{background:linear-gradient(90deg,transparent,#F87171,transparent);}
+    .stat-glow.green{background:linear-gradient(90deg,transparent,#34D399,transparent);}
     .stat-item .val { font-size: 34px; font-weight: 800; line-height:1; }
     .val.teal{color:#02C39A;} .val.blue{color:#60A5FA;} .val.red{color:#F87171;} .val.green{color:#34D399;}
     .stat-item .lbl { font-size:10px; color:#94A3B8; margin-top:6px; text-transform:uppercase; letter-spacing:1.5px; font-weight:600; }
 
-    /* AI SECTION */
     .ai-section {
       padding: 80px 48px;
       border-top: 1px solid #1A2332;
@@ -106,9 +103,8 @@
     .ai-features { list-style: none; display: flex; flex-direction: column; gap: 14px; }
     .ai-features li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #CBD5E1; }
     .ai-dot { width: 8px; height: 8px; background: #02C39A; border-radius: 50%; flex-shrink: 0; }
-    .ai-image { width: 100%; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); }
+    .ai-image { width: 100%; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); object-fit: cover; height: 380px; }
 
-    /* CITIES SECTION */
     .cities-section {
       padding: 80px 48px;
       border-top: 1px solid #1A2332;
@@ -117,10 +113,9 @@
     }
     .cities-section h3 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 12px; }
     .cities-section p { font-size: 15px; color: #94A3B8; margin-bottom: 36px; }
-    .cities-image { width: 100%; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); }
+    .cities-image { width: 100%; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); object-fit: cover; height: 400px; }
 
-    /* FILTERS */
-    .filters-section { padding: 24px 48px; border-top: 1px solid #1A2332; border-bottom: 1px solid #1A2332; }
+    .filters-section { padding: 24px 48px; border-top: 1px solid #1A2332; border-bottom: 1px solid #1A2332; background: rgba(15,22,41,0.5); }
     .filters-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
     .filters-row:last-child { margin-bottom: 0; }
     .filters-label { font-size: 10px; color: #94A3B8; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; margin-right: 4px; min-width: 50px; }
@@ -138,7 +133,6 @@
 
     .results-count { padding: 16px 48px 0; font-size: 12px; color: #94A3B8; }
 
-    /* GRID */
     .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(340px,1fr)); gap: 16px; padding: 20px 48px 60px; }
 
     .card {
@@ -146,13 +140,11 @@
       border-radius: 16px; padding: 22px;
       transition: all 0.25s; position: relative; overflow: hidden;
     }
-    .card::before {
-      content:''; position:absolute; top:0; left:0; width:4px; height:100%;
-    }
+    .card::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; }
     .card.buyer_intent::before { background: #60A5FA; }
     .card.seller_stress::before { background: #F87171; }
     .card.momentum::before { background: #34D399; }
-    .card:hover { transform:translateY(-3px); border-color: rgba(255,255,255,0.1); box-shadow:0 16px 48px rgba(0,0,0,0.5); }
+    .card:hover { transform:translateY(-3px); border-color:rgba(255,255,255,0.1); box-shadow:0 16px 48px rgba(0,0,0,0.5); }
 
     .card-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
     .signal-badge { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:3px 9px; border-radius:6px; }
@@ -166,26 +158,19 @@
     .card-meta { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
     .meta-item { font-size:11px; color:#64748B; display:flex; align-items:center; gap:3px; }
     .meta-item strong { color:#CBD5E1; font-weight:500; }
-    .card-link { font-size:11px; color:#02C39A; text-decoration:none; font-weight:500; transition:color 0.2s; opacity:0.7; }
+    .card-link { font-size:11px; color:#02C39A; text-decoration:none; font-weight:500; opacity:0.7; transition:opacity 0.2s; }
     .card-link:hover { opacity:1; }
 
-    /* MARKET DYNAMICS */
     .dynamics-section {
-      padding: 80px 48px;
-      border-top: 1px solid #1A2332;
-      background: linear-gradient(135deg, rgba(15,22,41,0.8), rgba(6,13,31,0.9));
+      padding: 80px 48px; border-top: 1px solid #1A2332;
+      background: linear-gradient(135deg, rgba(15,22,41,0.9), rgba(6,13,31,0.95));
       text-align: center;
     }
     .dynamics-section h3 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 12px; }
     .dynamics-section p { font-size: 15px; color: #94A3B8; margin-bottom: 36px; }
-    .dynamics-image { width: 100%; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); }
+    .dynamics-image { width: 100%; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); object-fit: cover; height: 420px; }
 
-    /* FOOTER */
-    footer {
-      background: rgba(6,13,31,0.95);
-      border-top: 1px solid #1A2332;
-      padding: 48px;
-    }
+    footer { background: rgba(6,13,31,0.98); border-top: 1px solid #1A2332; padding: 48px; }
     .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 32px; }
     .footer-col h4 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 16px; }
     .footer-col p, .footer-col li { font-size: 13px; color: #94A3B8; line-height: 1.7; }
@@ -206,10 +191,9 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="header-left">
-    <img class="header-logo" src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031675827/9YGsTcCmUQLyjWSrxpAjL/brand-logo-mark-4ZoNezaxsMHVFtQssWcHv.webp" alt="SEA Property Pulse Logo" onerror="this.style.display='none'">
+    <div class="logo-circle">&#127759;</div>
     <div>
       <h1>SEA Property Pulse</h1>
       <p>AI-Powered Real Estate Market Intelligence &middot; Southeast Asia</p>
@@ -218,7 +202,6 @@
   <div class="live-badge"><div class="live-dot"></div> LIVE DATA</div>
 </header>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
@@ -239,7 +222,6 @@
   </div>
 </div>
 
-<!-- STATS -->
 <div class="stats-bar">
   <div class="stat-item">
     <div class="val teal" id="totalListings">—</div>
@@ -263,7 +245,6 @@
   </div>
 </div>
 
-<!-- AI SECTION -->
 <div class="ai-section">
   <div>
     <h3>AI-Powered Market Analysis</h3>
@@ -277,18 +258,16 @@
     </ul>
   </div>
   <div>
-    <img class="ai-image" src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031675827/9YGsTcCmUQLyjWSrxpAjL/market-intelligence-illustration-MF4XnmPGZA35hCtmAT6FHV.webp" alt="AI Market Intelligence" onerror="this.style.display='none'">
+    <img class="ai-image" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80&auto=format&fit=crop" alt="AI Market Intelligence">
   </div>
 </div>
 
-<!-- CITIES SECTION -->
 <div class="cities-section">
   <h3>Southeast Asia's Premier Markets</h3>
   <p>Comprehensive coverage across the region's most dynamic real estate markets</p>
-  <img class="cities-image" src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031675827/9YGsTcCmUQLyjWSrxpAjL/southeast-asia-cities-composite-REUossAtK7e8eRgPDV5Nku.webp" alt="Southeast Asian Cities" onerror="this.style.display='none'">
+  <img class="cities-image" src="https://images.unsplash.com/photo-1555899434-94d1368aa7af?w=1400&q=80&auto=format&fit=crop" alt="Southeast Asian Cities">
 </div>
 
-<!-- FILTERS -->
 <div class="filters-section">
   <div class="filters-row">
     <span class="filters-label">Market</span>
@@ -317,14 +296,12 @@
   </div>
 </div>
 
-<!-- MARKET DYNAMICS -->
 <div class="dynamics-section">
   <h3>Real Estate Market Dynamics</h3>
   <p>Data-driven insights into Southeast Asia's property investment landscape</p>
-  <img class="dynamics-image" src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031675827/9YGsTcCmUQLyjWSrxpAjL/property-market-dynamics-dFvfTMX98Kdz3tYBxmCMuP.webp" alt="Market Dynamics" onerror="this.style.display='none'">
+  <img class="dynamics-image" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1400&q=80&auto=format&fit=crop" alt="Market Dynamics">
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-grid">
     <div class="footer-col">
@@ -346,7 +323,7 @@
       <h4>Contact</h4>
       <p>Tang88 Resources, Malaysia</p>
       <p style="margin-top:8px;"><a href="mailto:benny@seapropertypulse.com">benny@seapropertypulse.com</a></p>
-      <p style="margin-top:16px; font-size:12px; color:#64748B;">&copy; 2025 SEA Property Pulse. All rights reserved.</p>
+      <p style="margin-top:16px; font-size:12px; color:#64748B;">&copy; 2026 SEA Property Pulse. All rights reserved.</p>
     </div>
   </div>
   <hr class="footer-divider">
