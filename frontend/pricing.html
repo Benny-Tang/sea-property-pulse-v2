@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing & Services — SEA Property Pulse</title>
+<meta name="description" content="Simple, transparent pricing for SEA real estate market intelligence. Start free, scale as you grow. Advanced web data toolkits available as add-ons.">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --navy:   #0B1A35;
+  --navy2:  #0F2347;
+  --teal:   #027A8A;
+  --mint:   #00C49A;
+  --ice:    #E4F5F3;
+  --gold:   #F5A623;
+  --red:    #E85555;
+  --white:  #FFFFFF;
+  --gray:   #94A3B8;
+  --card:   rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(11,26,53,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.nav-logo { font-size: 18px; font-weight: 700; color: var(--mint); letter-spacing: -0.5px; }
+.nav-logo span { color: var(--white); }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a { font-size: 14px; color: var(--gray); transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--white); }
+.nav-cta {
+  background: var(--mint); color: var(--navy) !important;
+  padding: 8px 20px; border-radius: 8px;
+  font-size: 14px; font-weight: 700;
+  transition: opacity 0.2s;
+}
+.nav-cta:hover { opacity: 0.85; }
+
+/* ─── PAGE HEADER ─── */
+.page-header {
+  padding: 120px 40px 64px;
+  text-align: center;
+  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(0,196,154,0.07) 0%, transparent 70%);
+  border-bottom: 1px solid var(--border);
+}
+.eyebrow { font-size: 12px; font-weight: 700; color: var(--mint); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+.page-header h1 { font-size: clamp(32px, 4vw, 52px); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 16px; }
+.page-header p { font-size: 17px; color: var(--gray); max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+/* ─── SECTIONS ─── */
+section { padding: 80px 40px; }
+.section-inner { max-width: 1200px; margin: 0 auto; }
+.section-title { font-size: clamp(26px, 3vw, 38px); font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; }
+.section-sub { font-size: 16px; color: var(--gray); max-width: 560px; line-height: 1.7; margin-bottom: 48px; }
+
+/* ─── PRICING ─── */
+.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+.price-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 32px 28px;
+  position: relative; transition: transform 0.2s;
+}
+.price-card:hover { transform: translateY(-4px); }
+.price-card.featured {
+  border-color: var(--mint);
+  background: rgba(0,196,154,0.05);
+}
+.featured-badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--mint); color: var(--navy);
+  font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+  padding: 4px 16px; border-radius: 20px; white-space: nowrap;
+}
+.price-tier { font-size: 12px; font-weight: 700; color: var(--teal); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+.price-amount { font-size: 42px; font-weight: 800; letter-spacing: -1px; margin-bottom: 4px; }
+.price-amount span { font-size: 16px; color: var(--gray); font-weight: 400; }
+.price-desc { font-size: 13px; color: var(--gray); margin-bottom: 24px; line-height: 1.5; }
+.price-features { list-style: none; margin-bottom: 28px; }
+.price-features li { font-size: 13px; padding: 8px 0; border-bottom: 1px solid var(--border); color: rgba(255,255,255,0.7); display: flex; gap: 10px; }
+.price-features li .check { color: var(--mint); }
+.price-features li .cross { color: rgba(255,255,255,0.2); }
+.price-btn {
+  width: 100%; padding: 12px; border-radius: 10px;
+  font-size: 15px; font-weight: 700; cursor: pointer; border: none;
+  transition: all 0.2s;
+}
+.price-btn.primary { background: var(--mint); color: var(--navy); }
+.price-btn.secondary { background: transparent; color: var(--white); border: 1px solid var(--border); }
+.price-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+/* ─── SPECIAL SERVICES ─── */
+.special-services { background: var(--navy2); }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+.service-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 28px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.service-card:hover { transform: translateY(-3px); border-color: rgba(0,196,154,0.3); }
+.service-icon { font-size: 28px; margin-bottom: 14px; }
+.service-card h4 { color: var(--white); margin-bottom: 8px; font-size: 15px; font-weight: 700; }
+.service-card p { color: rgba(255,255,255,0.55); font-size: 13px; line-height: 1.6; }
+.service-card.more {
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; text-align: center;
+  border-style: dashed;
+}
+
+/* ─── FAQ ─── */
+.faq { background: var(--navy); }
+.faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.faq-item {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px;
+}
+.faq-item h4 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--white); }
+.faq-item p { font-size: 13px; color: var(--gray); line-height: 1.7; }
+
+/* ─── CTA ─── */
+.cta-section {
+  background: linear-gradient(135deg, var(--navy2), rgba(2,122,138,0.3));
+  text-align: center; padding: 80px 40px;
+  border-top: 1px solid var(--border);
+}
+.cta-section h2 { font-size: clamp(26px, 3.5vw, 42px); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+.cta-section p { font-size: 16px; color: var(--gray); margin-bottom: 36px; }
+.cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--mint); color: var(--navy);
+  padding: 14px 32px; border-radius: 10px;
+  font-size: 16px; font-weight: 700;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,196,154,0.3); }
+.btn-secondary {
+  color: var(--white); padding: 14px 32px;
+  border: 1px solid var(--border); border-radius: 10px;
+  font-size: 16px; font-weight: 600;
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-secondary:hover { border-color: var(--mint); background: rgba(0,196,154,0.05); }
+
+/* ─── FOOTER ─── */
+footer {
+  background: rgba(0,0,0,0.3); padding: 32px 40px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+.footer-bottom p { font-size: 12px; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
+.footer-markets { font-size: 16px; margin-bottom: 16px; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  section { padding: 56px 20px; }
+  .page-header { padding: 100px 20px 48px; }
+  .faq-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="index.html" class="nav-logo">SEA<span>PropertyPulse</span></a>
+  <div class="nav-links">
+    <a href="index.html#products">Products</a>
+    <a href="index.html#dashboard">Live Data</a>
+    <a href="index.html#howitworks">How It Works</a>
+    <a href="pricing.html" class="active">Pricing</a>
+    <a href="mailto:benny@seapropertypulse.com">Contact</a>
+    <a href="mailto:benny@seapropertypulse.com?subject=Early Access Request" class="nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<!-- ─── PAGE HEADER ─── -->
+<div class="page-header">
+  <div class="eyebrow">Pricing & Services</div>
+  <h1>Simple plans.<br>Advanced tools.</h1>
+  <p>Start free with no credit card. Scale up as your intelligence needs grow — with enterprise-grade web data toolkits available as add-ons.</p>
+</div>
+
+<!-- ─── PRICING ─── -->
+<section id="pricing">
+  <div class="section-inner">
+    <div class="eyebrow">Plans</div>
+    <h2 class="section-title">Transparent pricing for every stage</h2>
+    <p class="section-sub">All plans include live SEA market data. Upgrade or downgrade at any time.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tier">Free</div>
+        <div class="price-amount">SGD 0<span>/mo</span></div>
+        <div class="price-desc">Try it out — no credit card required. Get a feel for real SEA market signals before committing.</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> 1 market (your choice)</li>
+          <li><span class="check">✓</span> Weekly market signals</li>
+          <li><span class="check">✓</span> AI market summary</li>
+          <li><span class="cross">✗</span> Daily scans</li>
+          <li><span class="cross">✗</span> Email alerts</li>
+          <li><span class="cross">✗</span> API access</li>
+        </ul>
+        <button class="price-btn secondary" onclick="window.location.href='mailto:benny@seapropertypulse.com?subject=Free Tier Registration'">Register Free</button>
+      </div>
+      <div class="price-card">
+        <div class="price-tier">Starter</div>
+        <div class="price-amount">SGD 99<span>/mo</span></div>
+        <div class="price-desc">For individual agents and investors getting started with SEA market intelligence.</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> 2 markets (choose any)</li>
+          <li><span class="check">✓</span> Daily market signals</li>
+          <li><span class="check">✓</span> AI market summary</li>
+          <li><span class="check">✓</span> Email alerts</li>
+          <li><span class="cross">✗</span> API access</li>
+          <li><span class="cross">✗</span> Custom reports</li>
+        </ul>
+        <button class="price-btn secondary" onclick="window.location.href='mailto:benny@seapropertypulse.com?subject=Starter Plan Inquiry'">Get Started</button>
+      </div>
+      <div class="price-card featured">
+        <div class="featured-badge">Most Popular</div>
+        <div class="price-tier">Professional</div>
+        <div class="price-amount">SGD 299<span>/mo</span></div>
+        <div class="price-desc">For agencies and fund managers tracking multiple SEA markets actively.</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> All 6 SEA markets</li>
+          <li><span class="check">✓</span> Real-time signals</li>
+          <li><span class="check">✓</span> Full AI analysis</li>
+          <li><span class="check">✓</span> Weekly reports</li>
+          <li><span class="check">✓</span> API access (beta)</li>
+          <li><span class="cross">✗</span> Dedicated support</li>
+        </ul>
+        <button class="price-btn primary" onclick="window.location.href='mailto:benny@seapropertypulse.com?subject=Professional Plan Inquiry'">Get Started</button>
+      </div>
+      <div class="price-card">
+        <div class="price-tier">Business</div>
+        <div class="price-amount">SGD 699<span>/mo</span></div>
+        <div class="price-desc">For property developers and institutional investors requiring full coverage.</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> All 6 SEA markets</li>
+          <li><span class="check">✓</span> Real-time signals</li>
+          <li><span class="check">✓</span> Custom AI reports</li>
+          <li><span class="check">✓</span> Full API access</li>
+          <li><span class="check">✓</span> Dedicated support</li>
+          <li><span class="check">✓</span> CRM integration</li>
+        </ul>
+        <button class="price-btn secondary" onclick="window.location.href='mailto:benny@seapropertypulse.com?subject=Business Plan Inquiry'">Contact Sales</button>
+      </div>
+      <div class="price-card">
+        <div class="price-tier">Enterprise</div>
+        <div class="price-amount" style="font-size:28px">Custom</div>
+        <div class="price-desc">For banks, REITs, and proptech platforms needing white-label or bulk data access.</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> White-label option</li>
+          <li><span class="check">✓</span> Custom market scope</li>
+          <li><span class="check">✓</span> SLA guaranteed</li>
+          <li><span class="check">✓</span> On-premise option</li>
+          <li><span class="check">✓</span> Priority support</li>
+          <li><span class="check">✓</span> Custom contracts</li>
+        </ul>
+        <button class="price-btn secondary" onclick="window.location.href='mailto:benny@seapropertypulse.com?subject=Enterprise Inquiry'">Talk to Us</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SPECIAL SERVICES ─── -->
+<section class="special-services" id="special-services">
+  <div class="section-inner">
+    <div class="eyebrow">Special Services</div>
+    <h2 class="section-title">Advanced intelligence toolkits<br>for power users</h2>
+    <p class="section-sub">Built on enterprise-grade web data infrastructure — available as add-ons for Growth, Pro, and Enterprise plans. More toolkits added on an ongoing basis.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🤖</div>
+        <h4>MCP Server</h4>
+        <p>Agentic AI pipelines with direct model context protocol integration for autonomous data workflows.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔓</div>
+        <h4>Web Unlocker API</h4>
+        <p>Bypass geo-blocks and anti-bot protection to access any SEA property portal at scale.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🕷️</div>
+        <h4>Scraper APIs</h4>
+        <p>Pre-built, maintained scrapers for major SEA property portals — no infrastructure overhead.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔍</div>
+        <h4>SERP API</h4>
+        <p>Structured Google search intelligence across 6 SEA markets — the backbone of our daily signal engine.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🌐</div>
+        <h4>Browser API</h4>
+        <p>Full browser rendering for JS-heavy property portals — captures data invisible to standard scrapers.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🌏</div>
+        <h4>Proxy Networks</h4>
+        <p>Geo-targeted residential and datacenter proxies for hyper-local SEA market data collection.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📦</div>
+        <h4>Datasets</h4>
+        <p>Ready-to-use structured property datasets for SEA markets — historical data, bulk exports, custom fields.</p>
+      </div>
+      <div class="service-card more">
+        <div class="service-icon">✨</div>
+        <h4 style="color:rgba(255,255,255,0.4);font-size:14px">More coming soon</h4>
+        <p style="color:rgba(255,255,255,0.3);font-size:12px">New toolkits added regularly. <a href="mailto:benny@seapropertypulse.com" style="color:rgba(255,255,255,0.4)">Request a tool →</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FAQ ─── -->
+<section class="faq">
+  <div class="section-inner">
+    <div class="eyebrow">FAQ</div>
+    <h2 class="section-title" style="margin-bottom:40px">Common questions</h2>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h4>How does the Free tier work?</h4>
+        <p>Register for free, pick one SEA market, and receive weekly AI-generated market signals and summaries — no credit card required. Upgrade at any time to unlock more markets and daily scans.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What data sources do you use?</h4>
+        <p>Our autonomous pipeline scans PropertyGuru, 99.co, Rumah123, DDProperty, Lamudi, Batdongsan and many more across 6 SEA markets daily, processing signals through our AI classification engine.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What are the Special Services add-ons?</h4>
+        <p>Special Services are advanced web data toolkits available to Growth, Pro, and Enterprise subscribers. They include capabilities like Web Unlocker API, Browser API, and Proxy Networks for deeper custom intelligence workflows.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Can I cancel anytime?</h4>
+        <p>Yes. All paid plans are month-to-month with no lock-in. Contact us at benny@seapropertypulse.com and we'll handle your cancellation within 24 hours.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Do you offer a trial for paid plans?</h4>
+        <p>We're in early access — reach out and we'll work with you on a trial arrangement. The Free tier is also a great way to evaluate the platform before upgrading.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What currencies do you accept?</h4>
+        <p>All prices are in SGD. We accept major payment methods via Stripe and Billplz (FPX for Malaysian users). Enterprise invoicing available on request.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-section">
+  <div class="eyebrow">Get Early Access</div>
+  <h2>Ready to move before<br>your competitors do?</h2>
+  <p>Join property professionals across SEA getting daily market intelligence delivered to their dashboard.</p>
+  <div class="cta-actions">
+    <a href="mailto:benny@seapropertypulse.com?subject=Early Access Request" class="btn-primary">Request Early Access →</a>
+    <a href="index.html#dashboard" class="btn-secondary">View Live Data First</a>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-markets">🇲🇾 🇸🇬 🇹🇭 🇮🇩 🇵🇭 🇻🇳</div>
+  <div class="footer-bottom">
+    <p>© 2026 SEA Property Pulse · Tang88 Resources · 45-N, Jalan Ong Kim Wee, Malacca 75300, Malaysia</p>
+    <p><a href="mailto:benny@seapropertypulse.com" style="color:rgba(255,255,255,0.3)">benny@seapropertypulse.com</a> · <a href="index.html" style="color:rgba(255,255,255,0.3)">← Back to main site</a></p>
+  </div>
+  <div style="max-width:900px;margin:20px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,0.06)">
+    <p style="font-size:11px;color:rgba(255,255,255,0.2);line-height:1.7;text-align:center">
+      <strong style="color:rgba(255,255,255,0.3)">Disclaimer:</strong> SEA Property Pulse provides AI-generated market intelligence for informational purposes only. All data, signals, and analysis are derived from publicly available sources and do not constitute financial, investment, or real estate advice. Market conditions can change rapidly and past signals are not indicative of future performance. Users should conduct their own due diligence and consult qualified professionals before making any investment or property decisions. Tang88 Resources assumes no liability for decisions made based on information provided by this platform.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
