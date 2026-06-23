@@ -615,21 +615,32 @@ function mailto() {
 const FLAGS = { MY:'🇲🇾', SG:'🇸🇬', TH:'🇹🇭', ID:'🇮🇩', PH:'🇵🇭', VN:'🇻🇳' };
 const SENTIMENT_CLASS = { hot:'badge-hot', warm:'badge-warm', cool:'badge-cool' };
 
+const MARKET_STUBS = {
+  MY: { country_code:'MY', country:'Malaysia', sentiment:'warm', market_score:7.2, avg_price_range:'MYR 500K – 1.2M', summary:'Kuala Lumpur continues to show steady buyer demand with growing interest in suburban townships.', hot_locations:['Mont Kiara','Petaling Jaya','Iskandar'], trends:['Suburban demand rising','New launches outpacing resales','Foreign buyer interest recovering'], _demo:true },
+  SG: { country_code:'SG', country:'Singapore', sentiment:'hot', market_score:8.9, avg_price_range:'SGD 1.2M – 3.5M', summary:'Singapore remains the strongest SEA market with persistent demand and limited supply driving prices higher.', hot_locations:['Jurong Lake District','Tengah','Clementi'], trends:['HDB resale prices at record high','EC launches fully absorbed','Rental yields compressing'], _demo:true },
+  TH: { country_code:'TH', country:'Thailand', sentiment:'warm', market_score:6.8, avg_price_range:'THB 3M – 12M', summary:'Bangkok shows mixed signals with luxury segment outperforming mid-market amid economic uncertainty.', hot_locations:['Sukhumvit','Silom','Rama 9'], trends:['Chinese buyer demand returning','Tourism-linked condo recovering','Outer Bangkok gaining traction'], _demo:true },
+  ID: { country_code:'ID', country:'Indonesia', sentiment:'warm', market_score:7.0, avg_price_range:'IDR 800M – 5B', summary:'Jakarta and Bali markets diverging — Bali sees strong foreign demand while Jakarta commercial remains soft.', hot_locations:['Bali','SCBD Jakarta','BSD City'], trends:['Bali villa demand surging','IKN effect on Kalimantan','Affordable housing gap widening'], _demo:true },
+  PH: { country_code:'PH', country:'Philippines', sentiment:'cool', market_score:6.1, avg_price_range:'PHP 5M – 25M', summary:'Philippine market cooling as OFW remittances shift and office market oversupply persists in Metro Manila.', hot_locations:['BGC','Makati','Cebu'], trends:['Office vacancy rising','Residential pre-sales slowing','Provincial markets holding steady'], _demo:true },
+  VN: { country_code:'VN', country:'Vietnam', sentiment:'hot', market_score:8.1, avg_price_range:'VND 3B – 15B', summary:'Vietnam leads SEA in market momentum with Ho Chi Minh City and Hanoi both showing strong recovery signals.', hot_locations:['District 2 HCMC','Hanoi West','Da Nang'], trends:['Legal reforms boosting confidence','Industrial spillover to residential','Foreign direct investment driving demand'], _demo:true }
+};
+const MARKET_ORDER = ['MY','SG','TH','ID','PH','VN'];
+
 async function loadDashboard() {
+  let liveData = {};
   try {
-    // Try API first
     const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000/api/signals' : '/api/signals';
     const res = await fetch(apiUrl, { signal: AbortSignal.timeout(5000) });
-    if (!res.ok) throw new Error('no api');
-    const data = await res.json();
-    if (data && data.length > 0) {
-      renderMarkets(data);
-      return;
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.length > 0) {
+        data.forEach(m => { liveData[m.country_code] = m; });
+      }
     }
   } catch(e) {}
 
-  // Fallback: show placeholder cards
-  renderPlaceholders();
+  // Always build all 6 markets — live where available, stub where missing
+  const markets = MARKET_ORDER.map(code => liveData[code] || MARKET_STUBS[code]);
+  renderMarkets(markets);
 }
 
 function renderMarkets(markets) {
@@ -639,7 +650,7 @@ function renderMarkets(markets) {
     ? (() => { const d = new Date(markets[0].scanned_at); return d.toLocaleTimeString('en-MY', {hour:'2-digit',minute:'2-digit'}) + '\n' + d.toLocaleDateString('en-MY', {day:'numeric',month:'short'}); })()
     : '—';
 
-  document.getElementById('st-markets').textContent = markets.length;
+  document.getElementById('st-markets').textContent = 6;
   document.getElementById('st-hot').textContent = hotCount;
   document.getElementById('st-score').textContent = avgScore;
   document.getElementById('st-scan').textContent = lastScan;
@@ -655,38 +666,7 @@ function renderMarkets(markets) {
       <div class="mc-summary">${m.summary||''}</div>
       ${m.hot_locations?.length ? `<div class="mc-locations">${m.hot_locations.map(l=>`<span class="mc-loc">📍 ${l}</span>`).join('')}</div>` : ''}
       ${m.trends?.length ? `<ul class="mc-trends">${m.trends.map(t=>`<li>${t}</li>`).join('')}</ul>` : ''}
-      <div class="mc-footer">Updated: ${m.scanned_at ? new Date(m.scanned_at).toLocaleString('en-MY') : '—'}</div>
-    </div>
-  `).join('');
-}
-
-function renderPlaceholders() {
-  const markets = [
-    { country_code:'MY', country:'Malaysia', sentiment:'warm', market_score:7.2, avg_price_range:'MYR 500K – 1.2M', summary:'Kuala Lumpur continues to show steady buyer demand with growing interest in suburban townships.', hot_locations:['Mont Kiara','Petaling Jaya','Iskandar'], trends:['Suburban demand rising','New launches outpacing resales','Foreign buyer interest recovering'] },
-    { country_code:'SG', country:'Singapore', sentiment:'hot', market_score:8.9, avg_price_range:'SGD 1.2M – 3.5M', summary:'Singapore remains the strongest SEA market with persistent demand and limited supply driving prices higher.', hot_locations:['Jurong Lake District','Tengah','Clementi'], trends:['HDB resale prices at record high','EC launches fully absorbed','Rental yields compressing'] },
-    { country_code:'TH', country:'Thailand', sentiment:'warm', market_score:6.8, avg_price_range:'THB 3M – 12M', summary:'Bangkok shows mixed signals with luxury segment outperforming mid-market amid economic uncertainty.', hot_locations:['Sukhumvit','Silom','Rama 9'], trends:['Chinese buyer demand returning','Tourism-linked condo recovering','Outer Bangkok gaining traction'] },
-    { country_code:'ID', country:'Indonesia', sentiment:'warm', market_score:7.0, avg_price_range:'IDR 800M – 5B', summary:'Jakarta and Bali markets diverging — Bali sees strong foreign demand while Jakarta commercial remains soft.', hot_locations:['Bali','SCBD Jakarta','BSD City'], trends:['Bali villa demand surging','IKN effect on Kalimantan','Affordable housing gap widening'] },
-    { country_code:'PH', country:'Philippines', sentiment:'cool', market_score:6.1, avg_price_range:'PHP 5M – 25M', summary:'Philippine market cooling as OFW remittances shift and office market oversupply persists in Metro Manila.', hot_locations:['BGC','Makati','Cebu'], trends:['Office vacancy rising','Residential pre-sales slowing','Provincial markets holding steady'] },
-    { country_code:'VN', country:'Vietnam', sentiment:'hot', market_score:8.1, avg_price_range:'VND 3B – 15B', summary:'Vietnam leads SEA in market momentum with Ho Chi Minh City and Hanoi both showing strong recovery signals.', hot_locations:['District 2 HCMC','Hanoi West','Da Nang'], trends:['Legal reforms boosting confidence','Industrial spillover to residential','Foreign direct investment driving demand'] }
-  ];
-
-  document.getElementById('st-markets').textContent = 6;
-  document.getElementById('st-hot').textContent = 2;
-  document.getElementById('st-score').textContent = '7.4';
-  document.getElementById('st-scan').textContent = 'Demo Data';
-
-  document.getElementById('marketGrid').innerHTML = markets.map(m => `
-    <div class="market-card">
-      <div class="mc-header">
-        <div class="mc-country">${FLAGS[m.country_code]} ${m.country}</div>
-        <div class="mc-score">⭐ ${m.market_score}</div>
-      </div>
-      <span class="mc-sentiment ${SENTIMENT_CLASS[m.sentiment]}">${m.sentiment}</span>
-      <div class="mc-price">Avg Price: <strong>${m.avg_price_range}</strong></div>
-      <div class="mc-summary">${m.summary}</div>
-      <div class="mc-locations">${m.hot_locations.map(l=>`<span class="mc-loc">📍 ${l}</span>`).join('')}</div>
-      <ul class="mc-trends">${m.trends.map(t=>`<li>${t}</li>`).join('')}</ul>
-      <div class="mc-footer">⚡ Demo data — live data loads after first scraper run</div>
+      <div class="mc-footer">${m._demo ? '⚡ Demo data — pending next scraper run' : 'Updated: ' + new Date(m.scanned_at).toLocaleString('en-MY')}</div>
     </div>
   `).join('');
 }
