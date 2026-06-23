@@ -8,12 +8,24 @@
     {
       "src": "frontend/index.html",
       "use": "@vercel/static"
+    },
+    {
+      "src": "frontend/pricing.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "backend/server.js"
+    },
+    {
+      "src": "/pricing.html",
+      "dest": "frontend/pricing.html"
+    },
+    {
+      "src": "/pricing",
+      "dest": "frontend/pricing.html"
     },
     {
       "src": "/(.*)",
