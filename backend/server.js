@@ -14,9 +14,11 @@ app.get('/api/signals', async (req, res) => {
   const { data, error } = await supabase
     .from('property_signals')
     .select('*')
-    .order('market_score', { ascending: false });
+    .order('scanned_at', { ascending: false });
   if (error) return res.status(500).json({ error });
-  res.json(data);
+  // Sort by market_score for display after fetching latest scans
+  const sorted = (data || []).sort((a, b) => (b.market_score || 0) - (a.market_score || 0));
+  res.json(sorted);
 });
 
 // Get all individual listings
