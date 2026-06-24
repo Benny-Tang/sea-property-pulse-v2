@@ -163,13 +163,28 @@ async function runScan() {
     }
 
     // Always stamp scanned_at on property_signals so dashboard date reflects today's run
-    const { error: sigErr } = await supabase
-      .from('property_signals')
-      .upsert({ country_code: market.code, country: market.country, scanned_at: new Date().toISOString() }, { onConflict: 'country_code' });
-    if (sigErr) {
-      console.error(`\u274c Failed to update scanned_at for ${market.country}:`, sigErr.message);
-    } else {
-      console.log(`\u{1F550} scanned_at updated for ${market.country}`);
+    try {
+      const nowISO = new Date().toISOString();
+      // Try update first (row already exists)
+      const { data: existing } = await supabase
+        .from('property_signals')
+        .select('id')
+        .eq('country_code', market.code)
+        .limit(1);
+      if (existing && existing.length > 0) {
+        await supabase
+          .from('property_signals')
+          .update({ scanned_at: nowISO })
+          .eq('country_code', market.code);
+        console.log(`Clock scanned_at updated for ${market.country}`);
+      } else {
+        await supabase
+          .from('property_signals')
+          .insert({ country_code: market.code, country: market.country, scanned_at: nowISO });
+        console.log(`Clock scanned_at inserted for ${market.country}`);
+      }
+    } catch (sigErr) {
+      console.error(`Failed to update scanned_at for ${market.country}:`, sigErr.message);
     }
   }
 
@@ -178,4 +193,12 @@ async function runScan() {
   console.log(`📅 ${new Date().toISOString()}`);
 }
 
-runScan();
+runScan()
+  .then(() => {
+    console.log('Scraper finished successfully.');
+    process.exit(0);
+  })
+  .catch(err => {
+    console.error('Scraper crashed:', err.message);
+    process.exit(1);
+  });
