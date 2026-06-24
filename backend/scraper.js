@@ -141,6 +141,73 @@ async function saveListings(market, listings) {
   }
 }
 
+
+async function saveMarketSignal(market, listings) {
+  if (!listings || listings.length === 0) return;
+
+  try {
+    // Ask Claude to generate a market summary from the collected listings
+    const message = await anthropic.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1024,
+      messages: [{
+        role: 'user',
+        content: `You are a real estate market analyst for Southeast Asia.
+
+Based on these ${listings.length} property signals collected for ${market.country}:
+${JSON.stringify(listings.slice(0, 20))}
+
+Generate a market summary. Respond ONLY with valid JSON (no markdown):
+{
+  "sentiment": "hot|warm|cool|cold",
+  "market_score": <number 1-10>,
+  "avg_price_range": "<currency range string>",
+  "summary": "<2-3 sentence market overview>",
+  "hot_locations": ["<city/area>", "<city/area>", "<city/area>"],
+  "trends": ["<trend 1>", "<trend 2>", "<trend 3>"]
+}`
+      }]
+    });
+
+    const text = message.content[0].text;
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) return;
+    const signal = JSON.parse(jsonMatch[0]);
+
+    const nowISO = new Date().toISOString();
+    const { data: existing } = await supabase
+      .from('property_signals')
+      .select('id')
+      .eq('country_code', market.code)
+      .limit(1);
+
+    const payload = {
+      country_code: market.code,
+      country: market.country,
+      sentiment: signal.sentiment,
+      market_score: signal.market_score,
+      avg_price_range: signal.avg_price_range,
+      summary: signal.summary,
+      hot_locations: signal.hot_locations,
+      trends: signal.trends,
+      scanned_at: nowISO
+    };
+
+    if (existing && existing.length > 0) {
+      await supabase.from('property_signals').update(payload).eq('country_code', market.code);
+    } else {
+      await supabase.from('property_signals').insert(payload);
+    }
+    console.log(`📊 Market signal saved for ${market.country} — ${signal.sentiment} (${signal.market_score}/10)`);
+  } catch (err) {
+    console.error(`❌ Failed to save market signal for ${market.country}:`, err.message);
+    // Still update scanned_at even if summary fails
+    await supabase.from('property_signals')
+      .update({ scanned_at: new Date().toISOString() })
+      .eq('country_code', market.code);
+  }
+}
+
 async function runScan() {
   console.log('🚀 SEA Property Pulse scan started...');
   console.log(`📅 ${new Date().toISOString()}`);
@@ -150,42 +217,22 @@ async function runScan() {
 
   for (const market of MARKETS) {
     console.log(`\n${market.flag} Processing ${market.country}...`);
+    const marketListings = [];
     for (const query of market.queries) {
       const rawData = await scrapeQuery(market, query);
       if (rawData) {
         const listings = await analyzeWithClaude(market, rawData, query);
         if (listings.length > 0) {
           await saveListings(market, listings);
+          marketListings.push(...listings);
           totalSaved += listings.length;
         }
       }
       await new Promise(r => setTimeout(r, 3000));
     }
 
-    // Always stamp scanned_at on property_signals so dashboard date reflects today's run
-    try {
-      const nowISO = new Date().toISOString();
-      // Try update first (row already exists)
-      const { data: existing } = await supabase
-        .from('property_signals')
-        .select('id')
-        .eq('country_code', market.code)
-        .limit(1);
-      if (existing && existing.length > 0) {
-        await supabase
-          .from('property_signals')
-          .update({ scanned_at: nowISO })
-          .eq('country_code', market.code);
-        console.log(`Clock scanned_at updated for ${market.country}`);
-      } else {
-        await supabase
-          .from('property_signals')
-          .insert({ country_code: market.code, country: market.country, scanned_at: nowISO });
-        console.log(`Clock scanned_at inserted for ${market.country}`);
-      }
-    } catch (sigErr) {
-      console.error(`Failed to update scanned_at for ${market.country}:`, sigErr.message);
-    }
+    // Generate and save market summary signal to property_signals
+    await saveMarketSignal(market, marketListings);
   }
 
   console.log('\n' + '─'.repeat(50));
