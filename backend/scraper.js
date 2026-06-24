@@ -161,6 +161,16 @@ async function runScan() {
       }
       await new Promise(r => setTimeout(r, 3000));
     }
+
+    // Always stamp scanned_at on property_signals so dashboard date reflects today's run
+    const { error: sigErr } = await supabase
+      .from('property_signals')
+      .upsert({ country_code: market.code, country: market.country, scanned_at: new Date().toISOString() }, { onConflict: 'country_code' });
+    if (sigErr) {
+      console.error(`\u274c Failed to update scanned_at for ${market.country}:`, sigErr.message);
+    } else {
+      console.log(`\u{1F550} scanned_at updated for ${market.country}`);
+    }
   }
 
   console.log('\n' + '─'.repeat(50));
