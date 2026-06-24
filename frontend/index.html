@@ -646,9 +646,10 @@ async function loadDashboard() {
 function renderMarkets(markets) {
   const hotCount = markets.filter(m => m.sentiment === 'hot').length;
   const avgScore = (markets.reduce((a,b) => a + (b.market_score||0), 0) / markets.length).toFixed(1);
-  const lastScan = markets[0]?.scanned_at
-    ? (() => { const d = new Date(markets[0].scanned_at); return d.toLocaleTimeString('en-MY', {hour:'2-digit',minute:'2-digit'}) + '\n' + d.toLocaleDateString('en-MY', {day:'numeric',month:'short'}); })()
-    : '—';
+  const liveDates = markets.filter(m => !m._demo && m.scanned_at).map(m => new Date(m.scanned_at));
+  const lastScan = liveDates.length
+    ? (() => { const d = new Date(Math.max(...liveDates)); return d.toLocaleTimeString('en-MY', {hour:'2-digit',minute:'2-digit'}) + '\n' + d.toLocaleDateString('en-MY', {day:'numeric',month:'short',year:'numeric'}); })()
+    : 'Demo Data';
 
   document.getElementById('st-markets').textContent = 6;
   document.getElementById('st-hot').textContent = hotCount;
