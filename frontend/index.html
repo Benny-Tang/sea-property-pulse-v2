@@ -1,679 +1,315 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEA Property Pulse — Find Buyers & Sellers Before Your Competitors Do</title>
-<meta name="description" content="AI-powered real estate market intelligence for Southeast Asia. Track buyer intent, seller stress, and market momentum across 6 SEA markets daily.">
-<style>
-/* ─── RESET & BASE ─── */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --navy:   #0B1A35;
-  --navy2:  #0F2347;
-  --teal:   #027A8A;
-  --mint:   #00C49A;
-  --ice:    #E4F5F3;
-  --gold:   #F5A623;
-  --red:    #E85555;
-  --white:  #FFFFFF;
-  --gray:   #94A3B8;
-  --card:   rgba(255,255,255,0.04);
-  --border: rgba(255,255,255,0.08);
-}
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: var(--navy);
-  color: var(--white);
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-a { color: inherit; text-decoration: none; }
-
-/* ─── NAV ─── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(11,26,53,0.95);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 40px;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 64px;
-}
-.nav-logo { font-size: 18px; font-weight: 700; color: var(--mint); letter-spacing: -0.5px; }
-.nav-logo span { color: var(--white); }
-.nav-links { display: flex; gap: 32px; align-items: center; }
-.nav-links a { font-size: 14px; color: var(--gray); transition: color 0.2s; }
-.nav-links a:hover { color: var(--white); }
-.nav-cta {
-  background: var(--mint); color: var(--navy);
-  padding: 8px 20px; border-radius: 8px;
-  font-size: 14px; font-weight: 700;
-  transition: opacity 0.2s;
-}
-.nav-cta:hover { opacity: 0.85; }
-
-/* ─── HERO ─── */
-.hero {
-  min-height: 100vh;
-  display: flex; align-items: center;
-  padding: 100px 40px 80px;
-  position: relative;
-  overflow: hidden;
-}
-.hero-bg {
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(0,196,154,0.08) 0%, transparent 60%),
-              radial-gradient(ellipse 60% 50% at 20% 80%, rgba(2,122,138,0.06) 0%, transparent 60%);
-}
-.hero-grid {
-  position: absolute; inset: 0; opacity: 0.03;
-  background-image: linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-.hero-content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; width: 100%; }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(0,196,154,0.1); border: 1px solid rgba(0,196,154,0.3);
-  color: var(--mint); padding: 6px 16px; border-radius: 20px;
-  font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
-  margin-bottom: 28px;
-}
-.hero-badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--mint); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-.hero h1 {
-  font-size: clamp(36px, 5vw, 68px);
-  font-weight: 800; line-height: 1.05;
-  letter-spacing: -1.5px;
-  margin-bottom: 24px;
-  max-width: 800px;
-}
-.hero h1 em { font-style: normal; color: var(--mint); }
-.hero p {
-  font-size: 18px; color: var(--gray); max-width: 540px;
-  line-height: 1.7; margin-bottom: 40px;
-}
-.hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-.btn-primary {
-  background: var(--mint); color: var(--navy);
-  padding: 14px 32px; border-radius: 10px;
-  font-size: 16px; font-weight: 700;
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: inline-flex; align-items: center; gap: 8px;
-}
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,196,154,0.3); }
-.btn-secondary {
-  color: var(--white); padding: 14px 32px;
-  border: 1px solid var(--border); border-radius: 10px;
-  font-size: 16px; font-weight: 600;
-  transition: border-color 0.2s, background 0.2s;
-}
-.btn-secondary:hover { border-color: var(--mint); background: rgba(0,196,154,0.05); }
-
-.hero-stats {
-  display: flex; gap: 48px; margin-top: 56px;
-  padding-top: 48px; border-top: 1px solid var(--border);
-  flex-wrap: wrap;
-}
-.hero-stat .num { font-size: 36px; font-weight: 800; color: var(--mint); letter-spacing: -1px; }
-.hero-stat .lbl { font-size: 13px; color: var(--gray); margin-top: 4px; }
-
-/* ─── SOCIAL PROOF BAR ─── */
-.proof-bar {
-  background: rgba(255,255,255,0.02);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 20px 40px;
-  display: flex; align-items: center; justify-content: center; gap: 48px;
-  flex-wrap: wrap;
-}
-.proof-bar .label { font-size: 12px; color: var(--gray); text-transform: uppercase; letter-spacing: 1.5px; }
-.proof-item { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.6); }
-.proof-item span { color: var(--mint); }
-
-/* ─── SECTIONS COMMON ─── */
-section { padding: 96px 40px; }
-.section-inner { max-width: 1200px; margin: 0 auto; }
-.eyebrow { font-size: 12px; font-weight: 700; color: var(--mint); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
-.section-title { font-size: clamp(28px, 3.5vw, 44px); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
-.section-sub { font-size: 17px; color: var(--gray); max-width: 560px; line-height: 1.7; }
-
-/* ─── PRODUCT CARDS ─── */
-.products { background: var(--navy2); }
-.product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 56px; }
-.product-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 16px; padding: 32px;
-  transition: transform 0.2s, border-color 0.2s;
-  position: relative; overflow: hidden;
-}
-.product-card::before {
-  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--teal), var(--mint));
-}
-.product-card:hover { transform: translateY(-4px); border-color: rgba(0,196,154,0.3); }
-.product-icon { font-size: 32px; margin-bottom: 20px; }
-.product-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
-.product-card p { font-size: 14px; color: var(--gray); line-height: 1.6; margin-bottom: 20px; }
-.product-features { list-style: none; }
-.product-features li { font-size: 13px; color: rgba(255,255,255,0.6); padding: 5px 0; padding-left: 18px; position: relative; }
-.product-features li::before { content: "→"; position: absolute; left: 0; color: var(--teal); }
-.product-badge {
-  display: inline-block; margin-top: 20px;
-  background: rgba(0,196,154,0.1); color: var(--mint);
-  border: 1px solid rgba(0,196,154,0.2);
-  font-size: 11px; font-weight: 700; letter-spacing: 1px;
-  padding: 4px 12px; border-radius: 20px; text-transform: uppercase;
-}
-
-/* ─── USE CASE TABS ─── */
-.usecases { background: var(--navy); }
-.tab-nav { display: flex; gap: 8px; margin: 40px 0 32px; flex-wrap: wrap; }
-.tab-btn {
-  padding: 10px 20px; border-radius: 8px;
-  font-size: 14px; font-weight: 600;
-  background: var(--card); border: 1px solid var(--border);
-  color: var(--gray); cursor: pointer; transition: all 0.2s;
-}
-.tab-btn.active { background: rgba(0,196,154,0.15); border-color: var(--mint); color: var(--mint); }
-.tab-content { display: none; }
-.tab-content.active { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-.tab-text h3 { font-size: 28px; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.5px; }
-.tab-text p { font-size: 15px; color: var(--gray); line-height: 1.7; margin-bottom: 24px; }
-.tab-list { list-style: none; }
-.tab-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: rgba(255,255,255,0.7); display: flex; gap: 12px; }
-.tab-list li .icon { color: var(--mint); flex-shrink: 0; }
-.tab-visual {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 16px; padding: 28px;
-  min-height: 280px; display: flex; flex-direction: column; gap: 16px;
-}
-.mini-card {
-  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-  border-radius: 10px; padding: 14px 16px;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.mini-card .name { font-size: 13px; font-weight: 600; }
-.mini-card .val { font-size: 13px; color: var(--mint); font-weight: 700; }
-.mini-card .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; }
-.badge-hot { background: rgba(232,85,85,0.2); color: #F87171; }
-.badge-warm { background: rgba(245,166,35,0.2); color: #FCD34D; }
-.badge-cool { background: rgba(96,165,250,0.2); color: #93C5FD; }
-
-/* ─── HOW IT WORKS ─── */
-.howitworks { background: var(--navy2); }
-.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 56px; position: relative; }
-.steps::before {
-  content: ""; position: absolute;
-  top: 32px; left: calc(16.66% + 16px); right: calc(16.66% + 16px);
-  height: 1px; background: linear-gradient(90deg, var(--teal), var(--mint));
-}
-.step { text-align: center; padding: 32px 24px; }
-.step-num {
-  width: 64px; height: 64px; border-radius: 50%;
-  background: rgba(0,196,154,0.1); border: 2px solid var(--mint);
-  color: var(--mint); font-size: 22px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 24px;
-}
-.step h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
-.step p { font-size: 14px; color: var(--gray); line-height: 1.6; }
-.step-tool { font-size: 11px; color: var(--teal); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-top: 12px; }
-
-/* ─── LIVE DASHBOARD ─── */
-.dashboard { background: var(--navy); }
-.dashboard-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; flex-wrap: gap; gap: 20px; }
-.live-indicator {
-  display: flex; align-items: center; gap: 8px;
-  background: rgba(0,196,154,0.1); border: 1px solid rgba(0,196,154,0.3);
-  padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; color: var(--mint);
-}
-.live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--mint); animation: pulse 2s infinite; }
-.summary-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 32px; }
-.stat-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 12px; padding: 20px 24px;
-}
-.stat-card .sv { font-size: 28px; font-weight: 800; color: var(--mint); word-break: break-word; line-height: 1.2; }
-.stat-card .sl { font-size: 11px; color: var(--gray); margin-top: 6px; text-transform: uppercase; letter-spacing: 1px; }
-.market-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-.market-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 16px; padding: 24px;
-  transition: transform 0.2s, border-color 0.2s;
-}
-.market-card:hover { transform: translateY(-2px); border-color: rgba(0,196,154,0.3); }
-.mc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.mc-country { font-size: 17px; font-weight: 700; }
-.mc-score { background: rgba(0,196,154,0.15); color: var(--mint); padding: 4px 12px; border-radius: 20px; font-size: 14px; font-weight: 700; }
-.mc-sentiment { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-.mc-price { font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
-.mc-price strong { color: var(--mint); }
-.mc-summary { font-size: 13px; color: var(--gray); line-height: 1.5; margin-bottom: 12px; }
-.mc-locations { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-.mc-loc { background: rgba(2,122,138,0.2); color: #67E8F9; border: 1px solid rgba(2,122,138,0.3); padding: 3px 10px; border-radius: 8px; font-size: 11px; }
-.mc-trends { list-style: none; }
-.mc-trends li { font-size: 12px; color: rgba(255,255,255,0.45); padding: 3px 0 3px 14px; position: relative; }
-.mc-trends li::before { content: "→"; position: absolute; left: 0; color: var(--teal); font-size: 11px; }
-.mc-footer { font-size: 11px; color: rgba(255,255,255,0.2); margin-top: 12px; }
-.loading-state { text-align: center; padding: 60px; color: var(--gray); }
-.spinner { width: 40px; height: 40px; border: 3px solid rgba(0,196,154,0.2); border-top-color: var(--mint); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ─── PRICING ─── */
-.pricing { background: var(--navy2); }
-.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-top: 56px; }
-.price-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 16px; padding: 32px 28px;
-  position: relative; transition: transform 0.2s;
-}
-.price-card:hover { transform: translateY(-4px); }
-.price-card.featured {
-  border-color: var(--mint);
-  background: rgba(0,196,154,0.05);
-}
-.featured-badge {
-  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-  background: var(--mint); color: var(--navy);
-  font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
-  padding: 4px 16px; border-radius: 20px; white-space: nowrap;
-}
-.price-tier { font-size: 12px; font-weight: 700; color: var(--teal); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
-.price-amount { font-size: 42px; font-weight: 800; letter-spacing: -1px; margin-bottom: 4px; }
-.price-amount span { font-size: 16px; color: var(--gray); font-weight: 400; }
-.price-desc { font-size: 13px; color: var(--gray); margin-bottom: 24px; line-height: 1.5; }
-.price-features { list-style: none; margin-bottom: 28px; }
-.price-features li { font-size: 13px; padding: 8px 0; border-bottom: 1px solid var(--border); color: rgba(255,255,255,0.7); display: flex; gap: 10px; }
-.price-features li .check { color: var(--mint); }
-.price-features li .cross { color: rgba(255,255,255,0.2); }
-.price-btn {
-  width: 100%; padding: 12px; border-radius: 10px;
-  font-size: 15px; font-weight: 700; cursor: pointer; border: none;
-  transition: all 0.2s;
-}
-.price-btn.primary { background: var(--mint); color: var(--navy); }
-.price-btn.secondary { background: transparent; color: var(--white); border: 1px solid var(--border); }
-.price-btn:hover { opacity: 0.85; transform: translateY(-1px); }
-
-/* ─── TESTIMONIALS ─── */
-.testimonials { background: var(--navy); }
-.testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 48px; }
-.testimonial-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 16px; padding: 28px;
-}
-.testimonial-card .stars { color: var(--gold); font-size: 14px; margin-bottom: 16px; }
-.testimonial-card p { font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.8); margin-bottom: 20px; font-style: italic; }
-.testimonial-author { display: flex; gap: 12px; align-items: center; }
-.author-avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(0,196,154,0.2); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
-.author-name { font-size: 14px; font-weight: 700; }
-.author-role { font-size: 12px; color: var(--gray); }
-.testimonial-note { text-align: center; margin-top: 32px; font-size: 13px; color: var(--gray); font-style: italic; }
-
-/* ─── CTA SECTION ─── */
-.cta-section {
-  background: linear-gradient(135deg, var(--navy2), rgba(2,122,138,0.3));
-  text-align: center; padding: 96px 40px;
-  border-top: 1px solid var(--border);
-}
-.cta-section h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
-.cta-section p { font-size: 17px; color: var(--gray); margin-bottom: 40px; }
-.cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-
-/* ─── FOOTER ─── */
-footer {
-  background: rgba(0,0,0,0.3); padding: 48px 40px 32px;
-  border-top: 1px solid var(--border);
-}
-.footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
-.footer-brand h3 { font-size: 18px; font-weight: 700; color: var(--mint); margin-bottom: 12px; }
-.footer-brand p { font-size: 13px; color: var(--gray); line-height: 1.6; margin-bottom: 16px; }
-.footer-powered { display: flex; gap: 8px; flex-wrap: wrap; }
-.power-tag { font-size: 11px; background: rgba(255,255,255,0.05); color: var(--gray); padding: 4px 10px; border-radius: 6px; }
-.footer-col h4 { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.6); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
-.footer-col a { display: block; font-size: 13px; color: var(--gray); margin-bottom: 10px; transition: color 0.2s; }
-.footer-col a:hover { color: var(--white); }
-.footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-.footer-bottom p { font-size: 12px; color: rgba(255,255,255,0.3); }
-.footer-markets { display: flex; gap: 12px; font-size: 16px; }
-
-/* ─── RESPONSIVE ─── */
-@media (max-width: 768px) {
-  nav { padding: 0 20px; }
-  .nav-links { display: none; }
-  section { padding: 64px 20px; }
-  .hero { padding: 100px 20px 60px; }
-  .hero-stats { gap: 24px; }
-  .steps { grid-template-columns: 1fr; }
-  .steps::before { display: none; }
-  .tab-content.active { grid-template-columns: 1fr; }
-  .footer-grid { grid-template-columns: 1fr 1fr; }
-  .summary-stats { grid-template-columns: 1fr 1fr; }
-  .proof-bar { gap: 24px; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEA Property Pulse — Live Market Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/lang.js" defer></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #060D1F; color: #E8EAED; min-height: 100vh; overflow-x: hidden; }
+    header { position: sticky; top: 0; z-index: 100; background: rgba(6,13,31,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid #1A2332; padding: 16px 48px; display: flex; justify-content: space-between; align-items: center; }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .logo-circle { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #02C39A, #028090); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .header-left h1 { font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .header-left p { font-size: 11px; color: #94A3B8; margin-top: 2px; }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .nav-link { font-size: 13px; color: #94A3B8; text-decoration: none; font-weight: 500; transition: color 0.2s; }
+    .nav-link:hover { color: #02C39A; }
+    .lang-switcher { display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.04); border: 1px solid #1A2332; border-radius: 8px; padding: 3px; }
+    .lang-btn { padding: 4px 10px; border-radius: 6px; border: none; background: transparent; color: #64748B; font-size: 11px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+    .lang-btn:hover { color: #94A3B8; }
+    .lang-btn.active { background: rgba(2,195,154,0.12); color: #02C39A; }
+    .live-badge { display: flex; align-items: center; gap: 6px; background: rgba(2,195,154,0.08); border: 1px solid rgba(2,195,154,0.25); color: #02C39A; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+    .live-dot { width: 6px; height: 6px; background: #02C39A; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+    .hero { position: relative; overflow: hidden; min-height: 540px; display: flex; align-items: center; padding: 80px 48px; }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; background-image: url('https://images.unsplash.com/photo-1508009603885-50cf7c8dd0d5?w=1600&q=80&auto=format&fit=crop'); background-size: cover; background-position: center 30%; }
+    .hero-overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(to right, rgba(6,13,31,0.97) 0%, rgba(6,13,31,0.85) 50%, rgba(6,13,31,0.5) 100%); }
+    .hero-overlay2 { position: absolute; inset: 0; z-index: 1; background: linear-gradient(to bottom, transparent 0%, rgba(6,13,31,0.7) 100%); }
+    .hero-content { position: relative; z-index: 2; max-width: 640px; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(2,195,154,0.1); border: 1px solid rgba(2,195,154,0.25); color: #02C39A; padding: 5px 14px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 24px; }
+    .hero h2 { font-size: 52px; font-weight: 800; letter-spacing: -2px; line-height: 1.05; margin-bottom: 16px; color: #fff; }
+    .hero h2 span { background: linear-gradient(to right, #02C39A, #67E8F9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 16px; color: #94A3B8; line-height: 1.75; max-width: 480px; margin-bottom: 28px; }
+    .hero-cities { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
+    .city-pill { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.6); padding: 5px 14px; border-radius: 20px; font-size: 12px; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-btn { background: #02C39A; color: #060D1F; padding: 12px 28px; border-radius: 10px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.2s; text-decoration: none; display: inline-flex; align-items: center; }
+    .hero-btn:hover { background: #00A884; }
+    .hero-btn-outline { background: transparent; color: #02C39A; padding: 12px 28px; border-radius: 10px; border: 1px solid rgba(2,195,154,0.4); font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; }
+    .hero-btn-outline:hover { background: rgba(2,195,154,0.08); border-color: #02C39A; }
+    .stats-bar { display: grid; grid-template-columns: repeat(4,1fr); background: rgba(15,22,41,0.9); border-top: 1px solid #1A2332; border-bottom: 1px solid #1A2332; }
+    .stat-item { padding: 24px; text-align: center; border-right: 1px solid #1A2332; position: relative; }
+    .stat-item:last-child { border-right: none; }
+    .stat-glow { position: absolute; bottom:0; left:50%; transform:translateX(-50%); width:50%; height:1px; }
+    .stat-glow.teal{background:linear-gradient(90deg,transparent,#02C39A,transparent);}
+    .stat-glow.blue{background:linear-gradient(90deg,transparent,#60A5FA,transparent);}
+    .stat-glow.red{background:linear-gradient(90deg,transparent,#F87171,transparent);}
+    .stat-glow.green{background:linear-gradient(90deg,transparent,#34D399,transparent);}
+    .stat-item .val { font-size: 34px; font-weight: 800; line-height:1; }
+    .val.teal{color:#02C39A;} .val.blue{color:#60A5FA;} .val.red{color:#F87171;} .val.green{color:#34D399;}
+    .stat-item .lbl { font-size:10px; color:#94A3B8; margin-top:6px; text-transform:uppercase; letter-spacing:1.5px; font-weight:600; }
+    .ai-section { padding: 80px 48px; border-top: 1px solid #1A2332; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .ai-section h3 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 16px; }
+    .ai-section p { font-size: 15px; color: #94A3B8; line-height: 1.75; margin-bottom: 24px; }
+    .ai-features { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .ai-features li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #CBD5E1; }
+    .ai-dot { width: 8px; height: 8px; background: #02C39A; border-radius: 50%; flex-shrink: 0; }
+    .ai-image { width: 100%; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); object-fit: cover; height: 380px; }
+    .cities-section { padding: 80px 48px; border-top: 1px solid #1A2332; background: rgba(15,22,41,0.5); text-align: center; }
+    .cities-section h3 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 12px; }
+    .cities-section p { font-size: 15px; color: #94A3B8; margin-bottom: 36px; }
+    .cities-image { width: 100%; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); object-fit: cover; height: 400px; }
+    .how-section { padding: 80px 48px; border-top: 1px solid #1A2332; }
+    .how-section h3 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 12px; text-align: center; }
+    .how-section > p { font-size: 15px; color: #94A3B8; margin-bottom: 48px; text-align: center; }
+    .how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .how-step { background: #0F1629; border: 1px solid #1A2332; border-radius: 16px; padding: 32px 28px; }
+    .how-step-num { width: 40px; height: 40px; border-radius: 10px; background: rgba(2,195,154,0.12); border: 1px solid rgba(2,195,154,0.25); color: #02C39A; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .how-step h4 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .how-step p { font-size: 14px; color: #94A3B8; line-height: 1.7; }
+    .cta-banner { padding: 60px 48px; border-top: 1px solid #1A2332; background: rgba(2,195,154,0.04); display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+    .cta-banner h3 { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -0.5px; margin-bottom: 8px; }
+    .cta-banner p { font-size: 15px; color: #94A3B8; }
+    .cta-btns { display: flex; gap: 12px; flex-wrap: wrap; flex-shrink: 0; }
+    .cta-btn { background: #02C39A; color: #060D1F; padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; transition: background 0.2s; }
+    .cta-btn:hover { background: #00A884; }
+    .cta-btn-outline { background: transparent; color: #02C39A; padding: 12px 28px; border-radius: 10px; border: 1px solid rgba(2,195,154,0.4); font-size: 14px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; transition: all 0.2s; }
+    .cta-btn-outline:hover { background: rgba(2,195,154,0.08); border-color: #02C39A; }
+    .filters-section { padding: 24px 48px; border-top: 1px solid #1A2332; border-bottom: 1px solid #1A2332; background: rgba(15,22,41,0.5); }
+    .filters-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+    .filters-row:last-child { margin-bottom: 0; }
+    .filters-label { font-size: 10px; color: #94A3B8; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; margin-right: 4px; min-width: 50px; }
+    .filter-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid #1A2332; background: rgba(255,255,255,0.02); color: #94A3B8; cursor: pointer; font-size: 12px; font-weight: 500; transition: all 0.2s; font-family: 'Inter', sans-serif; }
+    .filter-btn:hover { border-color: rgba(255,255,255,0.15); color: #CBD5E1; }
+    .filter-btn.active { background: rgba(2,195,154,0.12); border-color: rgba(2,195,154,0.35); color: #02C39A; font-weight: 600; }
+    .filter-btn.buyer.active { background: rgba(96,165,250,0.12); border-color: rgba(96,165,250,0.35); color: #60A5FA; }
+    .filter-btn.seller.active { background: rgba(248,113,113,0.12); border-color: rgba(248,113,113,0.35); color: #F87171; }
+    .filter-btn.momentum.active { background: rgba(52,211,153,0.12); border-color: rgba(52,211,153,0.35); color: #34D399; }
+    .results-count { padding: 16px 48px 0; font-size: 12px; color: #94A3B8; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(340px,1fr)); gap: 16px; padding: 20px 48px 60px; }
+    .card { background: #0F1629; border: 1px solid #1A2332; border-radius: 16px; padding: 22px; transition: all 0.25s; position: relative; overflow: hidden; }
+    .card::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; }
+    .card.buyer_intent::before { background: #60A5FA; }
+    .card.seller_stress::before { background: #F87171; }
+    .card.momentum::before { background: #34D399; }
+    .card:hover { transform:translateY(-3px); border-color:rgba(255,255,255,0.1); box-shadow:0 16px 48px rgba(0,0,0,0.5); }
+    .card-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+    .signal-badge { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:3px 9px; border-radius:6px; }
+    .signal-badge.buyer_intent { background:rgba(96,165,250,0.1); color:#60A5FA; border:1px solid rgba(96,165,250,0.2); }
+    .signal-badge.seller_stress { background:rgba(248,113,113,0.1); color:#F87171; border:1px solid rgba(248,113,113,0.2); }
+    .signal-badge.momentum { background:rgba(52,211,153,0.1); color:#34D399; border:1px solid rgba(52,211,153,0.2); }
+    .country-tag { font-size:11px; color:#94A3B8; font-weight:500; }
+    .card-title { font-size:14px; font-weight:600; color:#E8EAED; margin-bottom:7px; line-height:1.5; }
+    .card-snippet { font-size:12px; color:#94A3B8; line-height:1.6; margin-bottom:12px; }
+    .card-meta { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    .meta-item { font-size:11px; color:#64748B; display:flex; align-items:center; gap:3px; }
+    .meta-item strong { color:#CBD5E1; font-weight:500; }
+    .card-link { font-size:11px; color:#02C39A; text-decoration:none; font-weight:500; opacity:0.7; transition:opacity 0.2s; }
+    .card-link:hover { opacity:1; }
+    .dynamics-section { padding: 80px 48px; border-top: 1px solid #1A2332; background: linear-gradient(135deg, rgba(15,22,41,0.9), rgba(6,13,31,0.95)); text-align: center; }
+    .dynamics-section h3 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 12px; }
+    .dynamics-section p { font-size: 15px; color: #94A3B8; margin-bottom: 36px; }
+    .dynamics-image { width: 100%; border-radius: 16px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); object-fit: cover; height: 420px; }
+    footer { background: rgba(6,13,31,0.98); border-top: 1px solid #1A2332; padding: 48px; }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 32px; }
+    .footer-col h4 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 16px; }
+    .footer-col p, .footer-col li { font-size: 13px; color: #94A3B8; line-height: 1.7; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { padding: 4px 0; }
+    .footer-col a { color: #02C39A; text-decoration: none; }
+    .footer-col a:hover { text-decoration: underline; }
+    .footer-divider { border: none; border-top: 1px solid #1A2332; margin-bottom: 24px; }
+    .footer-disclaimer { font-size: 12px; color: #64748B; line-height: 1.7; }
+    .footer-disclaimer strong { color: #94A3B8; }
+    .loading { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:400px; gap:16px; }
+    .spinner { width:44px; height:44px; border:3px solid rgba(2,195,154,0.1); border-top-color:#02C39A; border-radius:50%; animation:spin 0.8s linear infinite; }
+    @keyframes spin { to{transform:rotate(360deg);} }
+    .loading p { font-size:13px; color:#64748B; }
+    .no-data { text-align:center; padding:80px; color:#64748B; }
+  </style>
 </head>
 <body>
 
-<!-- ─── NAV ─── -->
-<nav>
-  <div class="nav-logo">SEA<span>PropertyPulse</span></div>
-  <div class="nav-links">
-    <a href="#products">Products</a>
-    <a href="#dashboard">Live Data</a>
-    <a href="#howitworks">How It Works</a>
-    <a href="pricing.html">Pricing</a>
-    <a href="mailto:benny@seapropertypulse.com">Contact</a>
-    <a href="pricing.html" class="nav-cta">Get Started</a>
+<header>
+  <div class="header-left">
+    <div class="logo-circle">&#127759;</div>
+    <div>
+      <h1>SEA Property Pulse</h1>
+      <p>AI-Powered Real Estate Market Intelligence &middot; Southeast Asia</p>
+    </div>
   </div>
-</nav>
+  <div class="header-right">
+    <a class="nav-link" href="/services.html" data-i18n="nav_services">Services</a>
+    <a class="nav-link" href="/pricing.html" data-i18n="nav_pricing">Pricing</a>
+    <a class="nav-link" href="/register.html" data-i18n="nav_register">Register Free</a>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="ms" onclick="setLang('ms')">BM</button>
+      <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">中文</button>
+    </div>
+    <div class="live-badge"><div class="live-dot"></div> <span data-i18n="live_badge">LIVE DATA</span></div>
+  </div>
+</header>
 
-<!-- ─── HERO ─── -->
-<section class="hero">
+<div class="hero">
   <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-overlay2"></div>
   <div class="hero-content">
-    <div class="hero-badge">🟢 Live Market Intelligence</div>
-    <h1>Find buyers & sellers <em>before</em> your competitors do</h1>
-    <p>AI-powered property market intelligence tracking buyer intent, seller stress, and momentum signals across 6 Southeast Asian markets — updated daily.</p>
-    <div class="hero-actions">
-      <a href="#dashboard" class="btn-primary">View Live Dashboard →</a>
-      <a href="pricing.html" target="_blank" class="btn-secondary">See Pricing</a>
+    <div class="hero-tag">&#9889; <span data-i18n="hero_tag">AI-Powered Intelligence</span></div>
+    <h2><span data-i18n="hero_title_1">Southeast Asia</span><br><span data-i18n="hero_title_2" style="background:linear-gradient(to right,#02C39A,#67E8F9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Property Signals</span></h2>
+    <p data-i18n="hero_desc">Real-time market intelligence powered by AI — tracking buyer intent, seller stress, and momentum across 6 SEA markets daily.</p>
+    <div class="hero-cities">
+      <span class="city-pill">&#127474;&#127486; Kuala Lumpur</span>
+      <span class="city-pill">&#127480;&#127468; Singapore</span>
+      <span class="city-pill">&#127481;&#127469; Bangkok</span>
+      <span class="city-pill">&#127470;&#127465; Jakarta</span>
+      <span class="city-pill">&#127477;&#127469; Manila</span>
+      <span class="city-pill">&#127483;&#127475; Ho Chi Minh</span>
     </div>
-
-  </div>
-</section>
-
-
-
-<!-- ─── PRODUCTS ─── -->
-<section class="products" id="products">
-  <div class="section-inner">
-    <div class="eyebrow">What We Offer</div>
-    <h2 class="section-title">Three intelligence products.<br>One SEA market edge.</h2>
-    <p class="section-sub">From residential leads to commercial market reports — all powered by live web data and AI analysis.</p>
-    <div class="product-grid">
-      <div class="product-card">
-        <div class="product-icon">🏠</div>
-        <h3>Real Estate Leads</h3>
-        <p>Identify motivated buyers and stressed sellers before they reach agents. Track intent signals across PropertyGuru, 99.co, and 6 major portals daily.</p>
-        <ul class="product-features">
-          <li>Buyer intent scoring by district</li>
-          <li>Seller stress indicators</li>
-          <li>Price reduction alerts</li>
-          <li>New listing velocity tracking</li>
-        </ul>
-        <span class="product-badge">🟢 Live</span>
-      </div>
-      <div class="product-card">
-        <div class="product-icon">📊</div>
-        <h3>Market Intelligence Reports</h3>
-        <p>Weekly AI-generated market reports for each SEA country — sentiment, hot zones, price trends, and momentum scores your team can act on.</p>
-        <ul class="product-features">
-          <li>Country-level market scores</li>
-          <li>Hot location rankings</li>
-          <li>Cross-border comparison</li>
-          <li>Investment opportunity alerts</li>
-        </ul>
-        <span class="product-badge">🟢 Live</span>
-      </div>
-      <div class="product-card">
-        <div class="product-icon">🔌</div>
-        <h3>Data API Access</h3>
-        <p>Integrate SEA property intelligence directly into your CRM, dashboard, or investment platform via our REST API. Enterprise-grade, built on Bright Data infrastructure.</p>
-        <ul class="product-features">
-          <li>REST API with JSON responses</li>
-          <li>Real-time & historical data</li>
-          <li>6 country endpoints</li>
-          <li>Custom market queries</li>
-        </ul>
-        <span class="product-badge" style="background:rgba(245,166,35,0.1);color:#FCD34D;border-color:rgba(245,166,35,0.3)">🔜 Coming Q3 2026</span>
-      </div>
+    <div class="hero-btns">
+      <button class="hero-btn" onclick="document.querySelector('.filters-section').scrollIntoView({behavior:'smooth'})" data-i18n="hero_explore">Explore Markets →</button>
+      <a class="hero-btn-outline" href="/pricing.html" data-i18n="hero_pricing">See Pricing</a>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ─── HOW IT WORKS ─── -->
-<section class="howitworks" id="howitworks">
-  <div class="section-inner">
-    <div class="eyebrow">How It Works</div>
-    <h2 class="section-title">From raw web data<br>to actionable intelligence</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <h3>We Scan</h3>
-        <p>Our autonomous pipeline scans PropertyGuru, 99.co, Rumah123, DDProperty, Lamudi, Batdongsan and many more — daily across all 6 SEA markets.</p>
-        <div class="step-tool">Autonomous Pipeline</div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <h3>AI Classifies</h3>
-        <p>Our AI processes every data point — extracting sentiment, scoring momentum, identifying hot zones, and generating market narratives automatically.</p>
-        <div class="step-tool">Updated Daily</div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <h3>You Get Leads</h3>
-        <p>Intelligence delivered to your dashboard in real-time. Filter by country, signal type, or market score. Export or access via API.</p>
-        <div class="step-tool">Updated Daily</div>
-      </div>
-    </div>
+<div class="stats-bar">
+  <div class="stat-item"><div class="val teal" id="totalListings">—</div><div class="lbl" data-i18n="stat_signals">Total Signals</div><div class="stat-glow teal"></div></div>
+  <div class="stat-item"><div class="val blue" id="buyerCount">—</div><div class="lbl" data-i18n="stat_buyer">Buyer Intent</div><div class="stat-glow blue"></div></div>
+  <div class="stat-item"><div class="val red" id="sellerCount">—</div><div class="lbl" data-i18n="stat_seller">Seller Stress</div><div class="stat-glow red"></div></div>
+  <div class="stat-item"><div class="val green" id="momentumCount">—</div><div class="lbl" data-i18n="stat_momentum">Momentum</div><div class="stat-glow green"></div></div>
+</div>
+
+<div class="ai-section">
+  <div>
+    <h3 data-i18n="ai_title">AI-Powered Market Analysis</h3>
+    <p data-i18n="ai_desc">Our advanced AI engine processes millions of data points in real-time, delivering actionable insights into Southeast Asia's most dynamic property markets.</p>
+    <ul class="ai-features">
+      <li><span class="ai-dot"></span> <span data-i18n="ai_f1">Real-time buyer intent tracking</span></li>
+      <li><span class="ai-dot"></span> <span data-i18n="ai_f2">Seller stress indicators</span></li>
+      <li><span class="ai-dot"></span> <span data-i18n="ai_f3">Market momentum analysis</span></li>
+      <li><span class="ai-dot"></span> <span data-i18n="ai_f4">Geographic market insights</span></li>
+      <li><span class="ai-dot"></span> <span data-i18n="ai_f5">Daily automated data refresh</span></li>
+    </ul>
   </div>
-</section>
+  <div><img class="ai-image" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80&auto=format&fit=crop" alt="AI Market Intelligence"></div>
+</div>
 
-<!-- ─── LIVE DASHBOARD ─── -->
-<section class="dashboard" id="dashboard">
-  <div class="section-inner">
-    <div class="dashboard-header">
-      <div>
-        <div class="eyebrow">Live Intelligence</div>
-        <h2 class="section-title" style="margin-bottom:0">SEA Market Signals</h2>
-      </div>
-      <div class="live-indicator"><div class="live-dot"></div>Live Data</div>
-    </div>
-    <div class="summary-stats">
-      <div class="stat-card"><div class="sv" id="st-markets">—</div><div class="sl">Markets Tracked</div></div>
-      <div class="stat-card"><div class="sv" id="st-hot">—</div><div class="sl">Hot Markets</div></div>
-      <div class="stat-card"><div class="sv" id="st-score">—</div><div class="sl">Avg Market Score</div></div>
-      <div class="stat-card"><div class="sv" id="st-scan" style="font-size:20px;white-space:pre-line;line-height:1.3">—</div><div class="sl">Last Updated</div></div>
-    </div>
-    <div class="market-grid" id="marketGrid">
-      <div class="loading-state">
-        <div class="spinner"></div>
-        <p>Loading live market intelligence...</p>
-      </div>
-    </div>
+<div class="cities-section">
+  <h3 data-i18n="cities_title">Southeast Asia's Premier Markets</h3>
+  <p data-i18n="cities_desc">Comprehensive coverage across the region's most dynamic real estate markets</p>
+  <img class="cities-image" src="https://images.unsplash.com/photo-1555899434-94d1368aa7af?w=1400&q=80&auto=format&fit=crop" alt="Southeast Asian Cities">
+</div>
+
+<div class="how-section">
+  <h3 data-i18n="how_title">How It Works</h3>
+  <p data-i18n="how_desc">Three steps from raw web data to actionable market intelligence</p>
+  <div class="how-steps">
+    <div class="how-step"><div class="how-step-num">1</div><h4 data-i18n="how_1_title">We Scan</h4><p data-i18n="how_1_desc">Our autonomous pipeline scans PropertyGuru, 99.co, Rumah123, DDProperty, Lamudi, Batdongsan and many more — daily across all 6 SEA markets.</p></div>
+    <div class="how-step"><div class="how-step-num">2</div><h4 data-i18n="how_2_title">Our AI Classifies</h4><p data-i18n="how_2_desc">Our AI processes every data point — extracting sentiment, scoring momentum, identifying hot zones, and generating market narratives automatically.</p></div>
+    <div class="how-step"><div class="how-step-num">3</div><h4 data-i18n="how_3_title">You Act</h4><p data-i18n="how_3_desc">Receive clear, prioritised signals straight to your dashboard so you can identify leads, spot trends, and move faster than competitors.</p></div>
   </div>
-</section>
+</div>
 
-<!-- ─── PRICING TEASER ─── -->
-<section style="background:var(--navy2);padding:80px 40px;text-align:center">
-  <div class="section-inner" style="max-width:700px">
-    <div class="eyebrow">Pricing & Services</div>
-    <h2 class="section-title">Simple plans. Advanced tools.<br>Start free, scale as you grow.</h2>
-    <p class="section-sub" style="margin:0 auto 40px">From a free tier to enterprise — plus special intelligence toolkits powered by enterprise-grade web data infrastructure.</p>
-    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
-      <a href="pricing.html" class="btn-primary">View Pricing & Services →</a>
-      <a href="mailto:benny@seapropertypulse.com?subject=Enterprise Inquiry" class="btn-secondary">Talk to Sales</a>
-    </div>
-    <p style="margin-top:24px;font-size:13px;color:var(--gray)">Free tier available · No credit card required · Cancel anytime</p>
+<div class="cta-banner">
+  <div>
+    <h3 data-i18n="cta_title">Ready to get started?</h3>
+    <p data-i18n="cta_desc">Explore our plans or learn about the intelligence tools powering the platform.</p>
   </div>
-</section>
-
-<!-- ─── TESTIMONIALS ─── -->
-<section class="testimonials" id="testimonials">
-  <div class="section-inner">
-    <div class="eyebrow">Early Access Feedback</div>
-    <h2 class="section-title">What early users say</h2>
-    <div class="testimonial-grid">
-      <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <p>"Finally, a platform that gives us real-time signals on which areas are heating up. We've already used the Malaysia data to time two acquisitions."</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">🏢</div>
-          <div><div class="author-name">Property Investment Fund</div><div class="author-role">Kuala Lumpur, Malaysia</div></div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <p>"The cross-market comparison is what sold us. We track SG and MY together and the AI summaries save us hours of research every week."</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">👤</div>
-          <div><div class="author-name">Senior Property Agent</div><div class="author-role">Singapore</div></div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="stars">★★★★☆</div>
-        <p>"The seller stress indicator is genuinely useful — we've found motivated sellers in districts where we wouldn't have looked otherwise."</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">🏗️</div>
-          <div><div class="author-name">Property Developer</div><div class="author-role">Bangkok, Thailand</div></div>
-        </div>
-      </div>
-    </div>
-    <p class="testimonial-note">* Early access feedback. Platform is in active development. Real client testimonials coming soon.</p>
+  <div class="cta-btns">
+    <a class="cta-btn" href="/pricing.html" data-i18n="cta_pricing">See Pricing</a>
+    <a class="cta-btn-outline" href="/services.html" data-i18n="cta_services">Our Services</a>
   </div>
-</section>
+</div>
 
-<!-- ─── CTA ─── -->
-<section class="cta-section">
-  <div class="eyebrow">Get Early Access</div>
-  <h2>Ready to move before<br>your competitors do?</h2>
-  <p>Join property professionals across SEA getting daily market intelligence delivered to their dashboard.</p>
-  <div class="cta-actions">
-    <a href="mailto:benny@seapropertypulse.com?subject=Early Access Request" class="btn-primary">Request Early Access →</a>
-    <a href="#dashboard" class="btn-secondary">View Live Data First</a>
+<div class="filters-section">
+  <div class="filters-row">
+    <span class="filters-label">Market</span>
+    <button class="filter-btn active" onclick="filterAll(event)">&#127760; All</button>
+    <button class="filter-btn" onclick="filterCountry('MY', event)">&#127474;&#127486; Malaysia</button>
+    <button class="filter-btn" onclick="filterCountry('SG', event)">&#127480;&#127468; Singapore</button>
+    <button class="filter-btn" onclick="filterCountry('TH', event)">&#127481;&#127469; Thailand</button>
+    <button class="filter-btn" onclick="filterCountry('ID', event)">&#127470;&#127465; Indonesia</button>
+    <button class="filter-btn" onclick="filterCountry('PH', event)">&#127477;&#127469; Philippines</button>
+    <button class="filter-btn" onclick="filterCountry('VN', event)">&#127483;&#127475; Vietnam</button>
   </div>
-</section>
+  <div class="filters-row">
+    <span class="filters-label">Signal</span>
+    <button class="filter-btn buyer" onclick="filterSignal('buyer_intent', event)">&#128309; Buyer Intent</button>
+    <button class="filter-btn seller" onclick="filterSignal('seller_stress', event)">&#128308; Seller Stress</button>
+    <button class="filter-btn momentum" onclick="filterSignal('momentum', event)">&#128994; Momentum</button>
+  </div>
+</div>
 
-<!-- ─── FOOTER ─── -->
+<div class="results-count" id="resultsCount"></div>
+<div id="content"><div class="loading"><div class="spinner"></div><p>Loading live market signals...</p></div></div>
+
+<div class="dynamics-section">
+  <h3>Real Estate Market Dynamics</h3>
+  <p>Data-driven insights into Southeast Asia's property investment landscape</p>
+  <img class="dynamics-image" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1400&q=80&auto=format&fit=crop" alt="Market Dynamics">
+</div>
+
 <footer>
   <div class="footer-grid">
-    <div class="footer-brand">
-      <h3>SEA Property Pulse</h3>
-      <p>AI-powered real estate market intelligence for Southeast Asia. Tracking buyer intent, seller stress, and momentum signals across 6 major markets daily.</p>
-      <div class="footer-company">
-        <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:12px;line-height:1.6">Tang88 Resources<br>45-N, Jalan Ong Kim Wee, Malacca 75300, Malaysia<br><a href="mailto:benny@seapropertypulse.com" style="color:rgba(255,255,255,0.5)">benny@seapropertypulse.com</a></p>
-      </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer_about_title">About SEA Property Pulse</h4>
+      <p data-i18n="footer_about_desc">Premium AI-powered real estate market intelligence for Southeast Asia.</p>
     </div>
     <div class="footer-col">
-      <h4>Markets</h4>
-      <a href="#dashboard">🇲🇾 Malaysia</a>
-      <a href="#dashboard">🇸🇬 Singapore</a>
-      <a href="#dashboard">🇹🇭 Thailand</a>
-      <a href="#dashboard">🇮🇩 Indonesia</a>
-      <a href="#dashboard">🇵🇭 Philippines</a>
-      <a href="#dashboard">🇻🇳 Vietnam</a>
+      <h4 data-i18n="footer_markets_title">Markets Covered</h4>
+      <ul>
+        <li>&#127474;&#127486; Malaysia</li><li>&#127480;&#127468; Singapore</li>
+        <li>&#127481;&#127469; Thailand</li><li>&#127470;&#127465; Indonesia</li>
+        <li>&#127477;&#127469; Philippines</li><li>&#127483;&#127475; Vietnam</li>
+      </ul>
     </div>
     <div class="footer-col">
-      <h4>Product</h4>
-      <a href="#products">Real Estate Leads</a>
-      <a href="#products">Market Reports</a>
-      <a href="#products">Data API</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="#howitworks">How It Works</a>
-    </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <a href="mailto:benny@seapropertypulse.com">Contact Us</a>
-      <a href="mailto:benny@seapropertypulse.com">Partnerships</a>
-      <a href="mailto:benny@seapropertypulse.com?subject=Enterprise Inquiry">Enterprise</a>
-      <a href="mailto:benny@seapropertypulse.com">Benny@SEAPropertyPulse</a>
+      <h4 data-i18n="footer_contact_title">Contact</h4>
+      <p>Tang88 Resources</p><p>45-N, Jalan Ong Kim Wee</p><p>Malacca 75300, Malaysia</p>
+      <p style="margin-top:8px;"><a href="mailto:benny@seapropertypulse.com">benny@seapropertypulse.com</a></p>
+      <p style="margin-top:16px;font-size:12px;color:#64748B;" data-i18n="footer_copyright">© 2026 SEA Property Pulse. All rights reserved.</p>
     </div>
   </div>
-  <div class="footer-bottom">
-    <p>© 2026 SEA Property Pulse · Tang88 Resources, Malaysia · benny@seapropertypulse.com</p>
-    <div class="footer-markets">🇲🇾 🇸🇬 🇹🇭 🇮🇩 🇵🇭 🇻🇳</div>
-
-  </div>
-  <!-- ─── DISCLAIMER ─── -->
-  <div style="max-width:1200px;margin:24px auto 0;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06)">
-    <p style="font-size:11px;color:rgba(255,255,255,0.2);line-height:1.7;text-align:center">
-      <strong style="color:rgba(255,255,255,0.3)">Disclaimer:</strong> SEA Property Pulse provides AI-generated market intelligence for informational purposes only. All data, signals, and analysis are derived from publicly available sources and do not constitute financial, investment, or real estate advice. Market conditions can change rapidly and past signals are not indicative of future performance. Users should conduct their own due diligence and consult qualified professionals before making any investment or property decisions. Tang88 Resources assumes no liability for decisions made based on information provided by this platform. © 2026 SEA Property Pulse · Tang88 Resources, Malaysia.
-    </p>
-  </div>
+  <hr class="footer-divider">
+  <p class="footer-disclaimer"><strong>Disclaimer:</strong> <span data-i18n="footer_disclaimer">The information provided on this platform is for general informational purposes only and does not constitute financial, legal, or investment advice.</span></p>
 </footer>
 
 <script>
-// ─── TAB SWITCHING ───
-function switchTab(id) {
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
-  event.target.classList.add('active');
-}
-
-// ─── MAILTO ───
-function mailto() {
-  window.location.href = 'mailto:benny@seapropertypulse.com?subject=SEA Property Pulse - Subscription Inquiry';
-}
-
-// ─── LIVE DASHBOARD ───
-const FLAGS = { MY:'🇲🇾', SG:'🇸🇬', TH:'🇹🇭', ID:'🇮🇩', PH:'🇵🇭', VN:'🇻🇳' };
-const SENTIMENT_CLASS = { hot:'badge-hot', warm:'badge-warm', cool:'badge-cool' };
-
-const MARKET_STUBS = {
-  MY: { country_code:'MY', country:'Malaysia', sentiment:'warm', market_score:7.2, avg_price_range:'MYR 500K – 1.2M', summary:'Kuala Lumpur continues to show steady buyer demand with growing interest in suburban townships.', hot_locations:['Mont Kiara','Petaling Jaya','Iskandar'], trends:['Suburban demand rising','New launches outpacing resales','Foreign buyer interest recovering'], _demo:true },
-  SG: { country_code:'SG', country:'Singapore', sentiment:'hot', market_score:8.9, avg_price_range:'SGD 1.2M – 3.5M', summary:'Singapore remains the strongest SEA market with persistent demand and limited supply driving prices higher.', hot_locations:['Jurong Lake District','Tengah','Clementi'], trends:['HDB resale prices at record high','EC launches fully absorbed','Rental yields compressing'], _demo:true },
-  TH: { country_code:'TH', country:'Thailand', sentiment:'warm', market_score:6.8, avg_price_range:'THB 3M – 12M', summary:'Bangkok shows mixed signals with luxury segment outperforming mid-market amid economic uncertainty.', hot_locations:['Sukhumvit','Silom','Rama 9'], trends:['Chinese buyer demand returning','Tourism-linked condo recovering','Outer Bangkok gaining traction'], _demo:true },
-  ID: { country_code:'ID', country:'Indonesia', sentiment:'warm', market_score:7.0, avg_price_range:'IDR 800M – 5B', summary:'Jakarta and Bali markets diverging — Bali sees strong foreign demand while Jakarta commercial remains soft.', hot_locations:['Bali','SCBD Jakarta','BSD City'], trends:['Bali villa demand surging','IKN effect on Kalimantan','Affordable housing gap widening'], _demo:true },
-  PH: { country_code:'PH', country:'Philippines', sentiment:'cool', market_score:6.1, avg_price_range:'PHP 5M – 25M', summary:'Philippine market cooling as OFW remittances shift and office market oversupply persists in Metro Manila.', hot_locations:['BGC','Makati','Cebu'], trends:['Office vacancy rising','Residential pre-sales slowing','Provincial markets holding steady'], _demo:true },
-  VN: { country_code:'VN', country:'Vietnam', sentiment:'hot', market_score:8.1, avg_price_range:'VND 3B – 15B', summary:'Vietnam leads SEA in market momentum with Ho Chi Minh City and Hanoi both showing strong recovery signals.', hot_locations:['District 2 HCMC','Hanoi West','Da Nang'], trends:['Legal reforms boosting confidence','Industrial spillover to residential','Foreign direct investment driving demand'], _demo:true }
-};
-const MARKET_ORDER = ['MY','SG','TH','ID','PH','VN'];
-
-async function loadDashboard() {
-  let liveData = {};
-  try {
-    const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000/api/signals' : '/api/signals';
-    const res = await fetch(apiUrl, { signal: AbortSignal.timeout(5000) });
-    if (res.ok) {
-      const data = await res.json();
-      if (data && data.length > 0) {
-        data.forEach(m => { liveData[m.country_code] = m; });
-      }
+  const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : '/api';
+  let allListings = [];
+  const flags = { MY:'&#127474;&#127486;', SG:'&#127480;&#127468;', TH:'&#127481;&#127469;', ID:'&#127470;&#127465;', PH:'&#127477;&#127469;', VN:'&#127483;&#127475;' };
+  async function loadListings() {
+    try {
+      const res = await fetch(`${API_URL}/listings`);
+      if (!res.ok) throw new Error('API error');
+      allListings = await res.json();
+      updateStats(); renderCards(allListings);
+    } catch (err) {
+      document.getElementById('content').innerHTML = '<div class="no-data"><h3>No Data Yet</h3><p>Run the scraper to populate signals.</p></div>';
     }
-  } catch(e) {}
-
-  // Always build all 6 markets — live where available, stub where missing
-  const markets = MARKET_ORDER.map(code => liveData[code] || MARKET_STUBS[code]);
-  renderMarkets(markets);
-}
-
-function renderMarkets(markets) {
-  const hotCount = markets.filter(m => m.sentiment === 'hot').length;
-  const avgScore = (markets.reduce((a,b) => a + (b.market_score||0), 0) / markets.length).toFixed(1);
-  const liveDates = markets.filter(m => !m._demo && m.scanned_at).map(m => new Date(m.scanned_at));
-  const lastScan = liveDates.length
-    ? (() => { const d = new Date(Math.max(...liveDates)); return d.toLocaleTimeString('en-MY', {hour:'2-digit',minute:'2-digit'}) + '\n' + d.toLocaleDateString('en-MY', {day:'numeric',month:'short',year:'numeric'}); })()
-    : 'Demo Data';
-
-  document.getElementById('st-markets').textContent = 6;
-  document.getElementById('st-hot').textContent = hotCount;
-  document.getElementById('st-score').textContent = avgScore;
-  document.getElementById('st-scan').textContent = lastScan;
-
-  document.getElementById('marketGrid').innerHTML = markets.map(m => `
-    <div class="market-card">
-      <div class="mc-header">
-        <div class="mc-country">${FLAGS[m.country_code]||''} ${m.country}</div>
-        <div class="mc-score">⭐ ${m.market_score||'—'}</div>
-      </div>
-      <span class="mc-sentiment ${SENTIMENT_CLASS[m.sentiment]||''}">${m.sentiment||'—'}</span>
-      <div class="mc-price">Avg Price: <strong>${m.avg_price_range||'N/A'}</strong></div>
-      <div class="mc-summary">${m.summary||''}</div>
-      ${m.hot_locations?.length ? `<div class="mc-locations">${m.hot_locations.map(l=>`<span class="mc-loc">📍 ${l}</span>`).join('')}</div>` : ''}
-      ${m.trends?.length ? `<ul class="mc-trends">${m.trends.map(t=>`<li>${t}</li>`).join('')}</ul>` : ''}
-      <div class="mc-footer">${m._demo ? '⚡ Demo data — pending next scraper run' : 'Updated: ' + new Date(m.scanned_at).toLocaleString('en-MY')}</div>
-    </div>
-  `).join('');
-}
-
-loadDashboard();
-setInterval(loadDashboard, 5 * 60 * 1000);
+  }
+  function updateStats() {
+    document.getElementById('totalListings').textContent = allListings.length;
+    document.getElementById('buyerCount').textContent = allListings.filter(l => l.signal_type === 'buyer_intent').length;
+    document.getElementById('sellerCount').textContent = allListings.filter(l => l.signal_type === 'seller_stress').length;
+    document.getElementById('momentumCount').textContent = allListings.filter(l => l.signal_type === 'momentum').length;
+  }
+  function renderCards(listings) {
+    document.getElementById('resultsCount').textContent = `Showing ${listings.length} signals`;
+    if (!listings.length) { document.getElementById('content').innerHTML = '<div class="no-data"><h3>No signals match this filter.</h3></div>'; return; }
+    const cards = listings.map(l => `<div class="card ${l.signal_type}"><div class="card-top"><span class="signal-badge ${l.signal_type}">${(l.signal_type||'').replace('_',' ')}</span><span class="country-tag">${flags[l.country_code]||''} ${l.country}</span></div><div class="card-title">${l.title||'Untitled'}</div>${l.snippet?`<div class="card-snippet">${l.snippet}</div>`:''}<div class="card-meta">${l.location?`<div class="meta-item">&#128205; <strong>${l.location}</strong></div>`:''} ${l.price?`<div class="meta-item">&#128176; <strong>${l.price}</strong></div>`:''} ${l.source?`<div class="meta-item">&#127760; <strong>${l.source}</strong></div>`:''}</div>${l.url?`<a class="card-link" href="${l.url}" target="_blank">View listing &#8594;</a>`:''}</div>`).join('');
+    document.getElementById('content').innerHTML = `<div class="grid">${cards}</div>`;
+  }
+  function filterAll(e) { document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); renderCards(allListings); }
+  function filterCountry(code,e) { document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); renderCards(allListings.filter(l=>l.country_code===code)); }
+  function filterSignal(type,e) { document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); renderCards(allListings.filter(l=>l.signal_type===type)); }
+  loadListings();
+  setInterval(loadListings, 5*60*1000);
 </script>
 </body>
 </html>

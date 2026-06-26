@@ -5,181 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register — SEA Property Pulse</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/lang.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #060D1F;
-      color: #E8EAED;
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-
-    /* Left panel */
-    .left-panel {
-      position: relative;
-      background: linear-gradient(160deg, #071525 0%, #060D1F 100%);
-      border-right: 1px solid #1A2332;
-      padding: 48px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      overflow: hidden;
-    }
-    .left-panel::before {
-      content: '';
-      position: absolute;
-      top: -120px; left: -120px;
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(2,195,154,0.07) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .left-panel::after {
-      content: '';
-      position: absolute;
-      bottom: -80px; right: -80px;
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(96,165,250,0.05) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
+    body { font-family: 'Inter', sans-serif; background: #060D1F; color: #E8EAED; min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
+    .left-panel { position: relative; background: linear-gradient(160deg, #071525 0%, #060D1F 100%); border-right: 1px solid #1A2332; padding: 48px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+    .left-panel::before { content: ''; position: absolute; top: -120px; left: -120px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(2,195,154,0.07) 0%, transparent 70%); pointer-events: none; }
     .brand { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; }
-    .logo-circle {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: linear-gradient(135deg, #02C39A, #028090);
-      display: flex; align-items: center; justify-content: center; font-size: 20px;
-      flex-shrink: 0;
-    }
+    .logo-circle { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #02C39A, #028090); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
     .brand-name { font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
     .brand-sub { font-size: 11px; color: #64748B; margin-top: 2px; }
-
     .left-content { position: relative; z-index: 1; }
-    .left-content h2 {
-      font-size: 38px; font-weight: 800; color: #fff;
-      letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 16px;
-    }
-    .left-content h2 span {
-      background: linear-gradient(to right, #02C39A, #67E8F9);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
+    .left-content h2 { font-size: 38px; font-weight: 800; color: #fff; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 16px; }
+    .left-content h2 .grad { background: linear-gradient(to right, #02C39A, #67E8F9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .left-content p { font-size: 14px; color: #94A3B8; line-height: 1.75; margin-bottom: 36px; max-width: 340px; }
-
     .free-includes { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px; }
     .free-includes li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #CBD5E1; }
-    .check-icon {
-      width: 22px; height: 22px; border-radius: 6px;
-      background: rgba(2,195,154,0.12); border: 1px solid rgba(2,195,154,0.25);
-      color: #02C39A; font-size: 11px; font-weight: 700;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-
+    .check-icon { width: 22px; height: 22px; border-radius: 6px; background: rgba(2,195,154,0.12); border: 1px solid rgba(2,195,154,0.25); color: #02C39A; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .markets-preview { display: flex; gap: 8px; flex-wrap: wrap; }
-    .market-pill {
-      background: rgba(255,255,255,0.04); border: 1px solid #1A2332;
-      color: #64748B; padding: 5px 12px; border-radius: 8px; font-size: 11px;
-      transition: all 0.2s;
-    }
-    .market-pill.highlight {
-      background: rgba(2,195,154,0.08); border-color: rgba(2,195,154,0.2);
-      color: #02C39A;
-    }
-
+    .market-pill { background: rgba(2,195,154,0.08); border: 1px solid rgba(2,195,154,0.2); color: #02C39A; padding: 5px 12px; border-radius: 8px; font-size: 11px; }
     .left-footer { font-size: 12px; color: #334155; position: relative; z-index: 1; }
-
-    /* Right panel — form */
-    .right-panel {
-      padding: 48px;
-      display: flex; align-items: center; justify-content: center;
-      background: #060D1F;
-    }
+    .lang-switcher { display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.04); border: 1px solid #1A2332; border-radius: 8px; padding: 3px; margin-top: 24px; width: fit-content; }
+    .lang-btn { padding: 4px 10px; border-radius: 6px; border: none; background: transparent; color: #64748B; font-size: 11px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+    .lang-btn:hover { color: #94A3B8; }
+    .lang-btn.active { background: rgba(2,195,154,0.12); color: #02C39A; }
+    .right-panel { padding: 48px; display: flex; align-items: center; justify-content: center; background: #060D1F; }
     .form-wrap { width: 100%; max-width: 420px; }
     .form-wrap h3 { font-size: 24px; font-weight: 800; color: #fff; letter-spacing: -0.5px; margin-bottom: 6px; }
     .form-wrap > p { font-size: 13px; color: #64748B; margin-bottom: 32px; }
     .form-wrap > p a { color: #02C39A; text-decoration: none; }
-    .form-wrap > p a:hover { text-decoration: underline; }
-
     .form-group { margin-bottom: 18px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #94A3B8; margin-bottom: 7px; letter-spacing: 0.3px; }
-    .form-group input, .form-group select {
-      width: 100%; padding: 11px 14px;
-      background: #0F1629; border: 1px solid #1A2332;
-      border-radius: 10px; color: #E8EAED; font-size: 14px;
-      font-family: 'Inter', sans-serif;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      appearance: none; -webkit-appearance: none;
-    }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #94A3B8; margin-bottom: 7px; }
+    .form-group input, .form-group select { width: 100%; padding: 11px 14px; background: #0F1629; border: 1px solid #1A2332; border-radius: 10px; color: #E8EAED; font-size: 14px; font-family: 'Inter', sans-serif; transition: border-color 0.2s, box-shadow 0.2s; appearance: none; -webkit-appearance: none; }
     .form-group input::placeholder { color: #334155; }
-    .form-group input:focus, .form-group select:focus {
-      outline: none;
-      border-color: rgba(2,195,154,0.5);
-      box-shadow: 0 0 0 3px rgba(2,195,154,0.08);
-    }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: rgba(2,195,154,0.5); box-shadow: 0 0 0 3px rgba(2,195,154,0.08); }
     .form-group input.error { border-color: rgba(248,113,113,0.5); }
     .form-group .field-error { font-size: 11px; color: #F87171; margin-top: 5px; display: none; }
     .form-group .field-error.show { display: block; }
     .select-wrap { position: relative; }
-    .select-wrap::after {
-      content: '▾'; position: absolute; right: 14px; top: 50%;
-      transform: translateY(-50%); color: #64748B; pointer-events: none; font-size: 12px;
-    }
+    .select-wrap::after { content: '▾'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: #64748B; pointer-events: none; font-size: 12px; }
     .form-group select option { background: #0F1629; }
-
     .password-wrap { position: relative; }
     .password-wrap input { padding-right: 44px; }
-    .toggle-pw {
-      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-      background: none; border: none; cursor: pointer; color: #64748B;
-      font-size: 14px; padding: 4px; transition: color 0.2s;
-    }
-    .toggle-pw:hover { color: #94A3B8; }
-
+    .toggle-pw { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748B; font-size: 14px; padding: 4px; transition: color 0.2s; }
     .pw-strength { margin-top: 6px; display: flex; gap: 4px; }
     .pw-bar { flex: 1; height: 3px; border-radius: 2px; background: #1A2332; transition: background 0.3s; }
     .pw-bar.weak { background: #F87171; }
     .pw-bar.medium { background: #FBBF24; }
     .pw-bar.strong { background: #02C39A; }
-
     .terms { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 24px; }
     .terms input[type="checkbox"] { margin-top: 2px; accent-color: #02C39A; flex-shrink: 0; width: 15px; height: 15px; }
     .terms label { font-size: 12px; color: #64748B; line-height: 1.6; cursor: pointer; }
     .terms label a { color: #02C39A; text-decoration: none; }
-
-    .submit-btn {
-      width: 100%; padding: 13px;
-      background: #02C39A; color: #060D1F;
-      border: none; border-radius: 10px;
-      font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif;
-      cursor: pointer; transition: background 0.2s, opacity 0.2s;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
+    .submit-btn { width: 100%; padding: 13px; background: #02C39A; color: #060D1F; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; transition: background 0.2s, opacity 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .submit-btn:hover:not(:disabled) { background: #00A884; }
     .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .submit-btn .spinner {
-      width: 16px; height: 16px;
-      border: 2px solid rgba(6,13,31,0.3);
-      border-top-color: #060D1F;
-      border-radius: 50%; animation: spin 0.7s linear infinite;
-      display: none;
-    }
-    .submit-btn.loading .spinner { display: block; }
+    .submit-btn .spin { width: 16px; height: 16px; border: 2px solid rgba(6,13,31,0.3); border-top-color: #060D1F; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
+    .submit-btn.loading .spin { display: block; }
     .submit-btn.loading .btn-text { display: none; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     .divider { display: flex; align-items: center; gap: 12px; margin: 24px 0; }
     .divider-line { flex: 1; height: 1px; background: #1A2332; }
     .divider span { font-size: 11px; color: #334155; }
-
-    .alert {
-      padding: 12px 16px; border-radius: 10px; font-size: 13px;
-      margin-bottom: 20px; display: none; line-height: 1.5;
-    }
+    .alert { padding: 12px 16px; border-radius: 10px; font-size: 13px; margin-bottom: 20px; display: none; line-height: 1.5; }
     .alert.error { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2); color: #F87171; }
     .alert.success { background: rgba(2,195,154,0.08); border: 1px solid rgba(2,195,154,0.2); color: #02C39A; }
     .alert.show { display: block; }
-
-    /* Success state */
     .success-state { display: none; text-align: center; }
     .success-state.show { display: block; }
     .success-icon { font-size: 48px; margin-bottom: 20px; }
@@ -187,95 +79,81 @@
     .success-state p { font-size: 14px; color: #94A3B8; line-height: 1.7; margin-bottom: 8px; }
     .success-state .email-highlight { color: #02C39A; font-weight: 600; }
     .back-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 24px; font-size: 13px; color: #02C39A; text-decoration: none; }
-    .back-link:hover { text-decoration: underline; }
-
-    @media (max-width: 768px) {
-      body { grid-template-columns: 1fr; }
-      .left-panel { display: none; }
-      .right-panel { padding: 32px 24px; align-items: flex-start; padding-top: 48px; }
-    }
+    @media (max-width: 768px) { body { grid-template-columns: 1fr; } .left-panel { display: none; } .right-panel { padding: 32px 24px; align-items: flex-start; padding-top: 48px; } }
   </style>
 </head>
 <body>
 
-<!-- Left panel -->
 <div class="left-panel">
-  <div class="brand">
-    <div class="logo-circle">&#127759;</div>
-    <div>
-      <div class="brand-name">SEA Property Pulse</div>
-      <div class="brand-sub">AI-Powered Market Intelligence</div>
+  <div>
+    <div class="brand">
+      <div class="logo-circle">&#127759;</div>
+      <div><div class="brand-name">SEA Property Pulse</div><div class="brand-sub">AI-Powered Market Intelligence</div></div>
+    </div>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="ms" onclick="setLang('ms')">BM</button>
+      <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">中文</button>
     </div>
   </div>
 
   <div class="left-content">
-    <h2>Start tracking<br><span>your market</span><br>for free.</h2>
-    <p>Get weekly AI-powered property signals for your chosen SEA market — no credit card, no commitment.</p>
-
+    <h2>
+      <span data-i18n="reg_left_title_1">Start tracking</span><br>
+      <span class="grad" data-i18n="reg_left_title_2">your market</span><br>
+      <span data-i18n="reg_left_title_3">for free.</span>
+    </h2>
+    <p data-i18n="reg_left_desc">Get weekly AI-powered property signals for your chosen SEA market — no credit card, no commitment.</p>
     <ul class="free-includes">
-      <li><span class="check-icon">✓</span> 1 SEA market of your choice</li>
-      <li><span class="check-icon">✓</span> Weekly automated scan</li>
-      <li><span class="check-icon">✓</span> Buyer intent &amp; seller stress signals</li>
-      <li><span class="check-icon">✓</span> AI market summary delivered to you</li>
+      <li><span class="check-icon">✓</span> <span data-i18n="reg_f1">1 SEA market of your choice</span></li>
+      <li><span class="check-icon">✓</span> <span data-i18n="reg_f2">Weekly automated scan</span></li>
+      <li><span class="check-icon">✓</span> <span data-i18n="reg_f3">Buyer intent & seller stress signals</span></li>
+      <li><span class="check-icon">✓</span> <span data-i18n="reg_f4">AI market summary delivered to you</span></li>
     </ul>
-
     <div class="markets-preview">
-      <span class="market-pill highlight">&#127474;&#127486; Malaysia</span>
-      <span class="market-pill highlight">&#127480;&#127468; Singapore</span>
-      <span class="market-pill highlight">&#127481;&#127469; Thailand</span>
-      <span class="market-pill highlight">&#127470;&#127465; Indonesia</span>
-      <span class="market-pill highlight">&#127477;&#127469; Philippines</span>
-      <span class="market-pill highlight">&#127483;&#127475; Vietnam</span>
+      <span class="market-pill">&#127474;&#127486; Malaysia</span>
+      <span class="market-pill">&#127480;&#127468; Singapore</span>
+      <span class="market-pill">&#127481;&#127469; Thailand</span>
+      <span class="market-pill">&#127470;&#127465; Indonesia</span>
+      <span class="market-pill">&#127477;&#127469; Philippines</span>
+      <span class="market-pill">&#127483;&#127475; Vietnam</span>
     </div>
   </div>
 
-  <div class="left-footer">
-    &copy; 2026 SEA Property Pulse &middot; Tang88 Resources, Malacca, Malaysia
-  </div>
+  <div class="left-footer">&copy; 2026 SEA Property Pulse &middot; Tang88 Resources, Malacca, Malaysia</div>
 </div>
 
-<!-- Right panel -->
 <div class="right-panel">
   <div class="form-wrap">
-
-    <!-- Form view -->
     <div id="formView">
-      <h3>Create your account</h3>
-      <p>Already have an account? <a href="/login.html">Sign in</a></p>
-
+      <h3 data-i18n="reg_title">Create your account</h3>
+      <p><span data-i18n="reg_have_account">Already have an account?</span> <a href="/login.html" data-i18n="reg_signin">Sign in</a></p>
       <div class="alert" id="alertBox"></div>
 
       <div class="form-group">
-        <label for="fullName">Full name</label>
-        <input type="text" id="fullName" placeholder="Your full name" autocomplete="name">
-        <div class="field-error" id="nameError">Please enter your name</div>
+        <label for="fullName" data-i18n="reg_name">Full name</label>
+        <input type="text" id="fullName" data-i18n-attr="placeholder" data-i18n="reg_name_ph" placeholder="Your full name" autocomplete="name">
+        <div class="field-error" id="nameError" data-i18n="err_name">Please enter your name</div>
       </div>
-
       <div class="form-group">
-        <label for="email">Email address</label>
+        <label for="email" data-i18n="reg_email">Email address</label>
         <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
-        <div class="field-error" id="emailError">Please enter a valid email</div>
+        <div class="field-error" id="emailError" data-i18n="err_email">Please enter a valid email</div>
       </div>
-
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password" data-i18n="reg_password">Password</label>
         <div class="password-wrap">
-          <input type="password" id="password" placeholder="Min. 8 characters" autocomplete="new-password">
-          <button class="toggle-pw" type="button" onclick="togglePassword()" id="toggleBtn">&#128065;</button>
+          <input type="password" id="password" data-i18n-attr="placeholder" data-i18n="reg_password_ph" placeholder="Min. 8 characters" autocomplete="new-password">
+          <button class="toggle-pw" type="button" onclick="togglePassword()">&#128065;</button>
         </div>
-        <div class="pw-strength" id="pwStrength">
-          <div class="pw-bar" id="bar1"></div>
-          <div class="pw-bar" id="bar2"></div>
-          <div class="pw-bar" id="bar3"></div>
-        </div>
-        <div class="field-error" id="passwordError">Password must be at least 8 characters</div>
+        <div class="pw-strength"><div class="pw-bar" id="bar1"></div><div class="pw-bar" id="bar2"></div><div class="pw-bar" id="bar3"></div></div>
+        <div class="field-error" id="passwordError" data-i18n="err_password">Password must be at least 8 characters</div>
       </div>
-
       <div class="form-group">
-        <label for="market">Choose your market</label>
+        <label for="market" data-i18n="reg_market">Choose your market</label>
         <div class="select-wrap">
           <select id="market">
-            <option value="" disabled selected>Select 1 market</option>
+            <option value="" disabled selected data-i18n="reg_market_ph">Select 1 market</option>
             <option value="MY">&#127474;&#127486; Malaysia</option>
             <option value="SG">&#127480;&#127468; Singapore</option>
             <option value="TH">&#127481;&#127469; Thailand</option>
@@ -284,46 +162,39 @@
             <option value="VN">&#127483;&#127475; Vietnam</option>
           </select>
         </div>
-        <div class="field-error" id="marketError">Please choose a market</div>
+        <div class="field-error" id="marketError" data-i18n="err_market">Please choose a market</div>
       </div>
-
       <div class="terms">
         <input type="checkbox" id="terms">
-        <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand this is a free account with 1 market and weekly scans.</label>
+        <label for="terms" data-i18n="reg_terms">I agree to the Terms of Service and Privacy Policy. I understand this is a free account with 1 market and weekly scans.</label>
       </div>
-
       <button class="submit-btn" id="submitBtn" onclick="handleRegister()">
-        <div class="spinner"></div>
-        <span class="btn-text">Create free account</span>
+        <div class="spin"></div>
+        <span class="btn-text" data-i18n="reg_btn">Create free account</span>
       </button>
-
       <div class="divider"><div class="divider-line"></div><span>or</span><div class="divider-line"></div></div>
-      <p style="text-align:center; font-size:13px; color:#64748B;">
-        Want more markets? <a href="/pricing.html" style="color:#02C39A; text-decoration:none;">See paid plans</a>
+      <p style="text-align:center;font-size:13px;color:#64748B;">
+        <span data-i18n="reg_more_markets">Want more markets?</span> <a href="/pricing.html" style="color:#02C39A;text-decoration:none;" data-i18n="reg_see_plans">See paid plans</a>
       </p>
     </div>
 
-    <!-- Success view -->
     <div class="success-state" id="successView">
       <div class="success-icon">&#9989;</div>
-      <h3>Check your inbox</h3>
-      <p>We've sent a confirmation link to</p>
+      <h3 data-i18n="reg_success_title">Check your inbox</h3>
+      <p data-i18n="reg_success_desc1">We've sent a confirmation link to</p>
       <p class="email-highlight" id="confirmedEmail"></p>
-      <p style="margin-top:12px;">Click the link to verify your account. Once confirmed, your first weekly market summary will arrive on Sunday.</p>
-      <a class="back-link" href="/index.html">&#8592; Back to dashboard</a>
+      <p style="margin-top:12px;" data-i18n="reg_success_desc2">Click the link to verify your account. Once confirmed, your first weekly market summary will arrive on Sunday.</p>
+      <a class="back-link" href="/index.html" data-i18n="reg_back">← Back to dashboard</a>
     </div>
-
   </div>
 </div>
 
 <script>
-  // Init Supabase — replace with your actual values
   const SUPABASE_URL = 'https://kgywtajbwidezhjuhwhx.supabase.co';
-  const sb_publishable_g9U8Nhitewx2fVFga47sAA_BFlOC_Di = 'SUPABASE_ANON_KEY';
+  const SUPABASE_ANON_KEY = 'SUPABASE_ANON_KEY';
   const { createClient } = supabase;
-  const sb = createClient(SUPABASE_URL, sb_publishable_g9U8Nhitewx2fVFga47sAA_BFlOC_Di);
+  const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // Password strength
   document.getElementById('password').addEventListener('input', function() {
     const val = this.value;
     const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3')];
@@ -357,75 +228,35 @@
     const password = document.getElementById('password').value;
     const market = document.getElementById('market').value;
     const terms = document.getElementById('terms').checked;
-
     document.querySelectorAll('.field-error').forEach(e => e.classList.remove('show'));
     document.querySelectorAll('input, select').forEach(e => e.classList.remove('error'));
-
-    if (!name) {
-      document.getElementById('nameError').classList.add('show');
-      document.getElementById('fullName').classList.add('error');
-      valid = false;
-    }
-    if (!email || !email.includes('@')) {
-      document.getElementById('emailError').classList.add('show');
-      document.getElementById('email').classList.add('error');
-      valid = false;
-    }
-    if (password.length < 8) {
-      document.getElementById('passwordError').classList.add('show');
-      document.getElementById('password').classList.add('error');
-      valid = false;
-    }
-    if (!market) {
-      document.getElementById('marketError').classList.add('show');
-      document.getElementById('market').classList.add('error');
-      valid = false;
-    }
-    if (!terms) {
-      showAlert('Please agree to the Terms of Service to continue.', 'error');
-      valid = false;
-    }
+    if (!name) { document.getElementById('nameError').classList.add('show'); document.getElementById('fullName').classList.add('error'); valid = false; }
+    if (!email || !email.includes('@')) { document.getElementById('emailError').classList.add('show'); document.getElementById('email').classList.add('error'); valid = false; }
+    if (password.length < 8) { document.getElementById('passwordError').classList.add('show'); document.getElementById('password').classList.add('error'); valid = false; }
+    if (!market) { document.getElementById('marketError').classList.add('show'); document.getElementById('market').classList.add('error'); valid = false; }
+    if (!terms) { showAlert(t('err_terms'), 'error'); valid = false; }
     return valid;
   }
 
   async function handleRegister() {
     if (!validate()) return;
-
     const fullName = document.getElementById('fullName').value.trim();
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const market = document.getElementById('market').value;
-
     setLoading(true);
-
     try {
-      // 1. Sign up with Supabase Auth
       const { data, error } = await sb.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { full_name: fullName, chosen_market: market }
-        }
+        email, password,
+        options: { data: { full_name: fullName, chosen_market: market } }
       });
-
       if (error) throw error;
-
-      // 2. Insert user profile
       if (data.user) {
-        await sb.from('user_profiles').insert({
-          id: data.user.id,
-          email,
-          full_name: fullName,
-          chosen_market: market,
-          tier: 'free'
-        });
+        await sb.from('user_profiles').insert({ id: data.user.id, email, full_name: fullName, chosen_market: market, tier: 'free' });
       }
-
-      // 3. Show success
       document.getElementById('confirmedEmail').textContent = email;
       document.getElementById('formView').style.display = 'none';
       document.getElementById('successView').classList.add('show');
-
     } catch (err) {
       showAlert(err.message || 'Something went wrong. Please try again.', 'error');
     } finally {
@@ -435,4 +266,3 @@
 </script>
 </body>
 </html>
-
