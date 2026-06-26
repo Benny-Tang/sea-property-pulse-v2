@@ -7,13 +7,7 @@
 
 { "src": "backend/server.js", "use": "@vercel/node" },
 
-{ "src": "frontend/index.html", "use": "@vercel/static" },
-
-{ "src": "frontend/pricing.html", "use": "@vercel/static" },
-
-{ "src": "frontend/services.html", "use": "@vercel/static" },
-
-{ "src": "frontend/register.html", "use": "@vercel/static" },
+{ "src": "frontend/.html", "use": "@vercel/static" },
 
 { "src": "frontend/lang.js", "use": "@vercel/static" }
 
@@ -37,9 +31,11 @@
 
 { "src": "/register", "dest": "frontend/register.html" },
 
+{ "src": "/index.html", "dest": "frontend/index.html" },
+
 { "src": "/", "dest": "frontend/index.html" },
 
-{ "src": "/(.)", "dest": "frontend/index.html" }
+{ "src": "/(.*)", "dest": "frontend/index.html" }
 
 ]
 
