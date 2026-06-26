@@ -37,6 +37,8 @@
 
 { "src": "/register", "dest": "frontend/register.html" },
 
+{ "src": "/", "dest": "frontend/index.html" },
+
 { "src": "/(.)", "dest": "frontend/index.html" }
 
 ]
