@@ -21,6 +21,14 @@
 
 { "src": "/register", "dest": "frontend/register.html" },
 
+{ "src": "/login.html", "dest": "frontend/login.html" },
+
+{ "src": "/login", "dest": "frontend/login.html" },
+
+{ "src": "/dashboard.html", "dest": "frontend/dashboard.html" },
+
+{ "src": "/dashboard", "dest": "frontend/dashboard.html" },
+
 { "src": "/", "dest": "frontend/index.html" },
 
 { "src": "/(.)", "dest": "frontend/index.html" }

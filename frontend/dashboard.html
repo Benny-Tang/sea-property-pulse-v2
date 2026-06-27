@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Dashboard — SEA Property Pulse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/lang.js" defer></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #060D1F; color: #E8EAED; min-height: 100vh; }
+    header { position: sticky; top: 0; z-index: 100; background: rgba(6,13,31,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid #1A2332; padding: 16px 48px; display: flex; justify-content: space-between; align-items: center; }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .logo-circle { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #02C39A, #028090); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .header-left h1 { font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .header-left p { font-size: 11px; color: #94A3B8; margin-top: 2px; }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .nav-link { font-size: 13px; color: #94A3B8; text-decoration: none; font-weight: 500; transition: color 0.2s; }
+    .nav-link:hover { color: #02C39A; }
+    .lang-switcher { display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.04); border: 1px solid #1A2332; border-radius: 8px; padding: 3px; }
+    .lang-btn { padding: 4px 10px; border-radius: 6px; border: none; background: transparent; color: #64748B; font-size: 11px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+    .lang-btn:hover { color: #94A3B8; }
+    .lang-btn.active { background: rgba(2,195,154,0.12); color: #02C39A; }
+    .user-badge { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.04); border: 1px solid #1A2332; border-radius: 10px; padding: 7px 14px; }
+    .user-avatar { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #02C39A, #028090); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #060D1F; }
+    .user-name { font-size: 12px; font-weight: 600; color: #CBD5E1; }
+    .user-tier { font-size: 10px; color: #64748B; }
+    .logout-btn { font-size: 12px; color: #64748B; background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: color 0.2s; }
+    .logout-btn:hover { color: #F87171; }
+    .welcome-banner { padding: 40px 48px; border-bottom: 1px solid #1A2332; background: linear-gradient(135deg, rgba(2,195,154,0.04) 0%, transparent 100%); }
+    .welcome-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(2,195,154,0.1); border: 1px solid rgba(2,195,154,0.25); color: #02C39A; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; }
+    .welcome-banner h2 { font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 8px; }
+    .welcome-banner p { font-size: 14px; color: #94A3B8; }
+    .market-highlight { color: #02C39A; font-weight: 600; }
+    .stats-bar { display: grid; grid-template-columns: repeat(4,1fr); background: rgba(15,22,41,0.9); border-bottom: 1px solid #1A2332; }
+    .stat-item { padding: 20px 24px; text-align: center; border-right: 1px solid #1A2332; position: relative; }
+    .stat-item:last-child { border-right: none; }
+    .stat-glow { position: absolute; bottom:0; left:50%; transform:translateX(-50%); width:50%; height:1px; }
+    .stat-glow.teal{background:linear-gradient(90deg,transparent,#02C39A,transparent);}
+    .stat-glow.blue{background:linear-gradient(90deg,transparent,#60A5FA,transparent);}
+    .stat-glow.red{background:linear-gradient(90deg,transparent,#F87171,transparent);}
+    .stat-glow.green{background:linear-gradient(90deg,transparent,#34D399,transparent);}
+    .stat-item .val { font-size: 28px; font-weight: 800; line-height:1; }
+    .val.teal{color:#02C39A;} .val.blue{color:#60A5FA;} .val.red{color:#F87171;} .val.green{color:#34D399;}
+    .stat-item .lbl { font-size:10px; color:#94A3B8; margin-top:6px; text-transform:uppercase; letter-spacing:1.5px; font-weight:600; }
+    .upgrade-banner { margin: 32px 48px 0; background: rgba(2,195,154,0.04); border: 1px solid rgba(2,195,154,0.15); border-radius: 14px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .upgrade-banner p { font-size: 13px; color: #94A3B8; }
+    .upgrade-banner strong { color: #02C39A; }
+    .upgrade-btn { background: #02C39A; color: #060D1F; padding: 9px 20px; border-radius: 8px; font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; transition: background 0.2s; }
+    .upgrade-btn:hover { background: #00A884; }
+    .summary-section { margin: 32px 48px 0; }
+    .summary-box { background: #0F1629; border: 1px solid rgba(2,195,154,0.2); border-radius: 16px; padding: 28px; }
+    .summary-box h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .summary-box .ai-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; background: rgba(2,195,154,0.1); color: #02C39A; border: 1px solid rgba(2,195,154,0.2); padding: 2px 8px; border-radius: 4px; }
+    .summary-box p { font-size: 13px; color: #94A3B8; line-height: 1.75; margin-top: 12px; }
+    .summary-date { font-size: 11px; color: #334155; margin-top: 12px; }
+    .filters-section { padding: 20px 48px; border-bottom: 1px solid #1A2332; background: rgba(15,22,41,0.5); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 24px; }
+    .filters-label { font-size: 10px; color: #94A3B8; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; margin-right: 4px; }
+    .filter-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid #1A2332; background: rgba(255,255,255,0.02); color: #94A3B8; cursor: pointer; font-size: 12px; font-weight: 500; transition: all 0.2s; font-family: 'Inter', sans-serif; }
+    .filter-btn:hover { border-color: rgba(255,255,255,0.15); color: #CBD5E1; }
+    .filter-btn.active { background: rgba(2,195,154,0.12); border-color: rgba(2,195,154,0.35); color: #02C39A; font-weight: 600; }
+    .filter-btn.buyer.active { background: rgba(96,165,250,0.12); border-color: rgba(96,165,250,0.35); color: #60A5FA; }
+    .filter-btn.seller.active { background: rgba(248,113,113,0.12); border-color: rgba(248,113,113,0.35); color: #F87171; }
+    .filter-btn.momentum.active { background: rgba(52,211,153,0.12); border-color: rgba(52,211,153,0.35); color: #34D399; }
+    .results-count { padding: 16px 48px 0; font-size: 12px; color: #94A3B8; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(340px,1fr)); gap: 16px; padding: 20px 48px 60px; }
+    .card { background: #0F1629; border: 1px solid #1A2332; border-radius: 16px; padding: 22px; transition: all 0.25s; position: relative; overflow: hidden; }
+    .card::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; }
+    .card.buyer_intent::before { background: #60A5FA; }
+    .card.seller_stress::before { background: #F87171; }
+    .card.momentum::before { background: #34D399; }
+    .card:hover { transform:translateY(-3px); border-color:rgba(255,255,255,0.1); box-shadow:0 16px 48px rgba(0,0,0,0.5); }
+    .card-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+    .signal-badge { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:3px 9px; border-radius:6px; }
+    .signal-badge.buyer_intent { background:rgba(96,165,250,0.1); color:#60A5FA; border:1px solid rgba(96,165,250,0.2); }
+    .signal-badge.seller_stress { background:rgba(248,113,113,0.1); color:#F87171; border:1px solid rgba(248,113,113,0.2); }
+    .signal-badge.momentum { background:rgba(52,211,153,0.1); color:#34D399; border:1px solid rgba(52,211,153,0.2); }
+    .country-tag { font-size:11px; color:#94A3B8; font-weight:500; }
+    .card-title { font-size:14px; font-weight:600; color:#E8EAED; margin-bottom:7px; line-height:1.5; }
+    .card-snippet { font-size:12px; color:#94A3B8; line-height:1.6; margin-bottom:12px; }
+    .card-meta { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    .meta-item { font-size:11px; color:#64748B; display:flex; align-items:center; gap:3px; }
+    .meta-item strong { color:#CBD5E1; font-weight:500; }
+    .card-link { font-size:11px; color:#02C39A; text-decoration:none; font-weight:500; opacity:0.7; transition:opacity 0.2s; }
+    .card-link:hover { opacity:1; }
+    .auth-gate { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:80vh; gap:16px; text-align:center; padding:48px; }
+    .auth-gate h2 { font-size:28px; font-weight:800; color:#fff; margin-bottom:8px; }
+    .auth-gate p { font-size:15px; color:#94A3B8; margin-bottom:24px; }
+    .auth-btns { display:flex; gap:12px; }
+    .auth-btn { padding:12px 28px; border-radius:10px; font-size:14px; font-weight:700; text-decoration:none; transition:all 0.2s; }
+    .auth-btn.primary { background:#02C39A; color:#060D1F; }
+    .auth-btn.primary:hover { background:#00A884; }
+    .auth-btn.secondary { background:transparent; color:#02C39A; border:1px solid rgba(2,195,154,0.4); }
+    .loading { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:300px; gap:16px; }
+    .spinner { width:44px; height:44px; border:3px solid rgba(2,195,154,0.1); border-top-color:#02C39A; border-radius:50%; animation:spin 0.8s linear infinite; }
+    @keyframes spin { to{transform:rotate(360deg);} }
+    .loading p { font-size:13px; color:#64748B; }
+    .no-data { text-align:center; padding:60px; color:#64748B; }
+    footer { background: rgba(6,13,31,0.98); border-top: 1px solid #1A2332; padding: 32px 48px; }
+    .footer-bottom { font-size: 12px; color: #334155; display: flex; justify-content: space-between; align-items: center; }
+    .footer-bottom a { color: #02C39A; text-decoration: none; }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-left">
+    <div class="logo-circle">&#127759;</div>
+    <div><h1>SEA Property Pulse</h1><p>My Dashboard</p></div>
+  </div>
+  <div class="header-right">
+    <a class="nav-link" href="/index.html">Public Dashboard</a>
+    <a class="nav-link" href="/pricing.html">Upgrade</a>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="ms" onclick="setLang('ms')">BM</button>
+      <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">中文</button>
+    </div>
+    <div class="user-badge" id="userBadge" style="display:none;">
+      <div class="user-avatar" id="userAvatar">B</div>
+      <div><div class="user-name" id="userName">Loading...</div><div class="user-tier">Free Plan</div></div>
+    </div>
+    <button class="logout-btn" id="logoutBtn" style="display:none;" onclick="handleLogout()">Sign out</button>
+  </div>
+</header>
+<div class="auth-gate" id="authGate" style="display:none;">
+  <div style="font-size:48px;">&#128274;</div>
+  <h2>Sign in to view your dashboard</h2>
+  <p>Your personalised market signals are waiting.</p>
+  <div class="auth-btns">
+    <a class="auth-btn primary" href="/login.html">Sign In</a>
+    <a class="auth-btn secondary" href="/register.html">Create Free Account</a>
+  </div>
+</div>
+<div id="dashboardContent" style="display:none;">
+  <div class="welcome-banner">
+    <div class="welcome-tag">&#9889; My Market</div>
+    <h2>Welcome back, <span id="welcomeName">there</span>!</h2>
+    <p>Your live signals for <span class="market-highlight" id="marketName">—</span> — updated daily.</p>
+  </div>
+  <div class="stats-bar">
+    <div class="stat-item"><div class="val teal" id="totalCount">—</div><div class="lbl">Total Signals</div><div class="stat-glow teal"></div></div>
+    <div class="stat-item"><div class="val blue" id="buyerCount">—</div><div class="lbl">Buyer Intent</div><div class="stat-glow blue"></div></div>
+    <div class="stat-item"><div class="val red" id="sellerCount">—</div><div class="lbl">Seller Stress</div><div class="stat-glow red"></div></div>
+    <div class="stat-item"><div class="val green" id="momentumCount">—</div><div class="lbl">Momentum</div><div class="stat-glow green"></div></div>
+  </div>
+  <div class="upgrade-banner">
+    <p>You're on the <strong>Free Plan</strong> — 1 market, weekly scans. Upgrade to unlock all 6 SEA markets with daily signals.</p>
+    <a class="upgrade-btn" href="/pricing.html">Upgrade Plan</a>
+  </div>
+  <div class="summary-section">
+    <div class="summary-box">
+      <h3>&#129302; AI Market Summary <span class="ai-tag">Weekly</span></h3>
+      <p id="aiSummary">Analysing your market signals...</p>
+      <div class="summary-date" id="summaryDate"></div>
+    </div>
+  </div>
+  <div class="filters-section">
+    <span class="filters-label">Signal</span>
+    <button class="filter-btn active" onclick="filterAll(event)">&#127760; All</button>
+    <button class="filter-btn buyer" onclick="filterSignal('buyer_intent', event)">&#128309; Buyer Intent</button>
+    <button class="filter-btn seller" onclick="filterSignal('seller_stress', event)">&#128308; Seller Stress</button>
+    <button class="filter-btn momentum" onclick="filterSignal('momentum', event)">&#128994; Momentum</button>
+  </div>
+  <div class="results-count" id="resultsCount"></div>
+  <div id="content"><div class="loading"><div class="spinner"></div><p>Loading your market signals...</p></div></div>
+</div>
+<footer>
+  <div class="footer-bottom">
+    <span>© 2026 SEA Property Pulse · Tang88 Resources, Malacca, Malaysia</span>
+    <a href="mailto:benny@seapropertypulse.com">benny@seapropertypulse.com</a>
+  </div>
+</footer>
+<script>
+  const SUPABASE_URL = 'https://kgywtajbwidezhjuhwhx.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_g9U8Nhitewx2fVFga47sAA_BFlOC_Di';
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : '/api';
+  const marketNames = { MY:'🇲🇾 Malaysia', SG:'🇸🇬 Singapore', TH:'🇹🇭 Thailand', ID:'🇮🇩 Indonesia', PH:'🇵🇭 Philippines', VN:'🇻🇳 Vietnam' };
+  let allSignals = [];
+  let userMarket = null;
+
+  async function init() {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) { document.getElementById('authGate').style.display = 'flex'; return; }
+    document.getElementById('dashboardContent').style.display = 'block';
+    document.getElementById('userBadge').style.display = 'flex';
+    document.getElementById('logoutBtn').style.display = 'block';
+    const { data: profile } = await sb.from('user_profiles').select('*').eq('id', session.user.id).single();
+    if (profile) {
+      const firstName = profile.full_name ? profile.full_name.split(' ')[0] : 'there';
+      document.getElementById('welcomeName').textContent = firstName;
+      document.getElementById('userName').textContent = profile.full_name || session.user.email;
+      document.getElementById('userAvatar').textContent = firstName[0].toUpperCase();
+      userMarket = profile.chosen_market;
+      document.getElementById('marketName').textContent = marketNames[userMarket] || userMarket;
+    }
+    await loadSignals();
+    generateSummary();
+  }
+
+  async function loadSignals() {
+    try {
+      const res = await fetch(`${API_URL}/listings`);
+      if (!res.ok) throw new Error('API error');
+      const all = await res.json();
+      allSignals = all.filter(l => l.country_code === userMarket);
+      updateStats(); renderCards(allSignals);
+    } catch (err) {
+      document.getElementById('content').innerHTML = '<div class="no-data"><h3>No signals yet.</h3><p>Your market will be updated on the next scan.</p></div>';
+    }
+  }
+
+  function updateStats() {
+    document.getElementById('totalCount').textContent = allSignals.length;
+    document.getElementById('buyerCount').textContent = allSignals.filter(l => l.signal_type === 'buyer_intent').length;
+    document.getElementById('sellerCount').textContent = allSignals.filter(l => l.signal_type === 'seller_stress').length;
+    document.getElementById('momentumCount').textContent = allSignals.filter(l => l.signal_type === 'momentum').length;
+  }
+
+  function renderCards(signals) {
+    document.getElementById('resultsCount').textContent = `Showing ${signals.length} signals`;
+    if (!signals.length) { document.getElementById('content').innerHTML = '<div class="no-data"><h3>No signals match this filter.</h3></div>'; return; }
+    const cards = signals.map(l => `<div class="card ${l.signal_type}"><div class="card-top"><span class="signal-badge ${l.signal_type}">${(l.signal_type||'').replace('_',' ')}</span><span class="country-tag">${marketNames[l.country_code]||l.country}</span></div><div class="card-title">${l.title||'Untitled'}</div>${l.snippet?`<div class="card-snippet">${l.snippet}</div>`:''}<div class="card-meta">${l.location?`<div class="meta-item">&#128205; <strong>${l.location}</strong></div>`:''} ${l.price?`<div class="meta-item">&#128176; <strong>${l.price}</strong></div>`:''} ${l.source?`<div class="meta-item">&#127760; <strong>${l.source}</strong></div>`:''}</div>${l.url?`<a class="card-link" href="${l.url}" target="_blank">View listing &#8594;</a>`:''}</div>`).join('');
+    document.getElementById('content').innerHTML = `<div class="grid">${cards}</div>`;
+  }
+
+  function generateSummary() {
+    const buyer = allSignals.filter(l => l.signal_type === 'buyer_intent').length;
+    const seller = allSignals.filter(l => l.signal_type === 'seller_stress').length;
+    const momentum = allSignals.filter(l => l.signal_type === 'momentum').length;
+    const total = allSignals.length;
+    const market = marketNames[userMarket] || userMarket;
+    let summary = '';
+    if (total === 0) { summary = 'Your first market scan is being prepared. Your weekly AI summary will appear here once data is collected for your market.'; }
+    else if (buyer > seller && buyer > momentum) { summary = `${market} is showing strong buyer activity this week with ${buyer} buyer intent signals out of ${total} total. Demand appears to be building — a good window to connect with active buyers. Seller stress signals (${seller}) remain moderate.`; }
+    else if (seller > buyer) { summary = `${market} is showing elevated seller stress this week with ${seller} stress signals out of ${total} total. This may indicate pricing pressure — a potential opportunity for buyers to negotiate.`; }
+    else if (momentum > buyer && momentum > seller) { summary = `${market} is showing strong market momentum this week with ${momentum} momentum signals. The market appears active with transaction volume building — good conditions for both buyers and sellers.`; }
+    else { summary = `${market} shows a balanced mix of signals this week — ${buyer} buyer intent, ${seller} seller stress, and ${momentum} momentum signals out of ${total} total. The market appears stable with no dominant trend direction.`; }
+    document.getElementById('aiSummary').textContent = summary;
+    document.getElementById('summaryDate').textContent = 'Generated: ' + new Date().toLocaleDateString('en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  }
+
+  function filterAll(e) { document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); renderCards(allSignals); }
+  function filterSignal(type,e) { document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); renderCards(allSignals.filter(l=>l.signal_type===type)); }
+  async function handleLogout() { await sb.auth.signOut(); window.location.href = '/index.html'; }
+  init();
+</script>
+</body>
+</html>

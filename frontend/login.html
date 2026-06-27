@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — SEA Property Pulse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/lang.js" defer></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #060D1F; color: #E8EAED; min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
+    .left-panel { position: relative; background: linear-gradient(160deg, #071525 0%, #060D1F 100%); border-right: 1px solid #1A2332; padding: 48px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+    .left-panel::before { content: ''; position: absolute; top: -120px; left: -120px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(2,195,154,0.07) 0%, transparent 70%); pointer-events: none; }
+    .brand { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; }
+    .logo-circle { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #02C39A, #028090); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .brand-name { font-size: 16px; font-weight: 800; color: #fff; }
+    .brand-sub { font-size: 11px; color: #64748B; margin-top: 2px; }
+    .left-content { position: relative; z-index: 1; }
+    .left-content h2 { font-size: 38px; font-weight: 800; color: #fff; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 16px; }
+    .left-content h2 .grad { background: linear-gradient(to right, #02C39A, #67E8F9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .left-content p { font-size: 14px; color: #94A3B8; line-height: 1.75; margin-bottom: 36px; max-width: 340px; }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .feature-list li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #CBD5E1; }
+    .check-icon { width: 22px; height: 22px; border-radius: 6px; background: rgba(2,195,154,0.12); border: 1px solid rgba(2,195,154,0.25); color: #02C39A; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .left-footer { font-size: 12px; color: #334155; position: relative; z-index: 1; }
+    .lang-switcher { display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.04); border: 1px solid #1A2332; border-radius: 8px; padding: 3px; margin-top: 24px; width: fit-content; }
+    .lang-btn { padding: 4px 10px; border-radius: 6px; border: none; background: transparent; color: #64748B; font-size: 11px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+    .lang-btn:hover { color: #94A3B8; }
+    .lang-btn.active { background: rgba(2,195,154,0.12); color: #02C39A; }
+    .right-panel { padding: 48px; display: flex; align-items: center; justify-content: center; background: #060D1F; }
+    .form-wrap { width: 100%; max-width: 400px; }
+    .form-wrap h3 { font-size: 24px; font-weight: 800; color: #fff; letter-spacing: -0.5px; margin-bottom: 6px; }
+    .form-wrap > p { font-size: 13px; color: #64748B; margin-bottom: 32px; }
+    .form-wrap > p a { color: #02C39A; text-decoration: none; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #94A3B8; margin-bottom: 7px; }
+    .form-group input { width: 100%; padding: 11px 14px; background: #0F1629; border: 1px solid #1A2332; border-radius: 10px; color: #E8EAED; font-size: 14px; font-family: 'Inter', sans-serif; transition: border-color 0.2s, box-shadow 0.2s; }
+    .form-group input::placeholder { color: #334155; }
+    .form-group input:focus { outline: none; border-color: rgba(2,195,154,0.5); box-shadow: 0 0 0 3px rgba(2,195,154,0.08); }
+    .forgot-link { display: block; text-align: right; font-size: 12px; color: #02C39A; text-decoration: none; margin-top: 6px; cursor: pointer; }
+    .password-wrap { position: relative; }
+    .password-wrap input { padding-right: 44px; }
+    .toggle-pw { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748B; font-size: 14px; padding: 4px; }
+    .submit-btn { width: 100%; padding: 13px; background: #02C39A; color: #060D1F; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; transition: background 0.2s, opacity 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 24px; }
+    .submit-btn:hover:not(:disabled) { background: #00A884; }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .submit-btn .spin { width: 16px; height: 16px; border: 2px solid rgba(6,13,31,0.3); border-top-color: #060D1F; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
+    .submit-btn.loading .spin { display: block; }
+    .submit-btn.loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .alert { padding: 12px 16px; border-radius: 10px; font-size: 13px; margin-bottom: 20px; display: none; line-height: 1.5; }
+    .alert.error { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2); color: #F87171; }
+    .alert.success { background: rgba(2,195,154,0.08); border: 1px solid rgba(2,195,154,0.2); color: #02C39A; }
+    .alert.show { display: block; }
+    .divider { display: flex; align-items: center; gap: 12px; margin: 24px 0; }
+    .divider-line { flex: 1; height: 1px; background: #1A2332; }
+    .divider span { font-size: 11px; color: #334155; }
+    @media (max-width: 768px) { body { grid-template-columns: 1fr; } .left-panel { display: none; } .right-panel { padding: 32px 24px; align-items: flex-start; padding-top: 48px; } }
+  </style>
+</head>
+<body>
+<div class="left-panel">
+  <div>
+    <div class="brand">
+      <div class="logo-circle">&#127759;</div>
+      <div><div class="brand-name">SEA Property Pulse</div><div class="brand-sub">AI-Powered Market Intelligence</div></div>
+    </div>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="ms" onclick="setLang('ms')">BM</button>
+      <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">中文</button>
+    </div>
+  </div>
+  <div class="left-content">
+    <h2>Welcome<br><span class="grad">back.</span></h2>
+    <p>Sign in to access your personalised market dashboard and latest AI property signals.</p>
+    <ul class="feature-list">
+      <li><span class="check-icon">✓</span> Your market signals, filtered for you</li>
+      <li><span class="check-icon">✓</span> Weekly AI market summary</li>
+      <li><span class="check-icon">✓</span> Buyer intent & seller stress tracking</li>
+      <li><span class="check-icon">✓</span> Daily automated updates</li>
+    </ul>
+  </div>
+  <div class="left-footer">&copy; 2026 SEA Property Pulse &middot; Tang88 Resources, Malacca, Malaysia</div>
+</div>
+<div class="right-panel">
+  <div class="form-wrap">
+    <h3>Sign in</h3>
+    <p>Don't have an account? <a href="/register.html">Create one free</a></p>
+    <div class="alert" id="alertBox"></div>
+    <div class="form-group">
+      <label for="email">Email address</label>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <div class="password-wrap">
+        <input type="password" id="password" placeholder="Your password" autocomplete="current-password">
+        <button class="toggle-pw" type="button" onclick="togglePassword()">&#128065;</button>
+      </div>
+      <span class="forgot-link" onclick="handleForgotPassword()">Forgot password?</span>
+    </div>
+    <button class="submit-btn" id="submitBtn" onclick="handleLogin()">
+      <div class="spin"></div>
+      <span class="btn-text">Sign in</span>
+    </button>
+    <div class="divider"><div class="divider-line"></div><span>or</span><div class="divider-line"></div></div>
+    <p style="text-align:center;font-size:13px;color:#64748B;">New to SEA Property Pulse? <a href="/register.html" style="color:#02C39A;text-decoration:none;">Create a free account</a></p>
+  </div>
+</div>
+<script>
+  const SUPABASE_URL = 'https://kgywtajbwidezhjuhwhx.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_g9U8Nhitewx2fVFga47sAA_BFlOC_Di';
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  sb.auth.getSession().then(({ data: { session } }) => {
+    if (session) window.location.href = '/dashboard.html';
+  });
+
+  function togglePassword() {
+    const input = document.getElementById('password');
+    input.type = input.type === 'password' ? 'text' : 'password';
+  }
+
+  function showAlert(msg, type) {
+    const box = document.getElementById('alertBox');
+    box.textContent = msg;
+    box.className = `alert ${type} show`;
+  }
+
+  function setLoading(on) {
+    const btn = document.getElementById('submitBtn');
+    btn.classList.toggle('loading', on);
+    btn.disabled = on;
+  }
+
+  async function handleLogin() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    if (!email || !password) { showAlert('Please enter your email and password.', 'error'); return; }
+    setLoading(true);
+    try {
+      const { data, error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      window.location.href = '/dashboard.html';
+    } catch (err) {
+      showAlert(err.message || 'Invalid email or password.', 'error');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleForgotPassword() {
+    const email = document.getElementById('email').value.trim();
+    if (!email) { showAlert('Please enter your email address first.', 'error'); return; }
+    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://www.seapropertypulse.com/dashboard.html' });
+    if (error) { showAlert(error.message, 'error'); }
+    else { showAlert('Password reset link sent to ' + email, 'success'); }
+  }
+
+  document.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleLogin(); });
+</script>
+</body>
+</html>
