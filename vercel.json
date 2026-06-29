@@ -1,39 +1,61 @@
-
 {
-
-"version": 2,
-
-"routes": [
-
-{ "src": "/api/(.)", "dest": "backend/server.js" },
-
-{ "src": "/lang.js", "dest": "frontend/lang.js" },
-
-{ "src": "/pricing.html", "dest": "frontend/pricing.html" },
-
-{ "src": "/pricing", "dest": "frontend/pricing.html" },
-
-{ "src": "/services.html", "dest": "frontend/services.html" },
-
-{ "src": "/services", "dest": "frontend/services.html" },
-
-{ "src": "/register.html", "dest": "frontend/register.html" },
-
-{ "src": "/register", "dest": "frontend/register.html" },
-
-{ "src": "/login.html", "dest": "frontend/login.html" },
-
-{ "src": "/login", "dest": "frontend/login.html" },
-
-{ "src": "/dashboard.html", "dest": "frontend/dashboard.html" },
-
-{ "src": "/dashboard", "dest": "frontend/dashboard.html" },
-
-{ "src": "/", "dest": "frontend/index.html" },
-
-{ "src": "/(.)", "dest": "frontend/index.html" }
-
-]
-
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/server.js"
+    },
+    {
+      "src": "/lang.js",
+      "dest": "frontend/lang.js"
+    },
+    {
+      "src": "/pricing.html",
+      "dest": "frontend/pricing.html"
+    },
+    {
+      "src": "/pricing",
+      "dest": "frontend/pricing.html"
+    },
+    {
+      "src": "/services.html",
+      "dest": "frontend/services.html"
+    },
+    {
+      "src": "/services",
+      "dest": "frontend/services.html"
+    },
+    {
+      "src": "/register.html",
+      "dest": "frontend/register.html"
+    },
+    {
+      "src": "/register",
+      "dest": "frontend/register.html"
+    },
+    {
+      "src": "/login.html",
+      "dest": "frontend/login.html"
+    },
+    {
+      "src": "/login",
+      "dest": "frontend/login.html"
+    },
+    {
+      "src": "/dashboard.html",
+      "dest": "frontend/dashboard.html"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "frontend/dashboard.html"
+    },
+    {
+      "src": "/",
+      "dest": "frontend/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/index.html"
+    }
+  ]
 }
-
