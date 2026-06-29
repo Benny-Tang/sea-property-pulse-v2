@@ -210,7 +210,15 @@ footer {
     <div class="eyebrow">Plans</div>
     <h2 class="section-title">Transparent pricing for every stage</h2>
     <p class="section-sub">All plans include live SEA market data. Upgrade or downgrade at any time.</p>
+    <!-- Introductory offer note -->
+    <div style="text-align:center;margin-bottom:32px;padding:14px 24px;background:rgba(0,196,154,0.08);border:1px solid rgba(0,196,154,0.25);border-radius:10px;max-width:600px;margin-left:auto;margin-right:auto">
+      <p style="font-size:14px;color:var(--mint);font-weight:700;margin-bottom:4px">🎉 Limited Introductory Offer — Agent Plan</p>
+      <p style="font-size:13px;color:var(--gray);margin:0">Sign up today and get your first month at <strong style="color:var(--white)">SGD 79</strong>. Automatically renews at SGD 99/mo from month 2. Cancel anytime.</p>
+    </div>
+
     <div class="pricing-grid">
+
+      <!-- FREE -->
       <div class="price-card">
         <div class="price-tier">Free</div>
         <div class="price-amount">SGD 0<span>/mo</span></div>
@@ -219,69 +227,68 @@ footer {
           <li><span class="check">✓</span> 1 market (your choice)</li>
           <li><span class="check">✓</span> Weekly market signals</li>
           <li><span class="check">✓</span> AI market summary</li>
+          <li><span class="cross">✗</span> Buyer & seller leads</li>
           <li><span class="cross">✗</span> Daily scans</li>
           <li><span class="cross">✗</span> Email alerts</li>
-          <li><span class="cross">✗</span> API access</li>
         </ul>
         <button class="price-btn secondary" onclick="window.location.href='mailto:benny@seapropertypulse.com?subject=Free Tier Registration'">Register Free</button>
       </div>
-      <div class="price-card">
-        <div class="price-tier">Starter</div>
-        <div class="price-amount">SGD 99<span>/mo</span></div>
-        <div class="price-desc">For individual agents and investors getting started with SEA market intelligence.</div>
+
+      <!-- AGENT -->
+      <div class="price-card featured">
+        <div class="featured-badge">Introductory SGD 79 First Month</div>
+        <div class="price-tier">Agent</div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
+          <div class="price-amount">SGD 99<span>/mo</span></div>
+          <div style="font-size:13px;color:var(--mint);font-weight:700;white-space:nowrap">SGD 79 first month</div>
+        </div>
+        <div class="price-desc">For individual real estate agents ready to work smarter with daily market intelligence and qualified leads.</div>
         <ul class="price-features">
-          <li><span class="check">✓</span> 2 markets (choose any)</li>
+          <li><span class="check">✓</span> All 6 SEA markets</li>
           <li><span class="check">✓</span> Daily market signals</li>
           <li><span class="check">✓</span> AI market summary</li>
+          <li><span class="check">✓</span> 100 buyer & seller leads/mo</li>
           <li><span class="check">✓</span> Email alerts</li>
-          <li><span class="cross">✗</span> API access</li>
-          <li><span class="cross">✗</span> Custom reports</li>
+          <li><span class="cross">✗</span> Property owner data</li>
         </ul>
-        <button class="price-btn secondary" onclick="window.location.href='mailto:benny@seapropertypulse.com?subject=Starter Plan Inquiry'">Get Started</button>
+        <button class="price-btn primary" onclick="window.location.href='mailto:benny@seapropertypulse.com?subject=Agent Plan Sign-Up'">Start for SGD 79</button>
+        <p style="font-size:11px;color:var(--gray);text-align:center;margin-top:10px">Renews at SGD 99/mo from month 2</p>
       </div>
-      <div class="price-card featured">
-        <div class="featured-badge">Most Popular</div>
-        <div class="price-tier">Professional</div>
+
+      <!-- AGENCY -->
+      <div class="price-card">
+        <div class="price-tier">Agency</div>
         <div class="price-amount">SGD 299<span>/mo</span></div>
-        <div class="price-desc">For agencies and fund managers tracking multiple SEA markets actively.</div>
+        <div class="price-desc">For real estate agencies, brokerages, and team leaders managing multiple agents across SEA markets.</div>
         <ul class="price-features">
           <li><span class="check">✓</span> All 6 SEA markets</li>
-          <li><span class="check">✓</span> Real-time signals</li>
-          <li><span class="check">✓</span> Full AI analysis</li>
-          <li><span class="check">✓</span> Weekly reports</li>
-          <li><span class="check">✓</span> API access (beta)</li>
-          <li><span class="cross">✗</span> Dedicated support</li>
+          <li><span class="check">✓</span> Daily signals + AI reports</li>
+          <li><span class="check">✓</span> 500 buyer & seller leads/mo</li>
+          <li><span class="check">✓</span> Property owner database</li>
+          <li><span class="check">✓</span> Agency directory access</li>
+          <li><span class="check">✓</span> Priority email support</li>
         </ul>
-        <button class="price-btn primary" onclick="window.location.href='mailto:benny@seapropertypulse.com?subject=Professional Plan Inquiry'">Get Started</button>
+        <button class="price-btn secondary" onclick="window.location.href='mailto:benny@seapropertypulse.com?subject=Agency Plan Inquiry'">Get Started</button>
       </div>
-      <div class="price-card">
-        <div class="price-tier">Business</div>
-        <div class="price-amount">SGD 699<span>/mo</span></div>
-        <div class="price-desc">For property developers and institutional investors requiring full coverage.</div>
+
+      <!-- DEVELOPER -->
+      <div class="price-card" style="border-color:rgba(245,166,35,0.4);background:rgba(245,166,35,0.03)">
+        <div class="price-tier" style="color:var(--gold)">Developer</div>
+        <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:4px">
+          <div class="price-amount" style="color:var(--gold)">USD 499<span>/mo</span></div>
+        </div>
+        <div class="price-desc">For property developers, REITs, and institutional investors requiring deep market intelligence and full data access.</div>
         <ul class="price-features">
           <li><span class="check">✓</span> All 6 SEA markets</li>
-          <li><span class="check">✓</span> Real-time signals</li>
-          <li><span class="check">✓</span> Custom AI reports</li>
-          <li><span class="check">✓</span> Full API access</li>
-          <li><span class="check">✓</span> Dedicated support</li>
-          <li><span class="check">✓</span> CRM integration</li>
+          <li><span class="check">✓</span> Unlimited leads</li>
+          <li><span class="check">✓</span> Township-level demand analysis</li>
+          <li><span class="check">✓</span> Competitor launch tracking</li>
+          <li><span class="check">✓</span> Foreign buyer demand signals</li>
+          <li><span class="check">✓</span> Full API access + white-label option</li>
         </ul>
-        <button class="price-btn secondary" onclick="window.location.href='mailto:benny@seapropertypulse.com?subject=Business Plan Inquiry'">Contact Sales</button>
+        <button class="price-btn secondary" style="border-color:rgba(245,166,35,0.4);color:var(--gold)" onclick="window.location.href='mailto:benny@seapropertypulse.com?subject=Developer Plan Inquiry'">Contact Us</button>
       </div>
-      <div class="price-card">
-        <div class="price-tier">Enterprise</div>
-        <div class="price-amount" style="font-size:28px">Custom</div>
-        <div class="price-desc">For banks, REITs, and proptech platforms needing white-label or bulk data access.</div>
-        <ul class="price-features">
-          <li><span class="check">✓</span> White-label option</li>
-          <li><span class="check">✓</span> Custom market scope</li>
-          <li><span class="check">✓</span> SLA guaranteed</li>
-          <li><span class="check">✓</span> On-premise option</li>
-          <li><span class="check">✓</span> Priority support</li>
-          <li><span class="check">✓</span> Custom contracts</li>
-        </ul>
-        <button class="price-btn secondary" onclick="window.location.href='mailto:benny@seapropertypulse.com?subject=Enterprise Inquiry'">Talk to Us</button>
-      </div>
+
     </div>
   </div>
 </section>
@@ -435,7 +442,7 @@ footer {
     <div class="faq-grid">
       <div class="faq-item">
         <h4>How does the Free tier work?</h4>
-        <p>Register for free, pick one SEA market, and receive weekly AI-generated market signals and summaries — no credit card required. Upgrade at any time to unlock more markets and daily scans.</p>
+        <p>Register for free, pick one SEA market, and receive weekly AI-generated market signals and summaries — no credit card required. Upgrade at any time to unlock leads, daily scans, and all 6 markets.</p>
       </div>
       <div class="faq-item">
         <h4>What data sources do you use?</h4>
@@ -450,12 +457,12 @@ footer {
         <p>Yes. All paid plans are month-to-month with no lock-in. Contact us at benny@seapropertypulse.com and we'll handle your cancellation within 24 hours.</p>
       </div>
       <div class="faq-item">
-        <h4>Do you offer a trial for paid plans?</h4>
-        <p>We're in early access — reach out and we'll work with you on a trial arrangement. The Free tier is also a great way to evaluate the platform before upgrading.</p>
+        <h4>What is the SGD 79 introductory offer?</h4>
+        <p>New Agent plan subscribers pay only SGD 79 for their first month — giving you 30 days to fully assess the platform, leads quality, and market signals. From month 2, the plan automatically renews at SGD 99/mo. You can cancel anytime before renewal.</p>
       </div>
       <div class="faq-item">
         <h4>What currencies do you accept?</h4>
-        <p>All prices are in SGD. We accept major payment methods via Stripe and Billplz (FPX for Malaysian users). Enterprise invoicing available on request.</p>
+        <p>Agent and Agency plans are priced in SGD. The Developer plan is priced in USD. We accept major payment methods via Stripe and Billplz (FPX for Malaysian users). USD invoicing available for Developer and custom plans.</p>
       </div>
     </div>
   </div>
