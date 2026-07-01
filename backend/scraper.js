@@ -1,85 +1,121 @@
 require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
-const Anthropic = require('@anthropic-ai/sdk');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const axios = require('axios');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+
+const APIFY_ACTOR_ID = 'apify~google-search-scraper';
+const APIFY_BASE_URL = 'https://api.apify.com/v2';
 
 const MARKETS = [
   { country: 'Malaysia', code: 'MY', currency: 'MYR', flag: '🇲🇾', queries: [
     'property for sale Kuala Lumpur site:propertyguru.com.my',
-    'buy condo Kuala Lumpur 2025',
-    'Malaysia property investment opportunity 2025'
+    'buy condo Kuala Lumpur 2026',
+    'Malaysia property investment opportunity 2026'
   ]},
   { country: 'Singapore', code: 'SG', currency: 'SGD', flag: '🇸🇬', queries: [
     'property for sale Singapore site:propertyguru.com.sg',
-    'buy condo Singapore 2025',
-    'Singapore property investment opportunity 2025'
+    'buy condo Singapore 2026',
+    'Singapore property investment opportunity 2026'
   ]},
   { country: 'Thailand', code: 'TH', currency: 'THB', flag: '🇹🇭', queries: [
     'property for sale Bangkok site:ddproperty.com',
-    'buy condo Bangkok 2025',
-    'Thailand property investment opportunity 2025'
+    'buy condo Bangkok 2026',
+    'Thailand property investment opportunity 2026'
   ]},
   { country: 'Indonesia', code: 'ID', currency: 'IDR', flag: '🇮🇩', queries: [
     'property for sale Jakarta site:rumah123.com',
-    'buy apartment Jakarta 2025',
-    'Indonesia property investment opportunity 2025'
+    'buy apartment Jakarta 2026',
+    'Indonesia property investment opportunity 2026'
   ]},
   { country: 'Philippines', code: 'PH', currency: 'PHP', flag: '🇵🇭', queries: [
     'property for sale Manila site:lamudi.com.ph',
-    'buy condo Manila 2025',
-    'Philippines property investment opportunity 2025'
+    'buy condo Manila 2026',
+    'Philippines property investment opportunity 2026'
   ]},
   { country: 'Vietnam', code: 'VN', currency: 'VND', flag: '🇻🇳', queries: [
     'property for sale Ho Chi Minh site:batdongsan.com.vn',
-    'buy apartment Ho Chi Minh 2025',
-    'Vietnam property investment opportunity 2025'
+    'buy apartment Ho Chi Minh 2026',
+    'Vietnam property investment opportunity 2026'
   ]}
 ];
 
+// ─── APIFY: Run Actor and wait for results ───────────────────────────────────
 async function scrapeQuery(market, query) {
   console.log(`🔍 Scraping: ${query}`);
   try {
-    const response = await axios.post(
-      'https://api.brightdata.com/request',
+    const runRes = await axios.post(
+      `${APIFY_BASE_URL}/acts/${APIFY_ACTOR_ID}/runs?token=${process.env.APIFY_TOKEN}`,
       {
-        zone: 'serp_api',
-        url: `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10`,
-        format: 'json'
+        queries: query,
+        maxPagesPerQuery: 1,
+        resultsPerPage: 10,
+        mobileResults: false,
+        languageCode: 'en',
+        maxConcurrency: 1
       },
-      {
-        headers: {
-          'Authorization': `Bearer ${process.env.BRIGHT_DATA_TOKEN}`,
-          'Content-Type': 'application/json'
-        },
-        timeout: 30000
-      }
+      { headers: { 'Content-Type': 'application/json' }, timeout: 30000 }
     );
-    return response.data;
+
+    const runId = runRes.data.data.id;
+    console.log(`  ▶ Actor run started: ${runId}`);
+
+    let status = 'RUNNING';
+    let attempts = 0;
+    while (status === 'RUNNING' || status === 'READY') {
+      await new Promise(r => setTimeout(r, 5000));
+      const statusRes = await axios.get(
+        `${APIFY_BASE_URL}/actor-runs/${runId}?token=${process.env.APIFY_TOKEN}`
+      );
+      status = statusRes.data.data.status;
+      attempts++;
+      if (attempts > 24) { console.error(`  ⚠ Timeout for run ${runId}`); return null; }
+    }
+
+    if (status !== 'SUCCEEDED') {
+      console.error(`  ❌ Actor run failed: ${status}`);
+      return null;
+    }
+
+    const datasetId = runRes.data.data.defaultDatasetId;
+    const resultsRes = await axios.get(
+      `${APIFY_BASE_URL}/datasets/${datasetId}/items?token=${process.env.APIFY_TOKEN}&format=json`
+    );
+
+    const items = resultsRes.data;
+    if (!items || items.length === 0) { console.warn(`  ⚠ No results for: ${query}`); return null; }
+
+    console.log(`  ✅ Got ${items.length} result pages`);
+    return items;
+
   } catch (error) {
-    console.error(`❌ Error:`, error.message);
+    console.error(`❌ Apify error:`, error.response?.data?.error?.message || error.message);
     return null;
   }
 }
 
-async function analyzeWithClaude(market, rawData, query) {
-  console.log(`🤖 Analyzing with Claude AI...`);
+// ─── GEMINI: Analyze search results ─────────────────────────────────────────
+async function analyzeWithGemini(market, rawData, query) {
+  console.log(`🤖 Analyzing with Gemini AI...`);
   try {
-    const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 2048,
-      messages: [
-        {
-          role: 'user',
-          content: `You are a real estate market analyst specializing in Southeast Asia.
+    const searchResults = rawData.flatMap(page =>
+      (page.organicResults || []).map(r => ({
+        title: r.title,
+        url: r.url,
+        description: r.description
+      }))
+    ).slice(0, 20);
+
+    const prompt = `You are a real estate market analyst specializing in Southeast Asia.
 
 Analyze this Google search data for ${market.country} property market.
 Query used: "${query}"
 
-Raw search data:
-${JSON.stringify(rawData).substring(0, 4000)}
+Search results:
+${JSON.stringify(searchResults)}
 
 Extract up to 10 individual property signals from the results.
 Classify each as:
@@ -87,7 +123,7 @@ Classify each as:
 - "seller_stress" = price drops, urgent sales, oversupply
 - "momentum" = new launches, investment hotspots, growth areas
 
-Respond ONLY with a valid JSON array like this:
+Respond ONLY with a valid JSON array, no markdown, no code fences:
 [
   {
     "title": "listing or article title",
@@ -98,23 +134,20 @@ Respond ONLY with a valid JSON array like this:
     "location": "specific area or city",
     "source": "website source name"
   }
-]`
-        }
-      ]
-    });
+]`;
 
-    const text = message.content[0].text;
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
     const jsonMatch = text.match(/\[[\s\S]*\]/);
-    if (jsonMatch) {
-      return JSON.parse(jsonMatch[0]);
-    }
+    if (jsonMatch) return JSON.parse(jsonMatch[0]);
     return [];
   } catch (error) {
-    console.error(`❌ Claude error:`, error.message);
+    console.error(`❌ Gemini error:`, error.message);
     return [];
   }
 }
 
+// ─── SUPABASE: Save individual listings ─────────────────────────────────────
 async function saveListings(market, listings) {
   console.log(`💾 Saving ${listings.length} listings for ${market.country}...`);
   const rows = listings.map(l => ({
@@ -130,10 +163,7 @@ async function saveListings(market, listings) {
     scanned_at: new Date().toISOString()
   }));
 
-  const { error } = await supabase
-    .from('property_listings')
-    .insert(rows);
-
+  const { error } = await supabase.from('property_listings').insert(rows);
   if (error) {
     console.error(`❌ Supabase error:`, error.message);
   } else {
@@ -141,23 +171,22 @@ async function saveListings(market, listings) {
   }
 }
 
-
+// ─── SUPABASE: Save market signal summary ───────────────────────────────────
 async function saveMarketSignal(market, listings) {
-  if (!listings || listings.length === 0) return;
+  if (!listings || listings.length === 0) {
+    await supabase.from('property_signals')
+      .update({ scanned_at: new Date().toISOString() })
+      .eq('country_code', market.code);
+    return;
+  }
 
   try {
-    // Ask Claude to generate a market summary from the collected listings
-    const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 1024,
-      messages: [{
-        role: 'user',
-        content: `You are a real estate market analyst for Southeast Asia.
+    const prompt = `You are a real estate market analyst for Southeast Asia.
 
 Based on these ${listings.length} property signals collected for ${market.country}:
 ${JSON.stringify(listings.slice(0, 20))}
 
-Generate a market summary. Respond ONLY with valid JSON (no markdown):
+Generate a market summary. Respond ONLY with valid JSON (no markdown, no code fences):
 {
   "sentiment": "hot|warm|cool|cold",
   "market_score": <number 1-10>,
@@ -165,22 +194,15 @@ Generate a market summary. Respond ONLY with valid JSON (no markdown):
   "summary": "<2-3 sentence market overview>",
   "hot_locations": ["<city/area>", "<city/area>", "<city/area>"],
   "trends": ["<trend 1>", "<trend 2>", "<trend 3>"]
-}`
-      }]
-    });
+}`;
 
-    const text = message.content[0].text;
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
     const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) return;
+    if (!jsonMatch) throw new Error('No JSON in Gemini response');
     const signal = JSON.parse(jsonMatch[0]);
 
     const nowISO = new Date().toISOString();
-    const { data: existing } = await supabase
-      .from('property_signals')
-      .select('id')
-      .eq('country_code', market.code)
-      .limit(1);
-
     const payload = {
       country_code: market.code,
       country: market.country,
@@ -193,23 +215,27 @@ Generate a market summary. Respond ONLY with valid JSON (no markdown):
       scanned_at: nowISO
     };
 
+    const { data: existing } = await supabase
+      .from('property_signals').select('id').eq('country_code', market.code).limit(1);
+
     if (existing && existing.length > 0) {
       await supabase.from('property_signals').update(payload).eq('country_code', market.code);
     } else {
       await supabase.from('property_signals').insert(payload);
     }
-    console.log(`📊 Market signal saved for ${market.country} — ${signal.sentiment} (${signal.market_score}/10)`);
+    console.log(`📊 Signal saved for ${market.country} — ${signal.sentiment} (${signal.market_score}/10)`);
+
   } catch (err) {
-    console.error(`❌ Failed to save market signal for ${market.country}:`, err.message);
-    // Still update scanned_at even if summary fails
+    console.error(`❌ Signal save failed for ${market.country}:`, err.message);
     await supabase.from('property_signals')
       .update({ scanned_at: new Date().toISOString() })
       .eq('country_code', market.code);
   }
 }
 
+// ─── MAIN ────────────────────────────────────────────────────────────────────
 async function runScan() {
-  console.log('🚀 SEA Property Pulse scan started...');
+  console.log('🚀 SEA Property Pulse scan started (Apify + Gemini)...');
   console.log(`📅 ${new Date().toISOString()}`);
   console.log('─'.repeat(50));
 
@@ -218,10 +244,11 @@ async function runScan() {
   for (const market of MARKETS) {
     console.log(`\n${market.flag} Processing ${market.country}...`);
     const marketListings = [];
+
     for (const query of market.queries) {
       const rawData = await scrapeQuery(market, query);
       if (rawData) {
-        const listings = await analyzeWithClaude(market, rawData, query);
+        const listings = await analyzeWithGemini(market, rawData, query);
         if (listings.length > 0) {
           await saveListings(market, listings);
           marketListings.push(...listings);
@@ -231,7 +258,6 @@ async function runScan() {
       await new Promise(r => setTimeout(r, 3000));
     }
 
-    // Generate and save market summary signal to property_signals
     await saveMarketSignal(market, marketListings);
   }
 
@@ -241,11 +267,5 @@ async function runScan() {
 }
 
 runScan()
-  .then(() => {
-    console.log('Scraper finished successfully.');
-    process.exit(0);
-  })
-  .catch(err => {
-    console.error('Scraper crashed:', err.message);
-    process.exit(1);
-  });
+  .then(() => { console.log('Scraper finished successfully.'); process.exit(0); })
+  .catch(err => { console.error('Scraper crashed:', err.message); process.exit(1); });

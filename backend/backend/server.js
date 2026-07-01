@@ -41,6 +41,16 @@ app.get('/api/listings/:code', async (req, res) => {
   res.json(data);
 });
 
+// Get market sentiment (all 6 countries)
+app.get('/api/sentiment', async (req, res) => {
+const { data, error } = await supabase
+.from('market_sentiment')
+.select('*')
+.order('country', { ascending: true });
+if (error) return res.status(500).json({ error });
+res.json(data);
+});
+
 // Health check
 app.get('/api/health', async (req, res) => {
   const { count } = await supabase

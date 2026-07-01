@@ -9,33 +9,33 @@ const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const MARKETS = [
   { country: 'Malaysia', code: 'MY', currency: 'MYR', flag: '🇲🇾', queries: [
     'property for sale Kuala Lumpur site:propertyguru.com.my',
-    'buy condo Kuala Lumpur 2025',
-    'Malaysia property investment opportunity 2025'
+    'buy condo Kuala Lumpur 2026',
+    'Malaysia property investment opportunity 2026'
   ]},
   { country: 'Singapore', code: 'SG', currency: 'SGD', flag: '🇸🇬', queries: [
     'property for sale Singapore site:propertyguru.com.sg',
-    'buy condo Singapore 2025',
-    'Singapore property investment opportunity 2025'
+    'buy condo Singapore 2026',
+    'Singapore property investment opportunity 2026'
   ]},
   { country: 'Thailand', code: 'TH', currency: 'THB', flag: '🇹🇭', queries: [
     'property for sale Bangkok site:ddproperty.com',
-    'buy condo Bangkok 2025',
-    'Thailand property investment opportunity 2025'
+    'buy condo Bangkok 2026',
+    'Thailand property investment opportunity 2026'
   ]},
   { country: 'Indonesia', code: 'ID', currency: 'IDR', flag: '🇮🇩', queries: [
     'property for sale Jakarta site:rumah123.com',
-    'buy apartment Jakarta 2025',
-    'Indonesia property investment opportunity 2025'
+    'buy apartment Jakarta 2026',
+    'Indonesia property investment opportunity 2026'
   ]},
   { country: 'Philippines', code: 'PH', currency: 'PHP', flag: '🇵🇭', queries: [
     'property for sale Manila site:lamudi.com.ph',
-    'buy condo Manila 2025',
-    'Philippines property investment opportunity 2025'
+    'buy condo Manila 2026',
+    'Philippines property investment opportunity 2026'
   ]},
   { country: 'Vietnam', code: 'VN', currency: 'VND', flag: '🇻🇳', queries: [
     'property for sale Ho Chi Minh site:batdongsan.com.vn',
-    'buy apartment Ho Chi Minh 2025',
-    'Vietnam property investment opportunity 2025'
+    'buy apartment Ho Chi Minh 2026',
+    'Vietnam property investment opportunity 2026'
   ]}
 ];
 
