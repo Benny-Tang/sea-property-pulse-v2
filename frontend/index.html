@@ -51,6 +51,23 @@
     .stat-item .val { font-size: 34px; font-weight: 800; line-height:1; }
     .val.teal{color:#02C39A;} .val.blue{color:#60A5FA;} .val.red{color:#F87171;} .val.green{color:#34D399;}
     .stat-item .lbl { font-size:10px; color:#94A3B8; margin-top:6px; text-transform:uppercase; letter-spacing:1.5px; font-weight:600; }
+    .sentiment-section { padding: 60px 48px; border-top: 1px solid #1A2332; }
+    .sentiment-section h3 { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 8px; }
+    .sentiment-section > p { font-size: 14px; color: #94A3B8; margin-bottom: 32px; }
+    .sentiment-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(320px,1fr)); gap: 16px; }
+    .sentiment-card { background: #0F1629; border: 1px solid #1A2332; border-radius: 16px; padding: 22px; transition: all 0.25s; }
+    .sentiment-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.1); box-shadow: 0 16px 48px rgba(0,0,0,0.5); }
+    .sentiment-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .sentiment-country { font-size: 15px; font-weight: 700; color: #fff; }
+    .sentiment-score { font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 8px; }
+    .sentiment-score.hot { background: rgba(2,195,154,0.12); color: #02C39A; }
+    .sentiment-score.warm { background: rgba(96,165,250,0.12); color: #60A5FA; }
+    .sentiment-score.cool { background: rgba(248,113,113,0.12); color: #F87171; }
+    .sentiment-label { font-size: 13px; color: #CBD5E1; font-weight: 600; margin-bottom: 10px; }
+    .sentiment-summary { font-size: 12px; color: #94A3B8; line-height: 1.6; margin-bottom: 14px; }
+    .sentiment-row { font-size: 11px; color: #64748B; line-height: 1.6; margin-bottom: 6px; }
+    .sentiment-row strong { color: #CBD5E1; }
+    .sentiment-updated { font-size: 10px; color: #475569; margin-top: 10px; }
     .ai-section { padding: 80px 48px; border-top: 1px solid #1A2332; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
     .ai-section h3 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 16px; }
     .ai-section p { font-size: 15px; color: #94A3B8; line-height: 1.75; margin-bottom: 24px; }
@@ -171,7 +188,7 @@
       <span class="city-pill">&#127483;&#127475; Ho Chi Minh</span>
     </div>
     <div class="hero-btns">
-      <a href="#live-signals" class="hero-btn" style="display:inline-block;text-decoration:none" onclick="event.preventDefault();document.querySelector('.filters-section').scrollIntoView({behavior:'smooth'})">Explore Markets →</a>
+      <a href="#dashboard" class="hero-btn" style="display:inline-block;text-decoration:none">Explore Markets →</a>
       <a class="hero-btn-outline" href="/pricing.html" data-i18n="hero_pricing">See Pricing</a>
     </div>
   </div>
@@ -182,6 +199,12 @@
   <div class="stat-item"><div class="val blue" id="buyerCount">—</div><div class="lbl" data-i18n="stat_buyer">Buyer Intent</div><div class="stat-glow blue"></div></div>
   <div class="stat-item"><div class="val red" id="sellerCount">—</div><div class="lbl" data-i18n="stat_seller">Seller Stress</div><div class="stat-glow red"></div></div>
   <div class="stat-item"><div class="val green" id="momentumCount">—</div><div class="lbl" data-i18n="stat_momentum">Momentum</div><div class="stat-glow green"></div></div>
+</div>
+
+<div class="sentiment-section">
+  <h3>Today's Market Sentiment</h3>
+  <p>Blended government policy and private-sector sentiment across all 6 SEA markets</p>
+  <div class="sentiment-grid" id="sentimentGrid"><div class="loading"><div class="spinner"></div><p>Loading market sentiment...</p></div></div>
 </div>
 
 <div class="ai-section">
@@ -283,6 +306,8 @@
   const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : '/api';
   let allListings = [];
   const flags = { MY:'&#127474;&#127486;', SG:'&#127480;&#127468;', TH:'&#127481;&#127469;', ID:'&#127470;&#127465;', PH:'&#127477;&#127469;', VN:'&#127483;&#127475;' };
+  const FLAGS_S = { MY:'&#127474;&#127486;', SG:'&#127480;&#127468;', TH:'&#127481;&#127469;', ID:'&#127470;&#127465;', PH:'&#127477;&#127469;', VN:'&#127483;&#127475;' };
+
   async function loadListings() {
     try {
       const res = await fetch(`${API_URL}/listings`);
@@ -310,6 +335,30 @@
   function filterSignal(type,e) { document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); renderCards(allListings.filter(l=>l.signal_type===type)); }
   loadListings();
   setInterval(loadListings, 5*60*1000);
+
+  function scoreClass(label) {
+    const l = (label||'').toLowerCase();
+    if (l.includes('bullish') || l.includes('hot')) return 'hot';
+    if (l.includes('cooling') || l.includes('bearish')) return 'cool';
+    return 'warm';
+  }
+  async function loadSentiment() {
+    try {
+      const res = await fetch(`${API_URL}/sentiment`);
+      if (!res.ok) throw new Error('API error');
+      const rows = await res.json();
+      renderSentiment(rows);
+    } catch (err) {
+      document.getElementById('sentimentGrid').innerHTML = '<div class="no-data"><h3>No sentiment data yet</h3><p>Run sentiment-scan.js to populate.</p></div>';
+    }
+  }
+  function renderSentiment(rows) {
+    if (!rows.length) { document.getElementById('sentimentGrid').innerHTML = '<div class="no-data"><h3>No sentiment data yet</h3></div>'; return; }
+    const cards = rows.map(r => `<div class="sentiment-card"><div class="sentiment-top"><span class="sentiment-country">${FLAGS_S[r.country_code]||''} ${r.country}</span><span class="sentiment-score ${scoreClass(r.sentiment_label)}">${r.sentiment_score}/10</span></div><div class="sentiment-label">${r.sentiment_label}</div><div class="sentiment-summary">${r.summary}</div><div class="sentiment-row"><strong>Official:</strong> ${r.government_signal||'—'}</div><div class="sentiment-row"><strong>Market:</strong> ${r.private_signal||'—'}</div><div class="sentiment-updated">Updated: ${new Date(r.scanned_at).toLocaleDateString()}</div></div>`).join('');
+    document.getElementById('sentimentGrid').innerHTML = cards;
+  }
+  loadSentiment();
+  setInterval(loadSentiment, 5*60*1000);
 </script>
 </body>
 </html>
