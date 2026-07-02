@@ -55,8 +55,10 @@
     .summary-box .ai-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; background: rgba(2,195,154,0.1); color: #02C39A; border: 1px solid rgba(2,195,154,0.2); padding: 2px 8px; border-radius: 4px; }
     .summary-box p { font-size: 13px; color: #94A3B8; line-height: 1.75; margin-top: 12px; }
     .summary-date { font-size: 11px; color: #334155; margin-top: 12px; }
-    .filters-section { padding: 20px 48px; border-bottom: 1px solid #1A2332; background: rgba(15,22,41,0.5); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 24px; }
-    .filters-label { font-size: 10px; color: #94A3B8; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; margin-right: 4px; }
+    .filters-section { padding: 20px 48px; border-bottom: 1px solid #1A2332; background: rgba(15,22,41,0.5); margin-top: 24px; }
+    .filters-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+    .filters-row:last-child { margin-bottom: 0; }
+    .filters-label { font-size: 10px; color: #94A3B8; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; margin-right: 4px; min-width: 50px; }
     .filter-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid #1A2332; background: rgba(255,255,255,0.02); color: #94A3B8; cursor: pointer; font-size: 12px; font-weight: 500; transition: all 0.2s; font-family: 'Inter', sans-serif; }
     .filter-btn:hover { border-color: rgba(255,255,255,0.15); color: #CBD5E1; }
     .filter-btn.active { background: rgba(2,195,154,0.12); border-color: rgba(2,195,154,0.35); color: #02C39A; font-weight: 600; }
@@ -109,7 +111,7 @@
     <div><h1>SEA Property Pulse</h1><p>My Dashboard</p></div>
   </div>
   <div class="header-right">
-    <a class="nav-link" href="/index.html">Public Dashboard</a>
+    <a class="nav-link" href="/index.html">Home</a>
     <a class="nav-link" href="/pricing.html">Upgrade</a>
     <div class="lang-switcher">
       <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
@@ -156,18 +158,30 @@
     </div>
   </div>
   <div class="filters-section">
-    <span class="filters-label">Signal</span>
-    <button class="filter-btn active" onclick="filterAll(event)">&#127760; All</button>
-    <button class="filter-btn buyer" onclick="filterSignal('buyer_intent', event)">&#128309; Buyer Intent</button>
-    <button class="filter-btn seller" onclick="filterSignal('seller_stress', event)">&#128308; Seller Stress</button>
-    <button class="filter-btn momentum" onclick="filterSignal('momentum', event)">&#128994; Momentum</button>
+    <div class="filters-row">
+      <span class="filters-label">Market</span>
+      <button class="filter-btn active" onclick="filterMarket('ALL', event)">&#127760; All</button>
+      <button class="filter-btn" onclick="filterMarket('MY', event)">&#127474;&#127486; Malaysia</button>
+      <button class="filter-btn" onclick="filterMarket('SG', event)">&#127480;&#127468; Singapore</button>
+      <button class="filter-btn" onclick="filterMarket('TH', event)">&#127481;&#127469; Thailand</button>
+      <button class="filter-btn" onclick="filterMarket('ID', event)">&#127470;&#127465; Indonesia</button>
+      <button class="filter-btn" onclick="filterMarket('PH', event)">&#127477;&#127469; Philippines</button>
+      <button class="filter-btn" onclick="filterMarket('VN', event)">&#127483;&#127475; Vietnam</button>
+    </div>
+    <div class="filters-row">
+      <span class="filters-label">Signal</span>
+      <button class="filter-btn active" onclick="filterSignal('ALL', event)">&#127760; All</button>
+      <button class="filter-btn buyer" onclick="filterSignal('buyer_intent', event)">&#128309; Buyer Intent</button>
+      <button class="filter-btn seller" onclick="filterSignal('seller_stress', event)">&#128308; Seller Stress</button>
+      <button class="filter-btn momentum" onclick="filterSignal('momentum', event)">&#128994; Momentum</button>
+    </div>
   </div>
   <div class="results-count" id="resultsCount"></div>
-  <div id="content"><div class="loading"><div class="spinner"></div><p>Loading your market signals...</p></div></div>
+  <div id="content"><div class="loading"><div class="spinner"></div><p>Loading market signals...</p></div></div>
 </div>
 <footer>
   <div class="footer-bottom">
-    <span>© 2026 SEA Property Pulse · Tang88 Resources, Malacca, Malaysia</span>
+    <span>&#169; 2026 SEA Property Pulse &middot; Tang88 Resources, Malacca, Malaysia</span>
     <a href="mailto:benny@seapropertypulse.com">benny@seapropertypulse.com</a>
   </div>
 </footer>
@@ -177,75 +191,100 @@
   const { createClient } = supabase;
   const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : '/api';
-  const marketNames = { MY:'🇲🇾 Malaysia', SG:'🇸🇬 Singapore', TH:'🇹🇭 Thailand', ID:'🇮🇩 Indonesia', PH:'🇵🇭 Philippines', VN:'🇻🇳 Vietnam' };
+  const marketNames = { MY:'&#127474;&#127486; Malaysia', SG:'&#127480;&#127468; Singapore', TH:'&#127481;&#127469; Thailand', ID:'&#127470;&#127465; Indonesia', PH:'&#127477;&#127469; Philippines', VN:'&#127483;&#127475; Vietnam' };
   let allSignals = [];
   let userMarket = null;
-
-  async function init() {
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session) { document.getElementById('authGate').style.display = 'flex'; return; }
-    document.getElementById('dashboardContent').style.display = 'block';
-    document.getElementById('userBadge').style.display = 'flex';
-    document.getElementById('logoutBtn').style.display = 'block';
-    const { data: profile } = await sb.from('user_profiles').select('*').eq('id', session.user.id).single();
-    if (profile) {
-      const firstName = profile.full_name ? profile.full_name.split(' ')[0] : 'there';
-      document.getElementById('welcomeName').textContent = firstName;
-      document.getElementById('userName').textContent = profile.full_name || session.user.email;
-      document.getElementById('userAvatar').textContent = firstName[0].toUpperCase();
-      userMarket = profile.chosen_market;
-      document.getElementById('marketName').textContent = marketNames[userMarket] || userMarket;
-    }
-    await loadSignals();
-    generateSummary();
-  }
-
-  async function loadSignals() {
-    try {
-      const res = await fetch(`${API_URL}/listings`);
-      if (!res.ok) throw new Error('API error');
-      const all = await res.json();
-      allSignals = all.filter(l => l.country_code === userMarket);
-      updateStats(); renderCards(allSignals);
-    } catch (err) {
-      document.getElementById('content').innerHTML = '<div class="no-data"><h3>No signals yet.</h3><p>Your market will be updated on the next scan.</p></div>';
-    }
-  }
-
-  function updateStats() {
-    document.getElementById('totalCount').textContent = allSignals.length;
-    document.getElementById('buyerCount').textContent = allSignals.filter(l => l.signal_type === 'buyer_intent').length;
-    document.getElementById('sellerCount').textContent = allSignals.filter(l => l.signal_type === 'seller_stress').length;
-    document.getElementById('momentumCount').textContent = allSignals.filter(l => l.signal_type === 'momentum').length;
-  }
-
-  function renderCards(signals) {
-    document.getElementById('resultsCount').textContent = `Showing ${signals.length} signals`;
-    if (!signals.length) { document.getElementById('content').innerHTML = '<div class="no-data"><h3>No signals match this filter.</h3></div>'; return; }
-    const cards = signals.map(l => `<div class="card ${l.signal_type}"><div class="card-top"><span class="signal-badge ${l.signal_type}">${(l.signal_type||'').replace('_',' ')}</span><span class="country-tag">${marketNames[l.country_code]||l.country}</span></div><div class="card-title">${l.title||'Untitled'}</div>${l.snippet?`<div class="card-snippet">${l.snippet}</div>`:''}<div class="card-meta">${l.location?`<div class="meta-item">&#128205; <strong>${l.location}</strong></div>`:''} ${l.price?`<div class="meta-item">&#128176; <strong>${l.price}</strong></div>`:''} ${l.source?`<div class="meta-item">&#127760; <strong>${l.source}</strong></div>`:''}</div>${l.url?`<a class="card-link" href="${l.url}" target="_blank">View listing &#8594;</a>`:''}</div>`).join('');
-    document.getElementById('content').innerHTML = `<div class="grid">${cards}</div>`;
-  }
-
-  function generateSummary() {
-    const buyer = allSignals.filter(l => l.signal_type === 'buyer_intent').length;
-    const seller = allSignals.filter(l => l.signal_type === 'seller_stress').length;
-    const momentum = allSignals.filter(l => l.signal_type === 'momentum').length;
-    const total = allSignals.length;
-    const market = marketNames[userMarket] || userMarket;
-    let summary = '';
-    if (total === 0) { summary = 'Your first market scan is being prepared. Your weekly AI summary will appear here once data is collected for your market.'; }
-    else if (buyer > seller && buyer > momentum) { summary = `${market} is showing strong buyer activity this week with ${buyer} buyer intent signals out of ${total} total. Demand appears to be building — a good window to connect with active buyers. Seller stress signals (${seller}) remain moderate.`; }
-    else if (seller > buyer) { summary = `${market} is showing elevated seller stress this week with ${seller} stress signals out of ${total} total. This may indicate pricing pressure — a potential opportunity for buyers to negotiate.`; }
-    else if (momentum > buyer && momentum > seller) { summary = `${market} is showing strong market momentum this week with ${momentum} momentum signals. The market appears active with transaction volume building — good conditions for both buyers and sellers.`; }
-    else { summary = `${market} shows a balanced mix of signals this week — ${buyer} buyer intent, ${seller} seller stress, and ${momentum} momentum signals out of ${total} total. The market appears stable with no dominant trend direction.`; }
-    document.getElementById('aiSummary').textContent = summary;
-    document.getElementById('summaryDate').textContent = 'Generated: ' + new Date().toLocaleDateString('en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-  }
-
-  function filterAll(e) { document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); renderCards(allSignals); }
-  function filterSignal(type,e) { document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); renderCards(allSignals.filter(l=>l.signal_type===type)); }
-  async function handleLogout() { await sb.auth.signOut(); window.location.href = '/index.html'; }
-  init();
+  let activeMarket = 'ALL';
+  let activeSignal = 'ALL';
+async function init() {
+const { data: { session } } = await sb.auth.getSession();
+if (!session) { document.getElementById('authGate').style.display = 'flex'; return; }
+document.getElementById('dashboardContent').style.display = 'block';
+document.getElementById('userBadge').style.display = 'flex';
+document.getElementById('logoutBtn').style.display = 'block';
+const { data: profile } = await sb.from('user_profiles').select('*').eq('id', session.user.id).single();
+if (profile) {
+const firstName = profile.full_name ? profile.full_name.split(' ')[0] : 'there';
+document.getElementById('welcomeName').textContent = firstName;
+document.getElementById('userName').textContent = profile.full_name || session.user.email;
+document.getElementById('userAvatar').textContent = firstName[0].toUpperCase();
+userMarket = profile.chosen_market;
+document.getElementById('marketName').textContent = marketNames[userMarket] || userMarket;
+}
+await loadSignals();
+generateSummary();
+}
+async function loadSignals() {
+try {
+const res = await fetch(API_URL + '/listings');
+if (!res.ok) throw new Error('API error');
+allSignals = await res.json();
+updateStats();
+applyFilters();
+} catch (err) {
+document.getElementById('content').innerHTML = '<div class="no-data"><h3>No signals yet.</h3><p>Your market will be updated on the next scan.</p></div>';
+}
+}
+function updateStats() {
+const display = allSignals.filter(l => userMarket ? l.country_code === userMarket : true);
+document.getElementById('totalCount').textContent = display.length;
+document.getElementById('buyerCount').textContent = display.filter(l => l.signal_type === 'buyer_intent').length;
+document.getElementById('sellerCount').textContent = display.filter(l => l.signal_type === 'seller_stress').length;
+document.getElementById('momentumCount').textContent = display.filter(l => l.signal_type === 'momentum').length;
+}
+function applyFilters() {
+let filtered = allSignals;
+if (activeMarket !== 'ALL') filtered = filtered.filter(l => l.country_code === activeMarket);
+if (activeSignal !== 'ALL') filtered = filtered.filter(l => l.signal_type === activeSignal);
+renderCards(filtered);
+}
+function renderCards(signals) {
+document.getElementById('resultsCount').textContent = 'Showing ' + signals.length + ' signals';
+if (!signals.length) { document.getElementById('content').innerHTML = '<div class="no-data"><h3>No signals match this filter.</h3></div>'; return; }
+const cards = signals.map(l => '<div class="card ' + l.signal_type + '">' +
+'<div class="card-top"><span class="signal-badge ' + l.signal_type + '">' + (l.signal_type||'').replace('_',' ') + '</span>' +
+'<span class="country-tag">' + (marketNames[l.country_code]||l.country) + '</span></div>' +
+'<div class="card-title">' + (l.title||'Untitled') + '</div>' +
+(l.snippet ? '<div class="card-snippet">' + l.snippet + '</div>' : '') +
+'<div class="card-meta">' +
+(l.location ? '<div class="meta-item">📍 <strong>' + l.location + '</strong></div>' : '') +
+(l.price ? '<div class="meta-item">💰 <strong>' + l.price + '</strong></div>' : '') +
+(l.source ? '<div class="meta-item">🌐 <strong>' + l.source + '</strong></div>' : '') +
+'</div>' +
+(l.url ? '<a class="card-link" href="' + l.url + '" target="_blank">View listing →</a>' : '') +
+'</div>').join('');
+document.getElementById('content').innerHTML = '<div class="grid">' + cards + '</div>';
+}
+function filterMarket(code, e) {
+document.querySelectorAll('.filters-row:first-child .filter-btn').forEach(b => b.classList.remove('active'));
+e.target.classList.add('active');
+activeMarket = code;
+applyFilters();
+}
+function filterSignal(type, e) {
+document.querySelectorAll('.filters-row:last-child .filter-btn').forEach(b => b.classList.remove('active'));
+e.target.classList.add('active');
+activeSignal = type;
+applyFilters();
+}
+function generateSummary() {
+const mySignals = userMarket ? allSignals.filter(l => l.country_code === userMarket) : allSignals;
+const buyer = mySignals.filter(l => l.signal_type === 'buyer_intent').length;
+const seller = mySignals.filter(l => l.signal_type === 'seller_stress').length;
+const momentum = mySignals.filter(l => l.signal_type === 'momentum').length;
+const total = mySignals.length;
+const market = marketNames[userMarket] || 'Your market';
+let summary = '';
+if (total === 0) { summary = 'Your first market scan is being prepared. Your weekly AI summary will appear here once data is collected for your market.'; }
+else if (buyer > seller && buyer > momentum) { summary = market + ' is showing strong buyer activity this week with ' + buyer + ' buyer intent signals out of ' + total + ' total. Demand appears to be building — a good window to connect with active buyers. Seller stress signals (' + seller + ') remain moderate.'; }
+else if (seller > buyer) { summary = market + ' is showing elevated seller stress this week with ' + seller + ' stress signals out of ' + total + ' total. This may indicate pricing pressure — a potential opportunity for buyers to negotiate.'; }
+else if (momentum > buyer && momentum > seller) { summary = market + ' is showing strong market momentum this week with ' + momentum + ' momentum signals. The market appears active with transaction volume building — good conditions for both buyers and sellers.'; }
+else { summary = market + ' shows a balanced mix of signals this week — ' + buyer + ' buyer intent, ' + seller + ' seller stress, and ' + momentum + ' momentum signals out of ' + total + ' total. The market appears stable with no dominant trend direction.'; }
+document.getElementById('aiSummary').textContent = summary;
+document.getElementById('summaryDate').textContent = 'Generated: ' + new Date().toLocaleDateString('en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+}
+async function handleLogout() { await sb.auth.signOut(); window.location.href = '/index.html'; }
+init();
 </script>
 </body>
 </html>
