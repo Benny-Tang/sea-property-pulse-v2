@@ -26,7 +26,8 @@ app.get('/api/listings', async (req, res) => {
   const { data, error } = await supabase
     .from('property_listings')
     .select('*')
-    .order('scanned_at', { ascending: false }
+    .gte('scanned_at', new Date().toISOString().slice(0, 10) + 'T00:00:00.000Z')
+    .order('scanned_at', { ascending: false });
   if (error) return res.status(500).json({ error });
   res.json(data);
 });
