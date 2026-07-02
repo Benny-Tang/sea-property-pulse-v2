@@ -26,8 +26,7 @@ app.get('/api/listings', async (req, res) => {
   const { data, error } = await supabase
     .from('property_listings')
     .select('*')
-    .order('scanned_at', { ascending: false })
-    .limit(200);
+    .order('scanned_at', { ascending: false }
   if (error) return res.status(500).json({ error });
   res.json(data);
 });
