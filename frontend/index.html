@@ -229,7 +229,7 @@
     </div>
     <div class="footer-col">
       <h4 data-i18n="footer_contact_title">Contact</h4>
-      <p>T88R (Tang88 Resources)</p><p>45-N, Jalan Ong Kim Wee</p><p>Malacca 75300, Malaysia</p>
+      <p>T88R </p><p>45-N, Jalan Ong Kim Wee</p><p>Malacca 75300, Malaysia</p>
       <p style="margin-top:8px;"><a href="mailto:benny@seapropertypulse.com">benny@seapropertypulse.com</a></p>
       <p style="margin-top:16px;font-size:12px;color:#64748B;" data-i18n="footer_copyright">&#169; 2026 SEA Property Pulse. All rights reserved.</p>
     </div>
@@ -278,6 +278,7 @@
     const official = (typeof t === 'function') ? t('sentiment_official') : 'Official';
     const market = (typeof t === 'function') ? t('sentiment_market') : 'Market';
     const updated = (typeof t === 'function') ? t('sentiment_updated') : 'Updated';
+    rows.sort((a,b) => { const order = ['Singapore','Malaysia','Thailand','Indonesia','Philippines','Vietnam']; return order.indexOf(a.country) - order.indexOf(b.country); });
     const cards = rows.map(r => '<div class="sentiment-card">' +
       '<div class="sentiment-top"><span class="sentiment-country">' + (FLAGS_S[r.country_code] || '') + ' ' + r.country + '</span>' +
       '<span class="sentiment-score ' + scoreClass(r.sentiment_label) + '">' + r.sentiment_score + '/10</span></div>' +
