@@ -31,7 +31,6 @@
     .hero-content { position: relative; z-index: 2; max-width: 640px; }
     .hero-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(2,195,154,0.1); border: 1px solid rgba(2,195,154,0.25); color: #02C39A; padding: 5px 14px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 24px; }
     .hero h2 { font-size: 52px; font-weight: 800; letter-spacing: -2px; line-height: 1.05; margin-bottom: 16px; color: #fff; }
-    .hero h2 span { background: linear-gradient(to right, #02C39A, #67E8F9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .hero p { font-size: 16px; color: #94A3B8; line-height: 1.75; max-width: 480px; margin-bottom: 28px; }
     .hero-cities { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
     .city-pill { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.6); padding: 5px 14px; border-radius: 20px; font-size: 12px; }
@@ -95,37 +94,6 @@
     .cta-btn:hover { background: #00A884; }
     .cta-btn-outline { background: transparent; color: #02C39A; padding: 12px 28px; border-radius: 10px; border: 1px solid rgba(2,195,154,0.4); font-size: 14px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; transition: all 0.2s; }
     .cta-btn-outline:hover { background: rgba(2,195,154,0.08); border-color: #02C39A; }
-    .filters-section { padding: 24px 48px; border-top: 1px solid #1A2332; border-bottom: 1px solid #1A2332; background: rgba(15,22,41,0.5); }
-    .filters-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
-    .filters-row:last-child { margin-bottom: 0; }
-    .filters-label { font-size: 10px; color: #94A3B8; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; margin-right: 4px; min-width: 50px; }
-    .filter-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid #1A2332; background: rgba(255,255,255,0.02); color: #94A3B8; cursor: pointer; font-size: 12px; font-weight: 500; transition: all 0.2s; font-family: 'Inter', sans-serif; }
-    .filter-btn:hover { border-color: rgba(255,255,255,0.15); color: #CBD5E1; }
-    .filter-btn.active { background: rgba(2,195,154,0.12); border-color: rgba(2,195,154,0.35); color: #02C39A; font-weight: 600; }
-    .filter-btn.buyer.active { background: rgba(96,165,250,0.12); border-color: rgba(96,165,250,0.35); color: #60A5FA; }
-    .filter-btn.seller.active { background: rgba(248,113,113,0.12); border-color: rgba(248,113,113,0.35); color: #F87171; }
-    .filter-btn.momentum.active { background: rgba(52,211,153,0.12); border-color: rgba(52,211,153,0.35); color: #34D399; }
-    .results-count { padding: 16px 48px 0; font-size: 12px; color: #94A3B8; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(340px,1fr)); gap: 16px; padding: 20px 48px 60px; }
-    .card { background: #0F1629; border: 1px solid #1A2332; border-radius: 16px; padding: 22px; transition: all 0.25s; position: relative; overflow: hidden; }
-    .card::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; }
-    .card.buyer_intent::before { background: #60A5FA; }
-    .card.seller_stress::before { background: #F87171; }
-    .card.momentum::before { background: #34D399; }
-    .card:hover { transform:translateY(-3px); border-color:rgba(255,255,255,0.1); box-shadow:0 16px 48px rgba(0,0,0,0.5); }
-    .card-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-    .signal-badge { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:3px 9px; border-radius:6px; }
-    .signal-badge.buyer_intent { background:rgba(96,165,250,0.1); color:#60A5FA; border:1px solid rgba(96,165,250,0.2); }
-    .signal-badge.seller_stress { background:rgba(248,113,113,0.1); color:#F87171; border:1px solid rgba(248,113,113,0.2); }
-    .signal-badge.momentum { background:rgba(52,211,153,0.1); color:#34D399; border:1px solid rgba(52,211,153,0.2); }
-    .country-tag { font-size:11px; color:#94A3B8; font-weight:500; }
-    .card-title { font-size:14px; font-weight:600; color:#E8EAED; margin-bottom:7px; line-height:1.5; }
-    .card-snippet { font-size:12px; color:#94A3B8; line-height:1.6; margin-bottom:12px; }
-    .card-meta { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
-    .meta-item { font-size:11px; color:#64748B; display:flex; align-items:center; gap:3px; }
-    .meta-item strong { color:#CBD5E1; font-weight:500; }
-    .card-link { font-size:11px; color:#02C39A; text-decoration:none; font-weight:500; opacity:0.7; transition:opacity 0.2s; }
-    .card-link:hover { opacity:1; }
     .dynamics-section { padding: 80px 48px; border-top: 1px solid #1A2332; background: linear-gradient(135deg, rgba(15,22,41,0.9), rgba(6,13,31,0.95)); text-align: center; }
     .dynamics-section h3 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 12px; }
     .dynamics-section p { font-size: 15px; color: #94A3B8; margin-bottom: 36px; }
@@ -141,15 +109,14 @@
     .footer-divider { border: none; border-top: 1px solid #1A2332; margin-bottom: 24px; }
     .footer-disclaimer { font-size: 12px; color: #64748B; line-height: 1.7; }
     .footer-disclaimer strong { color: #94A3B8; }
-    .loading { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:400px; gap:16px; }
+    .loading { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:200px; gap:16px; }
     .spinner { width:44px; height:44px; border:3px solid rgba(2,195,154,0.1); border-top-color:#02C39A; border-radius:50%; animation:spin 0.8s linear infinite; }
     @keyframes spin { to{transform:rotate(360deg);} }
     .loading p { font-size:13px; color:#64748B; }
-    .no-data { text-align:center; padding:80px; color:#64748B; }
+    .no-data { text-align:center; padding:40px; color:#64748B; }
   </style>
 </head>
 <body>
-
 <header>
   <div class="header-left">
     <div class="logo-circle">&#127759;</div>
@@ -170,7 +137,6 @@
     <div class="live-badge"><div class="live-dot"></div> <span data-i18n="live_badge">LIVE DATA</span></div>
   </div>
 </header>
-
 <div class="hero">
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
@@ -188,25 +154,22 @@
       <span class="city-pill">&#127483;&#127475; Ho Chi Minh</span>
     </div>
     <div class="hero-btns">
-      <a href="#dashboard" class="hero-btn" style="display:inline-block;text-decoration:none">Explore Markets →</a>
+      <a href="/services.html" class="hero-btn" style="display:inline-block;text-decoration:none" data-i18n="hero_explore">Special Services &#8594;</a>
       <a class="hero-btn-outline" href="/pricing.html" data-i18n="hero_pricing">See Pricing</a>
     </div>
   </div>
 </div>
-
 <div class="stats-bar">
-  <div class="stat-item"><div class="val teal" id="totalListings">—</div><div class="lbl" data-i18n="stat_signals">Total Signals</div><div class="stat-glow teal"></div></div>
-  <div class="stat-item"><div class="val blue" id="buyerCount">—</div><div class="lbl" data-i18n="stat_buyer">Buyer Intent</div><div class="stat-glow blue"></div></div>
-  <div class="stat-item"><div class="val red" id="sellerCount">—</div><div class="lbl" data-i18n="stat_seller">Seller Stress</div><div class="stat-glow red"></div></div>
-  <div class="stat-item"><div class="val green" id="momentumCount">—</div><div class="lbl" data-i18n="stat_momentum">Momentum</div><div class="stat-glow green"></div></div>
+  <div class="stat-item"><div class="val teal" id="totalListings">&#8212;</div><div class="lbl" data-i18n="stat_signals">Total Signals</div><div class="stat-glow teal"></div></div>
+  <div class="stat-item"><div class="val blue" id="buyerCount">&#8212;</div><div class="lbl" data-i18n="stat_buyer">Buyer Intent</div><div class="stat-glow blue"></div></div>
+  <div class="stat-item"><div class="val red" id="sellerCount">&#8212;</div><div class="lbl" data-i18n="stat_seller">Seller Stress</div><div class="stat-glow red"></div></div>
+  <div class="stat-item"><div class="val green" id="momentumCount">&#8212;</div><div class="lbl" data-i18n="stat_momentum">Momentum</div><div class="stat-glow green"></div></div>
 </div>
-
 <div class="sentiment-section">
-  <h3>Today's Market Sentiment</h3>
-  <p>Blended government policy and private-sector sentiment across all 6 SEA markets</p>
+  <h3 data-i18n="sentiment_title">Today's Market Sentiment</h3>
+  <p data-i18n="sentiment_desc">Blended government policy and private-sector sentiment across all 6 SEA markets</p>
   <div class="sentiment-grid" id="sentimentGrid"><div class="loading"><div class="spinner"></div><p>Loading market sentiment...</p></div></div>
 </div>
-
 <div class="ai-section">
   <div>
     <h3 data-i18n="ai_title">AI-Powered Market Analysis</h3>
@@ -221,13 +184,11 @@
   </div>
   <div><img class="ai-image" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80&auto=format&fit=crop" alt="AI Market Intelligence"></div>
 </div>
-
 <div class="cities-section">
   <h3 data-i18n="cities_title">Southeast Asia's Premier Markets</h3>
   <p data-i18n="cities_desc">Comprehensive coverage across the region's most dynamic real estate markets</p>
   <img class="cities-image" src="https://images.unsplash.com/photo-1555899434-94d1368aa7af?w=1400&q=80&auto=format&fit=crop" alt="Southeast Asian Cities">
 </div>
-
 <div class="how-section">
   <h3 data-i18n="how_title">How It Works</h3>
   <p data-i18n="how_desc">Three steps from raw web data to actionable market intelligence</p>
@@ -237,7 +198,6 @@
     <div class="how-step"><div class="how-step-num">3</div><h4 data-i18n="how_3_title">You Act</h4><p data-i18n="how_3_desc">Receive clear, prioritised signals straight to your dashboard so you can identify leads, spot trends, and move faster than competitors.</p></div>
   </div>
 </div>
-
 <div class="cta-banner">
   <div>
     <h3 data-i18n="cta_title">Ready to get started?</h3>
@@ -248,35 +208,11 @@
     <a class="cta-btn-outline" href="/services.html" data-i18n="cta_services">Our Services</a>
   </div>
 </div>
-
-<div class="filters-section">
-  <div class="filters-row">
-    <span class="filters-label">Market</span>
-    <button class="filter-btn active" onclick="filterAll(event)">&#127760; All</button>
-    <button class="filter-btn" onclick="filterCountry('MY', event)">&#127474;&#127486; Malaysia</button>
-    <button class="filter-btn" onclick="filterCountry('SG', event)">&#127480;&#127468; Singapore</button>
-    <button class="filter-btn" onclick="filterCountry('TH', event)">&#127481;&#127469; Thailand</button>
-    <button class="filter-btn" onclick="filterCountry('ID', event)">&#127470;&#127465; Indonesia</button>
-    <button class="filter-btn" onclick="filterCountry('PH', event)">&#127477;&#127469; Philippines</button>
-    <button class="filter-btn" onclick="filterCountry('VN', event)">&#127483;&#127475; Vietnam</button>
-  </div>
-  <div class="filters-row">
-    <span class="filters-label">Signal</span>
-    <button class="filter-btn buyer" onclick="filterSignal('buyer_intent', event)">&#128309; Buyer Intent</button>
-    <button class="filter-btn seller" onclick="filterSignal('seller_stress', event)">&#128308; Seller Stress</button>
-    <button class="filter-btn momentum" onclick="filterSignal('momentum', event)">&#128994; Momentum</button>
-  </div>
-</div>
-
-<div class="results-count" id="resultsCount"></div>
-<div id="content"><div class="loading"><div class="spinner"></div><p>Loading live market signals...</p></div></div>
-
 <div class="dynamics-section">
   <h3>Real Estate Market Dynamics</h3>
   <p>Data-driven insights into Southeast Asia's property investment landscape</p>
   <img class="dynamics-image" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1400&q=80&auto=format&fit=crop" alt="Market Dynamics">
 </div>
-
 <footer>
   <div class="footer-grid">
     <div class="footer-col">
@@ -295,70 +231,69 @@
       <h4 data-i18n="footer_contact_title">Contact</h4>
       <p>T88R (Tang88 Resources)</p><p>45-N, Jalan Ong Kim Wee</p><p>Malacca 75300, Malaysia</p>
       <p style="margin-top:8px;"><a href="mailto:benny@seapropertypulse.com">benny@seapropertypulse.com</a></p>
-      <p style="margin-top:16px;font-size:12px;color:#64748B;" data-i18n="footer_copyright">© 2026 SEA Property Pulse. All rights reserved.</p>
+      <p style="margin-top:16px;font-size:12px;color:#64748B;" data-i18n="footer_copyright">&#169; 2026 SEA Property Pulse. All rights reserved.</p>
     </div>
   </div>
   <hr class="footer-divider">
   <p class="footer-disclaimer"><strong>Disclaimer:</strong> <span data-i18n="footer_disclaimer">The information provided on this platform is for general informational purposes only and does not constitute financial, legal, or investment advice.</span></p>
 </footer>
-
 <script>
   const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : '/api';
-  let allListings = [];
-  const flags = { MY:'&#127474;&#127486;', SG:'&#127480;&#127468;', TH:'&#127481;&#127469;', ID:'&#127470;&#127465;', PH:'&#127477;&#127469;', VN:'&#127483;&#127475;' };
   const FLAGS_S = { MY:'&#127474;&#127486;', SG:'&#127480;&#127468;', TH:'&#127481;&#127469;', ID:'&#127470;&#127465;', PH:'&#127477;&#127469;', VN:'&#127483;&#127475;' };
 
-  async function loadListings() {
+  async function loadStats() {
     try {
-      const res = await fetch(`${API_URL}/listings`);
+      const res = await fetch(API_URL + '/listings');
       if (!res.ok) throw new Error('API error');
-      allListings = await res.json();
-      updateStats(); renderCards(allListings);
+      const data = await res.json();
+      document.getElementById('totalListings').textContent = data.length;
+      document.getElementById('buyerCount').textContent = data.filter(l => l.signal_type === 'buyer_intent').length;
+      document.getElementById('sellerCount').textContent = data.filter(l => l.signal_type === 'seller_stress').length;
+      document.getElementById('momentumCount').textContent = data.filter(l => l.signal_type === 'momentum').length;
     } catch (err) {
-      document.getElementById('content').innerHTML = '<div class="no-data"><h3>No Data Yet</h3><p>Run the scraper to populate signals.</p></div>';
+      document.getElementById('totalListings').textContent = '—';
     }
   }
-  function updateStats() {
-    document.getElementById('totalListings').textContent = allListings.length;
-    document.getElementById('buyerCount').textContent = allListings.filter(l => l.signal_type === 'buyer_intent').length;
-    document.getElementById('sellerCount').textContent = allListings.filter(l => l.signal_type === 'seller_stress').length;
-    document.getElementById('momentumCount').textContent = allListings.filter(l => l.signal_type === 'momentum').length;
-  }
-  function renderCards(listings) {
-    document.getElementById('resultsCount').textContent = `Showing ${listings.length} signals`;
-    if (!listings.length) { document.getElementById('content').innerHTML = '<div class="no-data"><h3>No signals match this filter.</h3></div>'; return; }
-    const cards = listings.map(l => `<div class="card ${l.signal_type}"><div class="card-top"><span class="signal-badge ${l.signal_type}">${(l.signal_type||'').replace('_',' ')}</span><span class="country-tag">${flags[l.country_code]||''} ${l.country}</span></div><div class="card-title">${l.title||'Untitled'}</div>${l.snippet?`<div class="card-snippet">${l.snippet}</div>`:''}<div class="card-meta">${l.location?`<div class="meta-item">&#128205; <strong>${l.location}</strong></div>`:''} ${l.price?`<div class="meta-item">&#128176; <strong>${l.price}</strong></div>`:''} ${l.source?`<div class="meta-item">&#127760; <strong>${l.source}</strong></div>`:''}</div>${l.url?`<a class="card-link" href="${l.url}" target="_blank">View listing &#8594;</a>`:''}</div>`).join('');
-    document.getElementById('content').innerHTML = `<div class="grid">${cards}</div>`;
-  }
-  function filterAll(e) { document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); renderCards(allListings); }
-  function filterCountry(code,e) { document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); renderCards(allListings.filter(l=>l.country_code===code)); }
-  function filterSignal(type,e) { document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); renderCards(allListings.filter(l=>l.signal_type===type)); }
-  loadListings();
-  setInterval(loadListings, 5*60*1000);
 
   function scoreClass(label) {
-    const l = (label||'').toLowerCase();
+    const l = (label || '').toLowerCase();
     if (l.includes('bullish') || l.includes('hot')) return 'hot';
     if (l.includes('cooling') || l.includes('bearish')) return 'cool';
     return 'warm';
   }
+
   async function loadSentiment() {
     try {
-      const res = await fetch(`${API_URL}/sentiment`);
+      const res = await fetch(API_URL + '/sentiment');
       if (!res.ok) throw new Error('API error');
       const rows = await res.json();
       renderSentiment(rows);
     } catch (err) {
-      document.getElementById('sentimentGrid').innerHTML = '<div class="no-data"><h3>No sentiment data yet</h3><p>Run sentiment-scan.js to populate.</p></div>';
+      document.getElementById('sentimentGrid').innerHTML = '<div class="no-data"><p>No sentiment data yet.</p></div>';
     }
   }
+
   function renderSentiment(rows) {
-    if (!rows.length) { document.getElementById('sentimentGrid').innerHTML = '<div class="no-data"><h3>No sentiment data yet</h3></div>'; return; }
-    const cards = rows.map(r => `<div class="sentiment-card"><div class="sentiment-top"><span class="sentiment-country">${FLAGS_S[r.country_code]||''} ${r.country}</span><span class="sentiment-score ${scoreClass(r.sentiment_label)}">${r.sentiment_score}/10</span></div><div class="sentiment-label">${r.sentiment_label}</div><div class="sentiment-summary">${r.summary}</div><div class="sentiment-row"><strong>Official:</strong> ${r.government_signal||'—'}</div><div class="sentiment-row"><strong>Market:</strong> ${r.private_signal||'—'}</div><div class="sentiment-updated">Updated: ${new Date(r.scanned_at).toLocaleDateString()}</div></div>`).join('');
+    if (!rows.length) { document.getElementById('sentimentGrid').innerHTML = '<div class="no-data"><p>No sentiment data yet.</p></div>'; return; }
+    const official = (typeof t === 'function') ? t('sentiment_official') : 'Official';
+    const market = (typeof t === 'function') ? t('sentiment_market') : 'Market';
+    const updated = (typeof t === 'function') ? t('sentiment_updated') : 'Updated';
+    const cards = rows.map(r => '<div class="sentiment-card">' +
+      '<div class="sentiment-top"><span class="sentiment-country">' + (FLAGS_S[r.country_code] || '') + ' ' + r.country + '</span>' +
+      '<span class="sentiment-score ' + scoreClass(r.sentiment_label) + '">' + r.sentiment_score + '/10</span></div>' +
+      '<div class="sentiment-label">' + r.sentiment_label + '</div>' +
+      '<div class="sentiment-summary">' + r.summary + '</div>' +
+      '<div class="sentiment-row"><strong>' + official + ':</strong> ' + (r.government_signal || '—') + '</div>' +
+      '<div class="sentiment-row"><strong>' + market + ':</strong> ' + (r.private_signal || '—') + '</div>' +
+      '<div class="sentiment-updated">' + updated + ': ' + new Date(r.scanned_at).toLocaleDateString() + '</div>' +
+      '</div>').join('');
     document.getElementById('sentimentGrid').innerHTML = cards;
   }
+
+  loadStats();
   loadSentiment();
-  setInterval(loadSentiment, 5*60*1000);
+  setInterval(loadStats, 5 * 60 * 1000);
+  setInterval(loadSentiment, 5 * 60 * 1000);
 </script>
 </body>
 </html>
